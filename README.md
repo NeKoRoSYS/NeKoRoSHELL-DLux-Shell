@@ -15,7 +15,9 @@
 
 The best way to say "I use Linux btw 🤓" is if your desktop environment looks sleek and suave.
 
-Powered by Hyprland, this project does not define itself as "just a rice." **NeKoRoSHELL DLux** aims to provide an out-of-the-box, clean and reliable, generic, and modular framework that lets you easily customize your desktop experience with simple UI design philosophy in mind.
+Powered by Hyprland and Quickshell, **NeKoRoSHELL DLux** aims strives to achieve what its predecessor could not; all while maintaining core philosophies and robustness.
+
+**This repo only contain the files for `.config/quickshell/`. If you want the actual dotfiles, [check them out here](https://github.io/NeKoRoSYS/NeKoRoSHELL-DLux-Shell)
 <br>
 <br>
 
