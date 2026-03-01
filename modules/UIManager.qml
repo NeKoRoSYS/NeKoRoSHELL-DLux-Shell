@@ -18,4 +18,6 @@ Scope {
         borderWidth: 13
         cornerRadius: 20
     }
+
+    AudioVisualizer {}
 }
