@@ -7,6 +7,7 @@ import "../shared"
 
 Scope {
     id: border
+    property string location
     property real borderWidth
     property real cornerRadius
     property color borderColor
@@ -19,9 +20,18 @@ Scope {
 
             PanelWindow {
                 screen: currentScreen
+                anchors { top: true; left: true; right: true }
+                implicitHeight: border.borderWidth
+                color: border.borderColor
+                visible: border.location !== "top"
+            }
+
+            PanelWindow {
+                screen: currentScreen
                 anchors { top: true; left: true; bottom: true }
                 implicitWidth: border.borderWidth
                 color: border.borderColor
+                visible: border.location !== "left"
             }
 
             PanelWindow {
@@ -29,6 +39,7 @@ Scope {
                 anchors { bottom: true; left: true; right: true }
                 implicitHeight: border.borderWidth
                 color: border.borderColor
+                visible: border.location !== "bottom"
             }
 
             PanelWindow {
@@ -36,6 +47,7 @@ Scope {
                 anchors { top: true; right: true; bottom: true }
                 implicitWidth: border.borderWidth
                 color: border.borderColor
+                visible: border.location !== "right"
             }
 
             PanelWindow {

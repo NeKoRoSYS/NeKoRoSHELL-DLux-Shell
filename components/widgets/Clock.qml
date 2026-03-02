@@ -2,24 +2,41 @@
 import QtQuick
 import "../../shared"
 
-Rectangle {
+Item {
+    id: clockRoot
+    
+    property string location: "top"
     property alias clockFont: label.font.family
     property alias clockSize: label.font.pixelSize
-    width: label.implicitWidth + 30
-    radius: height / 2
-    height: parent.height / 1.65
 
-    color: Colors.color7
-    border.width: 0
-    border.color: Colors.background 
+    readonly property bool isSide: location === "left" || location === "right"
 
-    Text {
-        id: label
+    implicitWidth: isSide ? (label.implicitHeight + 30) : (label.implicitWidth + 30)
+    implicitHeight: isSide ? (label.implicitWidth + 30) : (label.implicitHeight + 30)
+
+    Rectangle {
+        id: pill
         anchors.centerIn: parent
-        color: Colors.background 
-        text: Time.time
-        font.family: "JetBrainsMono Nerd Font"
-        font.pixelSize: 12
-        font.weight: Font.ExtraBold
+        
+        readonly property real thickness: (isSide ? parent.parent.width : parent.parent.height) / 1.65
+        readonly property real length: label.implicitWidth + 30
+
+        width: isSide ? thickness : length
+        height: isSide ? length : thickness
+        radius: (isSide ? width : height) / 2
+
+        color: Colors.color7
+
+        Text {
+            id: label
+            anchors.centerIn: parent
+            rotation: location === "left" ? -90 : (location === "right" ? 90 : 0)
+            
+            color: Colors.background 
+            text: Time.time
+            font.weight: Font.ExtraBold
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+        }
     }
 }

@@ -2,19 +2,31 @@ import QtQuick
 import ".."
 import "../../shared"
 
-Row {
+Grid {
     id: root
     spacing: 13
+    
+    readonly property bool isSide: navbar.location === "left" || navbar.location === "right"
+    
+    columns: isSide ? 1 : 0
+    rows: isSide ? 0 : 1
 
     anchors {
-        verticalCenter: parent.verticalCenter
+        verticalCenter: isSide ? undefined : parent.verticalCenter
+        horizontalCenter: isSide ? parent.horizontalCenter : undefined
+        
+        right: isSide ? undefined : parent.right
+        bottom: isSide ? parent.bottom : undefined
+        
+        rightMargin: isSide ? 0 : 35
+        bottomMargin: isSide ? 35 : 0
     }
 
     Button {
         id: notif
         labelText: "󰂚"
         labelFont: navbar.font
-        buttonSize: navbar.barSize / 1.65
+        buttonSize: (isSide ? parent.parent.width : parent.parent.height) / 1.65
         buttonColor: Colors.color7
     }
 
@@ -22,7 +34,7 @@ Row {
         id: settings
         labelText: ""
         labelFont: navbar.font
-        buttonSize: navbar.barSize / 1.65
+        buttonSize: (isSide ? parent.parent.width : parent.parent.height) / 1.65
         buttonColor: Colors.color7
     }
 
@@ -30,7 +42,7 @@ Row {
         id: power
         labelText: "⏻"
         labelFont: navbar.font
-        buttonSize: navbar.barSize / 1.65
+        buttonSize: (isSide ? parent.parent.width : parent.parent.height) / 1.65
         buttonColor: Colors.color7
     }
 }

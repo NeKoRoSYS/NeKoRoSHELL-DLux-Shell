@@ -6,23 +6,26 @@ import "../../shared"
 ListView {
     id: root
     
-    orientation: ListView.Horizontal
+    readonly property bool isSide: navbar.location === "left" || navbar.location === "right"
+    orientation: isSide ? ListView.Vertical : ListView.Horizontal
     spacing: 13
     
     model: Hyprland.workspaces
 
-    readonly property real delegateSize: parent.height / 1.65
+    readonly property real delegateSize: (isSide ? parent.width : parent.height) / 1.65
     readonly property real minWorkspaces: 5
-    readonly property real minCalculatedWidth: (delegateSize * minWorkspaces) + (spacing * (minWorkspaces - 1))
+    readonly property real minCalculatedSize: (delegateSize * minWorkspaces) + (spacing * (minWorkspaces - 1))
 
-    implicitWidth: Math.max(contentWidth, minCalculatedWidth)
-    height: parent.height
+    implicitWidth: isSide ? parent.width : Math.max(contentWidth, minCalculatedSize)
+    implicitHeight: isSide ? Math.max(contentHeight, minCalculatedSize) : parent.height
 
     clip: false 
 
     delegate: Rectangle {
         required property var modelData
-        anchors.verticalCenter: parent.verticalCenter
+        
+        anchors.horizontalCenter: isSide ? parent.horizontalCenter : undefined
+        anchors.verticalCenter: isSide ? undefined : parent.verticalCenter
         
         height: root.delegateSize
         width: height
@@ -31,7 +34,7 @@ ListView {
         Text {
             id: label
             anchors.centerIn: parent
-            text: modelData.focused ? "󰣇" : modelData.name
+            text: modelData.focused ? "  " : modelData.name
             color: modelData.focused ? Colors.background : Colors.foreground
             font.family: "JetBrainsMono Nerd Font"
             font.pixelSize: 12
@@ -44,10 +47,7 @@ ListView {
             onClicked: modelData.activate()
         }
 
-        color: {
-            if (modelData.focused) return Colors.color7;
-            return Colors.color5;
-        }
+        color: modelData.focused ? Colors.color7 : Colors.color5
 
         Behavior on color { ColorAnimation { duration: 150 } }
     }
