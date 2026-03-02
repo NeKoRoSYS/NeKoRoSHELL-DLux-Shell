@@ -16,6 +16,8 @@ Scope {
     readonly property bool isHorizontal: location === "top" || location === "bottom"
     readonly property bool isVertical: location === "left" || location === "right"
 
+    signal toggleSettingsPanel()
+
     Variants {
         model: Quickshell.screens
 
@@ -52,7 +54,7 @@ Scope {
                 anchors.centerIn: parent
             }
 
-            ButtonsRow { }
+            ButtonsRow { onToggleSettingsPanel: navbar.toggleSettingsPanel() }
         }
     }
 }
