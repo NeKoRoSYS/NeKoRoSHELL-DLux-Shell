@@ -1,8 +1,8 @@
-// quickshell/components/widgets/Workspaces.qml
+// quickshell/components/widgets/navbar/Workspaces.qml
 import QtQuick
 import Quickshell.Hyprland
-import "../../shared"
-import "../../components"
+import qs.shared
+import qs.components
 
 ListView {
     id: root

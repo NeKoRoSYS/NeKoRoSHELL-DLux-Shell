@@ -1,6 +1,6 @@
 // quickshell/components/Toggle.qml
 import QtQuick
-import "../shared"
+import qs.shared
 
 Item {
     id: root

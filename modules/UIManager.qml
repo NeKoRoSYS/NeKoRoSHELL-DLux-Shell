@@ -1,6 +1,6 @@
 import Quickshell
-import "../components"
-import "../shared"
+import qs.components
+import qs.shared
 
 Scope {
     id: root
@@ -20,7 +20,7 @@ Scope {
         borderWidth: root.borderWidth
         cornerRadius: root.cornerRadius
 
-        Bar {
+        Navbar {
             location: root.navbarLocation
             barColor: Colors.background
             barSize: root.navbarSize

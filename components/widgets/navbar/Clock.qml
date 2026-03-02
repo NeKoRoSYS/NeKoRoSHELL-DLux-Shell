@@ -1,6 +1,6 @@
-// quickshell/components/widgets/Clock.qml
+// quickshell/components/widgets/navbar/Clock.qml
 import QtQuick
-import "../../shared"
+import qs.shared
 
 Item {
     id: clockRoot

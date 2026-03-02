@@ -3,7 +3,7 @@
 import Quickshell
 import QtQuick
 import QtQuick.Shapes
-import "../shared"
+import qs.shared
 
 Scope {
     id: border

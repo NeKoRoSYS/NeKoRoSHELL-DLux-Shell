@@ -1,7 +1,8 @@
+// quickshell/components/widgets/navbar/ButtonsRow.qml
 import QtQuick
 import Quickshell
-import ".."
-import "../../shared"
+import qs.components
+import qs.shared
 
 Grid {
     id: root

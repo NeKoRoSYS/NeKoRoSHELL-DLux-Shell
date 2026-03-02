@@ -1,7 +1,7 @@
 // quickshell/components/SettingsPanel.qml
 import Quickshell
 import QtQuick
-import "../shared"
+import qs.shared
 
 Scope {
     id: settingsScope
