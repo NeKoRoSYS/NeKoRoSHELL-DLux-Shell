@@ -30,10 +30,6 @@ Scope {
         borderWidth: root.borderWidth
         cornerRadius: root.cornerRadius
     }
-    
-    AudioVisualizer {
-        visible: false
-    }
 
     PositionPanel {
         showPanel: root.isPanelOpen

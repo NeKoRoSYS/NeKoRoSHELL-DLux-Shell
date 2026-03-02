@@ -22,34 +22,37 @@ ListView {
 
     clip: false 
 
-    delegate: Rectangle {
+    delegate: Item {
         required property var modelData
-        
-        anchors.horizontalCenter: isSide ? parent.horizontalCenter : undefined
-        anchors.verticalCenter: isSide ? undefined : parent.verticalCenter
-        
-        height: root.delegateSize
-        width: height
-        radius: height / 2
-        
-        Text {
-            id: label
+
+        width: root.isSide ? ListView.view.width : root.delegateSize
+        height: root.isSide ? root.delegateSize : ListView.view.height
+
+        Rectangle {
             anchors.centerIn: parent
-            text: modelData.focused ? "󰣇" : modelData.name
-            color: modelData.focused ? Colors.background : Colors.foreground
-            font.family: "JetBrainsMono Nerd Font"
-            font.pixelSize: 12
-            font.weight: Font.ExtraBold
+            
+            height: root.delegateSize
+            width: height
+            radius: height / 2
+            
+            color: modelData.focused ? Colors.color7 : Colors.color5
+            Behavior on color { ColorAnimation { duration: 150 } }
+
+            Text {
+                id: label
+                anchors.centerIn: parent
+                text: modelData.focused ? "󰣇" : modelData.name
+                color: modelData.focused ? Colors.background : Colors.foreground
+                font.family: "JetBrainsMono Nerd Font"
+                font.pixelSize: 12
+                font.weight: Font.ExtraBold
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: modelData.activate()
+            }
         }
-
-        MouseArea {
-            anchors.fill: parent
-            cursorShape: Qt.PointingHandCursor
-            onClicked: modelData.activate()
-        }
-
-        color: modelData.focused ? Colors.color7 : Colors.color5
-
-        Behavior on color { ColorAnimation { duration: 150 } }
     }
 }

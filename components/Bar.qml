@@ -37,14 +37,8 @@ Scope {
             implicitWidth: navbar.isVertical ? navbar.barSize : undefined
 
            Workspaces {
-                anchors {
-                    left: navbar.isHorizontal ? parent.left : undefined
-                    leftMargin: navbar.isHorizontal ? 35 : 0
-                    top: navbar.isVertical ? parent.top : undefined
-                    topMargin: navbar.isVertical ? 35 : 0
-                    verticalCenter: navbar.isHorizontal ? parent.verticalCenter : undefined
-                    horizontalCenter: navbar.isVertical ? parent.horizontalCenter : undefined
-                }
+                x: navbar.isHorizontal ? 35 : (parent.width - width) / 2
+                y: navbar.isVertical ? 35 : (parent.height - height) / 2
             }
 
             Clock {
@@ -54,7 +48,11 @@ Scope {
                 anchors.centerIn: parent
             }
 
-            ButtonsRow { onToggleSettingsPanel: navbar.toggleSettingsPanel() }
+            ButtonsRow { 
+                x: navbar.isHorizontal ? parent.width - width - 35 : (parent.width - width) / 2
+                y: navbar.isVertical ? parent.height - height - 35 : (parent.height - height) / 2
+                onToggleSettingsPanel: navbar.toggleSettingsPanel()
+            }
         }
     }
 }
