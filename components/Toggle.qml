@@ -36,8 +36,8 @@ Item {
 
         Rectangle {
             id: thumb
-            width: 20
-            height: 20
+            width: 15
+            height: 15
             radius: 10
             anchors.verticalCenter: parent.verticalCenter
             
@@ -45,6 +45,11 @@ Item {
             color: Colors.foreground
             
             Behavior on x { NumberAnimation { duration: 150; easing.type: Easing.OutQuad } }
+
+            Text {
+                text: root.checked == true ? "|" : "O"
+                anchors.centerIn: parent
+            }
         }
 
         MouseArea {

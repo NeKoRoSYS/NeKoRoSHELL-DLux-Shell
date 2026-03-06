@@ -6,7 +6,7 @@ Item {
     id: root
     
     property bool show: false
-    property string preset: "slide" // Options: "slide", "scale", "fade"
+    property string preset: "slide" // Options are "slide", "scale", "fade"
     property string edge: "top"     
     
     property bool isSurfaceVisible: false
