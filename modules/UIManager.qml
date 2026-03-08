@@ -32,6 +32,11 @@ Scope {
         function onToggleBorders(state) {
             Config.saveSetting("enableBorders", state)
         }
+        
+        function onToggleLightMode(state) {
+            Config.saveSetting("lightMode", state)
+            Colors.reloadColors()
+        }
     }
 
     ScreenBorder {
@@ -52,6 +57,7 @@ Scope {
     Theming {
         showPanel: root.activePanel === "theming"
         bordersEnabled: Config.enableBorders
+        lightMode: Config.lightMode
         navbarOffset: root.navbarSize
     }
 

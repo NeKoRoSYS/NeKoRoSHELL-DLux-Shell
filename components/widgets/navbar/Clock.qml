@@ -34,14 +34,15 @@ Item {
         height: root.isSide ? length : thickness
         radius: (root.isSide ? width : height) / 2
 
-        color: Colors.color7
-
+        color: mouseArea.containsMouse ? Colors.foreground : Colors.color3
+        Behavior on color { ColorAnimation { duration: 150 } }
+        
         Text {
             id: label
             anchors.centerIn: parent
             rotation: root.location === "left" ? -90 : (root.location === "right" ? 90 : 0)
             
-            color: Colors.background 
+            color: mouseArea.containsMouse ? Colors.background : Colors.foreground 
             text: mouseArea.containsMouse ? "󰣇" : Time.time
             font.weight: Font.ExtraBold
             horizontalAlignment: Text.AlignHCenter

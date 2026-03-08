@@ -1,4 +1,4 @@
-// quickshell/components/widgets/SettingsPanel.qml
+// quickshell/components/widgets/Theming.qml
 import Quickshell
 import Quickshell.Wayland
 import QtQuick
@@ -9,9 +9,10 @@ Panel {
     id: settingsScope
     
     panelWidth: 400
-    panelHeight: 475
+    panelHeight: 500
 
     property bool bordersEnabled: false
+    property bool lightMode: false
 
     Column {
         anchors.fill: parent
@@ -36,6 +37,12 @@ Panel {
                 labelText: "Show Borders"
                 checked: settingsScope.bordersEnabled
                 onToggled: (state) => EventBus.toggleBorders(state)
+            }
+
+            Toggle {
+                labelText: "Light Mode"
+                checked: settingsScope.lightMode
+                onToggled: (state) => EventBus.toggleLightMode(state)
             }
         }
 
@@ -76,6 +83,7 @@ Panel {
                     
                     onAccepted: {
                         Config.saveSetting("wallpaperPath", text)
+                        Colors.reloadColors()
                         wpInput.focus = false
                     }
                 }

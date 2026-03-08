@@ -6,7 +6,7 @@ import qs.shared
 Panel {
     id: dashboardScope
     
-    panelWidth: 400
+    panelWidth: 800
     panelHeight: 400
     animationPreset: "slide"
 

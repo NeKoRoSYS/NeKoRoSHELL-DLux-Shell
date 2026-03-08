@@ -35,7 +35,7 @@ Scope {
             implicitHeight: navbar.isHorizontal ? navbar.barSize : undefined
             implicitWidth: navbar.isHorizontal ? undefined : navbar.barSize
 
-           Workspaces {
+            Workspaces {
                 x: navbar.isHorizontal ? 35 : (parent.width - width) / 2
                 y: navbar.isHorizontal ? (parent.height - height) / 2 : 35
             }

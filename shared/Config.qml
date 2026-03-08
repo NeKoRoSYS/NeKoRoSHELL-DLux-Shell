@@ -14,6 +14,7 @@ Singleton {
 
     property string navbarLocation: "top"
     property bool enableBorders: true
+    property bool lightMode: false
     property string wallpaperPath: "/home/nekorosys/.config/wallpapers/1145396.png"
 
     FileView {
@@ -25,10 +26,12 @@ Singleton {
             
             property string navbarLocation: "top"
             property bool enableBorders: true
+            property bool lightMode: false
             property string wallpaperPath: ""
 
             onNavbarLocationChanged: root.navbarLocation = navbarLocation
             onEnableBordersChanged: root.enableBorders = enableBorders
+            onLightModeChanged: root.lightMode = lightMode
             onWallpaperPathChanged: root.wallpaperPath = wallpaperPath
         }
     }
@@ -36,11 +39,13 @@ Singleton {
     function saveSetting(key, value) {
         if (key === "navbarLocation") root.navbarLocation = value;
         if (key === "enableBorders") root.enableBorders = value;
+        if (key === "lightMode") root.lightMode = value;
         if (key === "wallpaperPath") root.wallpaperPath = value;
 
         let fileData = {
             navbarLocation: root.navbarLocation,
             enableBorders: root.enableBorders,
+            lightMode: root.lightMode,
             wallpaperPath: root.wallpaperPath
         };
 
