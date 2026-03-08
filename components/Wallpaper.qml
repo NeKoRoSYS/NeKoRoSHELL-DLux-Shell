@@ -1,9 +1,9 @@
-// quickshell/components/Wallpaper.qml
+// components/Wallpaper.qml
 import Quickshell
 import Quickshell.Wayland
 import QtQuick
 import QtMultimedia
-import qs.shared
+import qs.globals
 
 Scope {
     id: rootScope

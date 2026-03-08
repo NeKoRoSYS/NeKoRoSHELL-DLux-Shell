@@ -1,0 +1,8 @@
+module qs.components
+
+Button          1.0 Button.qml
+Toggle          1.0 Toggle.qml
+Panel           1.0 Panel.qml
+ScreenBorder    1.0 ScreenBorder.qml
+AnimatedElement 1.0 AnimatedElement.qml
+Wallpaper       1.0 Wallpaper.qml

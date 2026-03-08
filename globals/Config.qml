@@ -1,4 +1,4 @@
-// quickshell/shared/Config.qml
+// globals/Config.qml
 pragma Singleton
 
 import QtQuick
@@ -8,15 +8,17 @@ import Quickshell.Io
 Singleton {
     id: root
 
-    readonly property string configDir: Quickshell.env("HOME") + "/.config/quickshell"
-    readonly property string configPath: configDir + "/config.json"
-    readonly property string tmpPath: configDir + "/config_tmp.json"
+    readonly property string configPath: Quickshell.env("HOME") + "/.config/quickshell/config.json"
+    readonly property string tmpPath:    Quickshell.env("HOME") + "/.config/quickshell/.config.json.tmp"
 
     property string navbarLocation: "top"
-    property string navbarLayout: "edges"
-    property bool enableBorders: true
+    property bool   enableBorders:  true
+    property string activeLayout:   "default"
+    
     property bool lightMode: false
     property string wallpaperPath: "/home/nekorosys/.config/wallpapers/1145396.png"
+
+    readonly property bool isHorizontal: navbarLocation === "top" || navbarLocation === "bottom"
 
     FileView {
         id: configFile
@@ -24,18 +26,18 @@ Singleton {
 
         adapter: JsonAdapter {
             id: configAdapter
-            
+
             property string navbarLocation: "top"
-            property string navbarLayout: "edges"
-            property bool enableBorders: true
+            property bool   enableBorders:  true
+            property string activeLayout:   "default"
             property bool lightMode: false
             property string wallpaperPath: ""
 
             onNavbarLocationChanged: root.navbarLocation = navbarLocation
-            onNavbarLayoutChanged: root.navbarLayout = navbarLayout
-            onEnableBordersChanged: root.enableBorders = enableBorders
-            onLightModeChanged: root.lightMode = lightMode
-            onWallpaperPathChanged: root.wallpaperPath = wallpaperPath
+            onEnableBordersChanged:  root.enableBorders  = enableBorders
+            onActiveLayoutChanged:   root.activeLayout   = activeLayout
+            onLightModeChanged:      root.lightMode      = lightMode
+            onWallpaperPathChanged:  root.wallpaperPath  = wallpaperPath
         }
     }
 
@@ -48,10 +50,10 @@ Singleton {
 
     function saveSetting(key, value) {
         if (key === "navbarLocation") root.navbarLocation = value;
-        if (key === "navbarLayout") root.navbarLayout = value;
-        if (key === "enableBorders") root.enableBorders = value;
-        if (key === "lightMode") root.lightMode = value;
-        if (key === "wallpaperPath") root.wallpaperPath = value;
+        if (key === "enableBorders")  root.enableBorders  = value;
+        if (key === "activeLayout")   root.activeLayout   = value;
+        if (key === "lightMode")      root.lightMode      = value;
+        if (key === "wallpaperPath")  root.wallpaperPath  = value;
 
         saveTimer.restart();
     }
@@ -60,6 +62,7 @@ Singleton {
         let fileData = {
             navbarLocation: root.navbarLocation,
             enableBorders: root.enableBorders,
+            activeLayout: root.activeLayout,
             navbarLayout: root.navbarLayout,
             lightMode: root.lightMode,
             wallpaperPath: root.wallpaperPath

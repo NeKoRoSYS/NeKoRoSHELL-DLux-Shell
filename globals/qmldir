@@ -1,0 +1,7 @@
+module qs.globals
+
+singleton Colors     1.0 Colors.qml
+singleton Config     1.0 Config.qml
+singleton Animations 1.0 Animations.qml
+singleton Time       1.0 Time.qml
+singleton EventBus   1.0 EventBus.qml

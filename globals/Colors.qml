@@ -11,33 +11,33 @@ Singleton {
     property alias themeAdapter: themeAdapter
 
     property var special: [background, foreground, cursor]
-    property color background: themeAdapter.special.background
-    property color foreground: themeAdapter.special.foreground
-    property color cursor: themeAdapter.special.cursor
+    readonly property color background: themeAdapter.special.background
+    readonly property color foreground: themeAdapter.special.foreground
+    readonly property color cursor: themeAdapter.special.cursor
 
     property var colors: [color0, color1, color2, color3, color4, color5, color6, color7, color8, color9, color10, color11, color12, color13, color14, color15]
-    property color color0: themeAdapter.colors.color0
-    property color color1: themeAdapter.colors.color1
-    property color color2: themeAdapter.colors.color2
-    property color color3: themeAdapter.colors.color3
-    property color color4: themeAdapter.colors.color4
-    property color color5: themeAdapter.colors.color5
-    property color color6: themeAdapter.colors.color6
-    property color color7: themeAdapter.colors.color7
-    property color color8: themeAdapter.colors.color8
-    property color color9: themeAdapter.colors.color9
-    property color color10: themeAdapter.colors.color10
-    property color color11: themeAdapter.colors.color11
-    property color color12: themeAdapter.colors.color12
-    property color color13: themeAdapter.colors.color13
-    property color color14: themeAdapter.colors.color14
-    property color color15: themeAdapter.colors.color15
+    readonly property color color0: themeAdapter.colors.color0
+    readonly property color color1: themeAdapter.colors.color1
+    readonly property color color2: themeAdapter.colors.color2
+    readonly property color color3: themeAdapter.colors.color3
+    readonly property color color4: themeAdapter.colors.color4
+    readonly property color color5: themeAdapter.colors.color5
+    readonly property color color6: themeAdapter.colors.color6
+    readonly property color color7: themeAdapter.colors.color7
+    readonly property color color8: themeAdapter.colors.color8
+    readonly property color color9: themeAdapter.colors.color9
+    readonly property color color10: themeAdapter.colors.color10
+    readonly property color color11: themeAdapter.colors.color11
+    readonly property color color12: themeAdapter.colors.color12
+    readonly property color color13: themeAdapter.colors.color13
+    readonly property color color14: themeAdapter.colors.color14
+    readonly property color color15: themeAdapter.colors.color15
 
     Process {
         id: wallustProcess
-        onExited: (exitCode) => {
+        onExited: exitCode => {
             if (exitCode === 0) {
-                themeFile.reload()
+                themeFile.reload();
             }
         }
     }

@@ -1,7 +1,7 @@
 {
   "navbarLocation": "right",
   "enableBorders": true,
-  "navbarLayout": "center",
+  "activeLayout": "media",
   "lightMode": false,
   "wallpaperPath": "/home/nekorosys/.config/wallpapers/1145396.png"
 }

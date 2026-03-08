@@ -1,0 +1,4 @@
+module qs.engine
+
+singleton ModuleRegistry 1.0 ModuleRegistry.qml
+LayoutLoader             1.0 LayoutLoader.qml

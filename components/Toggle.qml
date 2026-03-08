@@ -1,6 +1,6 @@
-// quickshell/components/Toggle.qml
+// components/Toggle.qml
 import QtQuick
-import qs.shared
+import qs.globals
 
 Item {
     id: root
