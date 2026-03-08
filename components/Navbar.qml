@@ -39,14 +39,20 @@ Scope {
             readonly property real widgetGap: 15
             readonly property bool isCentered: navbar.layout == "center"
 
+            readonly property real totalCenterWidth: workspacesObj.width + clockObj.width + buttonsObj.width + (widgetGap * 2)
+            readonly property real totalCenterHeight: workspacesObj.height + clockObj.height + buttonsObj.height + (widgetGap * 2)
+            
+            readonly property real centerStartX: (width - totalCenterWidth) / 2
+            readonly property real centerStartY: (height - totalCenterHeight) / 2
+
             Workspaces {
                 id: workspacesObj
-                x: navbar.isHorizontal ?
-                    (isCentered ? (parent.width - (width + clockObj.width + buttonsObj.width + (widgetGap * 2))) / 2 : 35) :
+                x: navbar.isHorizontal ? 
+                    (isCentered ? centerStartX : 35) : 
                     (parent.width - width) / 2
-                y: navbar.isHorizontal ?
-                    (parent.height - height) / 2 :
-                    (isCentered ? (parent.height - (height + clockObj.height + buttonsObj.height + (widgetGap * 2))) / 2 : 35)
+                y: navbar.isHorizontal ? 
+                    (parent.height - height) / 2 : 
+                    (isCentered ? centerStartY : 35)
                 Behavior on x { NumberAnimation { duration: 300; easing.type: Easing.OutCubic } }
                 Behavior on y { NumberAnimation { duration: 300; easing.type: Easing.OutCubic } }
             }
@@ -58,11 +64,11 @@ Scope {
                 clockFont: navbar.font
                 
                 x: navbar.isHorizontal ?
-                    (isCentered ? workspacesObj.x + workspacesObj.width + widgetGap : (parent.width - width) / 2) :
+                    (isCentered ? (centerStartX + workspacesObj.width + widgetGap) : (parent.width - width) / 2) :
                     (parent.width - width) / 2
                 y: navbar.isHorizontal ?
                     (parent.height - height) / 2 :
-                    (isCentered ? workspacesObj.y + workspacesObj.height + widgetGap : (parent.height - height) / 2)
+                    (isCentered ? (centerStartY + workspacesObj.height + widgetGap) : (parent.height - height) / 2)
 
                 Behavior on x { NumberAnimation { duration: 300; easing.type: Easing.OutCubic } }
                 Behavior on y { NumberAnimation { duration: 300; easing.type: Easing.OutCubic } }
@@ -71,12 +77,11 @@ Scope {
             ButtonsRow { 
                 id: buttonsObj
                 x: navbar.isHorizontal ?
-                    (isCentered ? clockObj.x + clockObj.width + widgetGap : parent.width - width - 35) :
+                    (isCentered ? (centerStartX + workspacesObj.width + clockObj.width + (widgetGap * 2)) : parent.width - width - 35) :
                     (parent.width - width) / 2
                 y: navbar.isHorizontal ?
                     (parent.height - height) / 2 :
-                    (isCentered ? clockObj.y + clockObj.height + widgetGap : parent.height - height - 35)
-                
+                    (isCentered ? (centerStartY + workspacesObj.height + clockObj.height + (widgetGap * 2)) : parent.height - height - 35)
                 Behavior on x { NumberAnimation { duration: 300; easing.type: Easing.OutCubic } }
                 Behavior on y { NumberAnimation { duration: 300; easing.type: Easing.OutCubic } }
             }

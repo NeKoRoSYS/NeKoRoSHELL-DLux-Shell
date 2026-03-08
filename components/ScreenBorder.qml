@@ -57,7 +57,8 @@ Scope {
                 implicitHeight: border.cornerRadius
                 implicitWidth: border.cornerRadius
                 color: "transparent"
-                visible: enabled
+                // ALWAYS visible if the navbar is on the top or left
+                visible: border.enabled || border.location === "top" || border.location === "left"
                 
                 Shape {
                     width: border.cornerRadius
@@ -80,7 +81,7 @@ Scope {
                 implicitHeight: border.cornerRadius
                 implicitWidth: border.cornerRadius
                 color: "transparent"
-                visible: enabled
+                visible: border.enabled || border.location === "top" || border.location === "right"
                 
                 Shape {
                     width: border.cornerRadius
@@ -103,7 +104,7 @@ Scope {
                 implicitHeight: border.cornerRadius
                 implicitWidth: border.cornerRadius
                 color: "transparent"
-                visible: enabled
+                visible: border.enabled || border.location === "bottom" || border.location === "left"
                 
                 Shape {
                     width: border.cornerRadius
@@ -126,7 +127,7 @@ Scope {
                 implicitHeight: border.cornerRadius
                 implicitWidth: border.cornerRadius
                 color: "transparent"
-                visible: enabled
+                visible: border.enabled || border.location === "bottom" || border.location === "right"
                 
                 Shape {
                     width: border.cornerRadius
