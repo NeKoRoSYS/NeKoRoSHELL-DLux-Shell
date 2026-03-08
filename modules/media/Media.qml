@@ -40,13 +40,14 @@ Item {
         width:   length
         height:  root.buttonSize
         radius:  height / 2
-        color:   Colors.color3
+        color: titleArea.containsMouse ? "white" : Colors.color3
+        Behavior on color { ColorAnimation { duration: 150 } }
 
         Text {
             id: titleText
             anchors.centerIn: parent
             text:             root.player ? (root.player.trackTitle || root.player.identity || "") : ""
-            color:            "white"
+            color:            titleArea.containsMouse ? "black" : "white"
             font.family:      root.barFont
             font.pixelSize:   root.buttonSize * 0.52
             font.weight:      Font.Bold
@@ -55,6 +56,8 @@ Item {
         }
 
         MouseArea {
+            id: titleArea
+            hoverEnabled:    true
             anchors.fill:    parent
             cursorShape:     Qt.PointingHandCursor
             acceptedButtons: Qt.LeftButton | Qt.BackButton | Qt.ForwardButton
@@ -81,7 +84,6 @@ Item {
         anchors.centerIn: parent
         spacing:          6
 
-        // Previous
         Rectangle {
             width: root.buttonSize; height: width; radius: width / 2
             color: prevArea.containsMouse ? "white" : Colors.color3
@@ -103,7 +105,6 @@ Item {
             }
         }
 
-        // Play / Pause
         Rectangle {
             width: root.buttonSize; height: width; radius: width / 2
             color: playArea.containsMouse ? "white" : Colors.color3
@@ -130,7 +131,6 @@ Item {
             }
         }
 
-        // Next
         Rectangle {
             width: root.buttonSize; height: width; radius: width / 2
             color: nextArea.containsMouse ? "white" : Colors.color3
