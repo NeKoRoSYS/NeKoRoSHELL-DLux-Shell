@@ -44,7 +44,7 @@ Singleton {
 
     function reloadColors() {
         const wallustConfig = Config.lightMode ? "wallust-light.toml" : "wallust-dark.toml";
-        const cmdString = `wallust run "${Config.wallpaperPath}" -q -C ~/.config/wallust/${wallustConfig} || wallust run "${Config.wallpaperPath}" -q -C ~/.config/wallust/${wallustConfig} -b full -t 5`;
+        const cmdString = `wallust run ${Config.wallpaperPath} -q -C ~/.config/wallust/${wallustConfig} || wallust run "${Config.wallpaperPath}" -q -C ~/.config/wallust/${wallustConfig} -b full -t 5`;
         wallustProcess.command = ["sh", "-c", cmdString + "; hyprctl reload"];
         wallustProcess.running = true;
     }

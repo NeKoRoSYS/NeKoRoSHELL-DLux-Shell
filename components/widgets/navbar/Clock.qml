@@ -13,10 +13,11 @@ Item {
 
     Text {
         id: timeMetrics
-        text: Time.time
+        text: root.isSide ? Time.timeVertical : Time.time
         font.family: label.font.family
         font.pixelSize: label.font.pixelSize
         font.weight: label.font.weight
+        lineHeight: 0.8
         visible: false
     }
 
@@ -27,26 +28,31 @@ Item {
         id: pill
         anchors.centerIn: parent
         
-        readonly property real thickness: (root.isSide ? parent.parent.width : parent.parent.height) / 1.65
-        readonly property real length: timeMetrics.implicitWidth + 30
+        readonly property real thickness: (root.isSide ? parent.width - 10 : parent.height) / 1.65
+        readonly property real length: root.isSide ? (timeMetrics.implicitHeight + 20) : (timeMetrics.implicitWidth + 30)
+
+        implicitWidth: root.isSide ? thickness : length
+        implicitHeight: root.isSide ? length : thickness
 
         width: root.isSide ? thickness : length
         height: root.isSide ? length : thickness
         radius: (root.isSide ? width : height) / 2
 
-        color: mouseArea.containsMouse ? Colors.foreground : Colors.color3
+        color: mouseArea.containsMouse ? "white" : Colors.color3
         Behavior on color { ColorAnimation { duration: 150 } }
         
         Text {
             id: label
             anchors.centerIn: parent
-            rotation: root.location === "left" ? -90 : (root.location === "right" ? 90 : 0)
             
-            color: mouseArea.containsMouse ? Colors.background : Colors.foreground 
-            text: mouseArea.containsMouse ? "󰣇" : Time.time
+            text: mouseArea.containsMouse ? "󰣇" : (root.isSide ? Time.timeVertical : Time.time)
+            color: mouseArea.containsMouse ? Colors.color5 : "white"
+            
             font.weight: Font.ExtraBold
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
+            
+            lineHeight: 0.8 
         }
 
         MouseArea {

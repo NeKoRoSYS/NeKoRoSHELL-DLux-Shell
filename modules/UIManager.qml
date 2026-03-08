@@ -28,6 +28,10 @@ Scope {
         function onChangeLocation(newLocation) {
             Config.saveSetting("navbarLocation", newLocation)
         }
+
+        function onChangeLayout(newLayout) {
+            Config.saveSetting("navbarLayout", newLayout)
+        }
         
         function onToggleBorders(state) {
             Config.saveSetting("enableBorders", state)
@@ -48,6 +52,7 @@ Scope {
 
         Navbar {
             location: Config.navbarLocation
+            layout: Config.navbarLayout
             barColor: Colors.background
             barSize: root.navbarSize
             fontSize: root.fontSize

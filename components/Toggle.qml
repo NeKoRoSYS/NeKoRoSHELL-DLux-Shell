@@ -31,7 +31,7 @@ Item {
         height: 24
         radius: height / 2
         
-        color: root.checked ? Colors.color2 : Colors.color0 
+        color: root.checked ? Colors.color3 : Colors.color0 
         Behavior on color { ColorAnimation { duration: 150 } }
 
         Rectangle {
@@ -42,7 +42,7 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             
             x: root.checked ? track.width - width - 2 : 2
-            color: Colors.foreground
+            color: "white"
             
             Behavior on x { NumberAnimation { duration: 150; easing.type: Easing.OutQuad } }
 

@@ -9,10 +9,10 @@ Panel {
     id: settingsScope
     
     panelWidth: 400
-    panelHeight: 500
+    panelHeight: 550
 
-    property bool bordersEnabled: false
-    property bool lightMode: false
+    property bool bordersEnabled: Config.enableBorders
+    property bool lightMode: Config.lightMode
 
     Column {
         anchors.fill: parent
@@ -43,6 +43,12 @@ Panel {
                 labelText: "Light Mode"
                 checked: settingsScope.lightMode
                 onToggled: (state) => EventBus.toggleLightMode(state)
+            }
+
+            Toggle {
+                labelText: "Center Navbar Widgets"
+                checked: Config.navbarLayout === "center"
+                onToggled: (state) => EventBus.changeLayout(state ? "center" : "edges")
             }
         }
 
@@ -115,7 +121,7 @@ Panel {
                     labelText: "󰁝"
                     labelFont: "JetBrainsMono Nerd Font"
                     buttonSize: 40
-                    buttonColor: Colors.color7
+                    buttonColor: "white"
                     onButtonClicked: EventBus.changeLocation("top")
                 }
                 Button {
@@ -123,7 +129,7 @@ Panel {
                     labelText: "󰁅"
                     labelFont: "JetBrainsMono Nerd Font"
                     buttonSize: 40
-                    buttonColor: Colors.color7
+                    buttonColor: "white"
                     onButtonClicked: EventBus.changeLocation("bottom")
                 }
                 Button {
@@ -131,7 +137,7 @@ Panel {
                     labelText: "󰁍"
                     labelFont: "JetBrainsMono Nerd Font"
                     buttonSize: 40
-                    buttonColor: Colors.color7
+                    buttonColor: "white"
                     onButtonClicked: EventBus.changeLocation("left")
                 }
                 Button {
@@ -139,7 +145,7 @@ Panel {
                     labelText: "󰁔"
                     labelFont: "JetBrainsMono Nerd Font"
                     buttonSize: 40
-                    buttonColor: Colors.color7
+                    buttonColor: "white"
                     onButtonClicked: EventBus.changeLocation("right")
                 }
             }

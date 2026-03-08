@@ -19,7 +19,7 @@ Item {
         height: root.isSide ? (container.implicitHeight + 15) : root.baseSize
         radius: (root.isSide ? width : height) / 2
         
-        color: Colors.color5
+        color: Colors.color3
         opacity: 0.325
     }
 
@@ -35,7 +35,7 @@ Item {
             id: notif
             labelText: "󰂚"
             labelFont: navbar.font
-            labelColor: Colors.foreground
+            labelColor: "white"
             buttonSize: root.baseSize
             buttonColor: Colors.color3
             onButtonClicked: {
@@ -49,7 +49,7 @@ Item {
             id: settings
             labelText: ""
             labelFont: navbar.font
-            labelColor: Colors.foreground
+            labelColor: "white"
             buttonSize: root.baseSize
             buttonColor: Colors.color3
             onButtonClicked: EventBus.togglePanel("theming")
@@ -59,7 +59,7 @@ Item {
             id: power
             labelText: "⏻"
             labelFont: navbar.font
-            labelColor: Colors.foreground
+            labelColor: "white"
             buttonSize: root.baseSize
             buttonColor: Colors.color3
             onButtonClicked: {

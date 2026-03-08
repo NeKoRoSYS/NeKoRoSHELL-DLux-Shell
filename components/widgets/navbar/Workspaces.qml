@@ -70,14 +70,14 @@ Item {
                         width: height
                         radius: height / 2
                         
-                        color: wsMouseArea.containsMouse ? Colors.foreground : (workspaceDelegate.modelData.focused ? Colors.color7 : Colors.color3)
+                        color: wsMouseArea.containsMouse ? "white" : (workspaceDelegate.modelData.focused ? "white" : Colors.color3)
                         Behavior on color { ColorAnimation { duration: 150 } }
 
                         Text {
                             anchors.centerIn: parent
                             anchors.horizontalCenterOffset: 1
                             text: workspaceDelegate.modelData.focused ? "󰣇" : workspaceDelegate.modelData.name
-                            color: wsMouseArea.containsMouse ? Colors.background : (workspaceDelegate.modelData.focused ? Colors.background : Colors.foreground)
+                            color: wsMouseArea.containsMouse ? "black" : (workspaceDelegate.modelData.focused ? "black" : "white")
                             Behavior on color { ColorAnimation { duration: 150 } }
                             font.family: "JetBrainsMono Nerd Font"
                             font.pixelSize: 12
@@ -110,7 +110,7 @@ Item {
                             width: height
                             radius: height / 2
                             
-                            color: appMouseArea.containsMouse ? Colors.foreground : (isFocusedApp ? Colors.color7 : Colors.color3)
+                            color: appMouseArea.containsMouse ? "white" : (isFocusedApp ? "white" : Colors.color3)
                             Behavior on color { ColorAnimation { duration: 150 } }
 
                             Text {
@@ -154,7 +154,7 @@ Item {
                                     return appClass.substring(0, 1).toUpperCase();
                                 }
                                 
-                                color: appMouseArea.containsMouse ? Colors.background : (isFocusedApp ? Colors.color3 : Colors.foreground)
+                                color: appMouseArea.containsMouse ? "black" : (isFocusedApp ? Colors.color3 : "white")
                                 Behavior on color { ColorAnimation { duration: 150 } }
                                 font.family: "JetBrainsMono Nerd Font"
                                 font.pixelSize: 14 
@@ -182,7 +182,7 @@ Item {
                         width: height
                         radius: height / 2
                         
-                        color: overflowMouseArea.containsMouse ? Colors.foreground : Colors.color3
+                        color: overflowMouseArea.containsMouse ? "white" : Colors.color3
                         Behavior on color { ColorAnimation { duration: 150 } }
                         
                         Text {
@@ -192,7 +192,7 @@ Item {
                             
                             text: "+" + (appRepeater.count - root.maxIcons)
                             
-                            color: overflowMouseArea.containsMouse ? Colors.background : Colors.foreground
+                            color: overflowMouseArea.containsMouse ? "black" : "white"
                             Behavior on color { ColorAnimation { duration: 150 } }
                             font.family: "JetBrainsMono Nerd Font"
                             font.pixelSize: 11
