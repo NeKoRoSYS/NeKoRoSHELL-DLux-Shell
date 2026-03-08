@@ -1,3 +1,4 @@
+// quickshell/components/Button.qml
 import QtQuick
 
 Rectangle {
@@ -7,7 +8,7 @@ Rectangle {
     property string style: "circle"
     property string labelText
     property string labelFont
-    property string labelColor
+    property string labelColor: "white"
     property real buttonSize: parent.height / 1.65
     property color buttonColor
 
@@ -16,7 +17,9 @@ Rectangle {
         if (style == "circle") height
     }
     radius: height / 2
-    color: buttonColor
+    
+    color: mouseArea.containsMouse ? "white" : root.buttonColor
+    Behavior on color { ColorAnimation { duration: 150 } }
     
     Text {
         id: label
@@ -25,7 +28,10 @@ Rectangle {
         anchors.verticalCenterOffset: 1
         text: root.labelText
         font.family: root.labelFont
-        color: labelColor
+        
+        color: mouseArea.containsMouse ? "black" : root.labelColor
+        Behavior on color { ColorAnimation { duration: 150 } }
+        
         font.pixelSize: parent.height / 1.75
     }
 

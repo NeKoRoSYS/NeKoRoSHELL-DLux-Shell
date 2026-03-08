@@ -9,8 +9,8 @@ Scope {
 
     property real navbarSize: 40
     property real fontSize: 12
-    property real borderWidth: 10
-    property real cornerRadius: 20
+    property real borderWidth: 13
+    property real cornerRadius: 25
 
     property string activePanel: ""
 
@@ -43,20 +43,20 @@ Scope {
         }
     }
 
+    Navbar {
+        location: Config.navbarLocation
+        layout: Config.navbarLayout
+        barColor: Colors.background
+        barSize: root.navbarSize
+        fontSize: root.fontSize
+    }
+
     ScreenBorder {
         enabled: Config.enableBorders 
         location: Config.navbarLocation
         borderColor: Colors.background
         borderWidth: root.borderWidth
         cornerRadius: root.cornerRadius
-
-        Navbar {
-            location: Config.navbarLocation
-            layout: Config.navbarLayout
-            barColor: Colors.background
-            barSize: root.navbarSize
-            fontSize: root.fontSize
-        }
     }
 
     Theming {
