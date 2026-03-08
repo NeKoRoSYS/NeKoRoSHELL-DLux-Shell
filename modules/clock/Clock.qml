@@ -47,7 +47,7 @@ Item {
                                 ? "󰣇"
                                 : (root.isHorizontal
                                     ? Time.time
-                                    : Time.time.replace(":", "\n"))
+                                    : Time.timeVertical)
             font.family:    root.barFont
             font.pixelSize: root.fontSize
             font.weight:    Font.ExtraBold

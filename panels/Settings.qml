@@ -75,7 +75,7 @@ Panel {
                     anchors.fill: parent
                     anchors.margins: 10
                     verticalAlignment: TextInput.AlignVCenter
-                    color: "white"
+                    color: Colors.foreground
                     font.family: "JetBrainsMono Nerd Font"
                     font.pixelSize: 11
                     text: Config.wallpaperPath

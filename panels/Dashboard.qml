@@ -32,5 +32,9 @@ Panel {
             font.pixelSize: 14
             anchors.horizontalCenter: parent.horizontalCenter
         }
+
+        Rectangle { width: parent.width; height: 1; color: Colors.color8; opacity: 0.5 }
+
+        Spotify { }
     }
 }

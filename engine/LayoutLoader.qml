@@ -28,6 +28,7 @@ Scope {
         }
     }
 
+    // ── SHARED COMPONENTS & TRANSITIONS ──────────────────────────────
     Component {
         id: moduleDelegate
         Loader {
@@ -53,6 +54,7 @@ Scope {
             NumberAnimation { property: "scale"; from: 0.8; to: 1.0; duration: Animations.normal; easing.type: Animations.easeOut }
         }
     }
+    // ─────────────────────────────────────────────────────────────────
 
     Variants {
         model: Quickshell.screens

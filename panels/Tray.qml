@@ -59,7 +59,7 @@ Panel {
 
                     Text {
                         text:           trayRow.modelData.tooltip?.title || trayRow.modelData.title || ""
-                        color:          itemHover.containsMouse ? "black" : "white"
+                        color:          itemHover.containsMouse ? "white" : Colors.foreground
                         font.family:    "JetBrainsMono Nerd Font"
                         font.pixelSize: 12
                         elide:          Text.ElideRight

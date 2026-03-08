@@ -6,3 +6,5 @@ Panel           1.0 Panel.qml
 ScreenBorder    1.0 ScreenBorder.qml
 AnimatedElement 1.0 AnimatedElement.qml
 Wallpaper       1.0 Wallpaper.qml
+Spotify         1.0 Spotify.qml
+WavySlider      1.0 WavySlider.qml
