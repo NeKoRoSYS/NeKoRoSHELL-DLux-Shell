@@ -57,6 +57,8 @@ Scope {
     Dashboard {
         showPanel:    shell.activePanel === "dashboard"
         navbarOffset: loader.barSize
+        anchorEdge: "top"
+        anchorAlignment: "center"
     }
 
     Settings {
@@ -64,16 +66,20 @@ Scope {
         navbarOffset:   loader.barSize
         bordersEnabled: Config.enableBorders
         lightMode:      Config.lightMode
+        anchorAlignment: "end"
     }
 
     Tray {
         showPanel:    shell.activePanel === "tray"
         navbarOffset: loader.barSize
+        anchorAlignment: "end"
     }
     
     WallpaperPicker {
         showPanel:    shell.activePanel === "wallpaper"
         navbarOffset: loader.barSize
+        anchorEdge: "bottom"
+        anchorAlignment: "center"
     }
 
     Connections {

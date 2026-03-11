@@ -1,7 +1,7 @@
 {
-  "navbarLocation": "right",
+  "navbarLocation": "left",
   "enableBorders": true,
   "activeLayout": "center",
-  "lightMode": false,
-  "wallpaperPath": "/home/nekorosys/.config/wallpapers/wallhaven-k818lq.jpg"
+  "lightMode": true,
+  "wallpaperPath": "/home/nekorosys/.config/wallpapers/windows-11.jpg"
 }
