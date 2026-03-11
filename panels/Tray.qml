@@ -8,12 +8,20 @@ import qs.globals
 Panel {
     id: trayPanel
 
+    property int trayItemCount: SystemTray.items.values.length
     panelWidth:      400
-    panelHeight:     475
+    panelHeight:     85 + (trayItemCount > 0 ? (trayItemCount * 44) : 25)
     animationPreset: "slide"
 
+    Behavior on panelHeight {
+        NumberAnimation {
+            duration: Animations.normal
+            easing.type: Animations.easeOut
+        }
+    }
+
     Column {
-        anchors.fill: parent
+        width: parent.width
         spacing: 4
 
         Text {
@@ -93,7 +101,7 @@ Panel {
         }
 
         Text {
-            visible:        SystemTray.items.values.length === 0
+            visible:        trayPanel.trayItemCount === 0
             text:           "No tray items"
             color:          Colors.color8
             font.family:    "JetBrainsMono Nerd Font"
