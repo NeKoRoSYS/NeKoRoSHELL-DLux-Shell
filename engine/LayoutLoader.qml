@@ -54,8 +54,8 @@ Scope {
     Transition {
         id: animAdd
         ParallelAnimation {
-            NumberAnimation { property: "opacity"; from: 0.0; to: 1.0; duration: Animations.normal }
-            NumberAnimation { property: "scale"; from: 0.8; to: 1.0; duration: Animations.normal; easing.type: Animations.easeOut }
+            NumberAnimation { property: "opacity"; to: 1.0; duration: Animations.normal }
+            NumberAnimation { property: "scale"; to: 1.0; duration: Animations.normal; easing.type: Animations.easeOut }
         }
     }
     // ─────────────────────────────────────────────────────────────────
