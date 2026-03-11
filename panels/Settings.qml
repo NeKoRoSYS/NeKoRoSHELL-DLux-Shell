@@ -61,9 +61,24 @@ Panel {
                 anchors.horizontalCenter: parent.horizontalCenter
             }
 
-            Button {
+            Rectangle {
+                width:  parent.width; height: 28; radius: 14
+                color:  Colors.color3
+                Behavior on color { ColorAnimation { duration: 150 } }
 
-                onButtonClicked: EventBus.togglePanel("wallpaper")
+                Text {
+                    anchors.centerIn: parent
+                    text:            "Select Wallpaper"
+                    color:           "white"
+                    font.family:     "JetBrainsMono Nerd Font"
+                    font.pixelSize:  11
+                    font.weight:     Font.Bold
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape:  Qt.PointingHandCursor
+                    onClicked:    EventBus.togglePanel("wallpaper")
+                }
             }
 
             // Rectangle {

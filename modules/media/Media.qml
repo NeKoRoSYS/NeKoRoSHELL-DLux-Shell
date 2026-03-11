@@ -29,7 +29,6 @@ Item {
     visible:        hasPlayer
     clip:           true
 
-    // ── Horizontal: title pill, click to play/pause, side buttons for skip ──
     Rectangle {
         id: titlePill
         visible:          root.isHorizontal
@@ -77,7 +76,6 @@ Item {
         }
     }
 
-    // ── Vertical: three stacked icon buttons ─────────────────────────────
     Column {
         id: verticalControls
         visible:          !root.isHorizontal

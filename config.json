@@ -2,6 +2,6 @@
   "navbarLocation": "left",
   "enableBorders": true,
   "activeLayout": "center",
-  "lightMode": true,
+  "lightMode": false,
   "wallpaperPath": "/home/nekorosys/.config/wallpapers/windows-11.jpg"
 }

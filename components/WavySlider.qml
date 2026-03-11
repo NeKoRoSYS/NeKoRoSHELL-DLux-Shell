@@ -5,7 +5,7 @@ import qs.globals
 Slider {
     id: slider
 
-    property color activeColor: Colors.color3
+    property color activeColor: "white"
     property color inactiveColor: Colors.color8
     
     property real waveAnimationPhase: 1

@@ -11,8 +11,8 @@ Rectangle {
     width: parent.width
     height: 120
     radius: 14
-    color: Colors.color1
-    border.color: Colors.color3
+    color: Colors.color5
+    border.color: Colors.foreground
     border.width: 2
     clip: true
 
@@ -91,7 +91,7 @@ Rectangle {
                 text: "󰓇" 
                 font.family: "JetBrainsMono Nerd Font"
                 font.pixelSize: 32
-                color: Colors.color2 
+                color: "white"
             }
         }
 
@@ -108,7 +108,7 @@ Rectangle {
                 
                 Text {
                     text: musicWidget.player ? (musicWidget.player.trackTitle || "Unknown Title") : "No Music Playing"
-                    color: Colors.foreground
+                    color: "white"
                     font.family: "JetBrainsMono Nerd Font"
                     font.pixelSize: 15
                     font.weight: Font.Bold
@@ -118,7 +118,7 @@ Rectangle {
 
                 Text {
                     text: musicWidget.player ? (musicWidget.player.trackArtist || "Unknown Artist") : "Play some music!"
-                    color: Colors.color7
+                    color: "white"
                     font.family: "JetBrainsMono Nerd Font"
                     font.pixelSize: 12
                     elide: Text.ElideRight
@@ -181,7 +181,7 @@ Rectangle {
                     text: "󰒮" 
                     font.family: "JetBrainsMono Nerd Font"
                     font.pixelSize: 22
-                    color: Colors.foreground
+                    color: "white"
                     MouseArea {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
@@ -193,7 +193,7 @@ Rectangle {
                     text: musicWidget.player && musicWidget.player.playbackState === MprisPlaybackState.Playing ? "󰏤" : "󰐊"
                     font.family: "JetBrainsMono Nerd Font"
                     font.pixelSize: 24
-                    color: Colors.foreground
+                    color: "white"
                     MouseArea {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
@@ -205,7 +205,7 @@ Rectangle {
                     text: "󰒭" 
                     font.family: "JetBrainsMono Nerd Font"
                     font.pixelSize: 22
-                    color: Colors.foreground
+                    color: "white"
                     MouseArea {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor

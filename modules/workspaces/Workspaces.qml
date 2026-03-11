@@ -87,7 +87,7 @@ Item {
                         Behavior on color { ColorAnimation { duration: 150 } }
                         
                         font.family:      root.barFont
-                        font.pixelSize:   12
+                        font.pixelSize:   parent.height / 2
                         font.weight:      Font.ExtraBold
                     }
 
@@ -142,7 +142,7 @@ Item {
                             Behavior on color { ColorAnimation { duration: 150 } }
                             
                             font.family:    root.barFont
-                            font.pixelSize: 14 
+                            font.pixelSize:   parent.height / 1.85
                         }
 
                         MouseArea {
@@ -178,7 +178,7 @@ Item {
                         Behavior on color { ColorAnimation { duration: 150 } }
                         
                         font.family:    root.barFont
-                        font.pixelSize: 11
+                        font.pixelSize:   parent.height / 2
                         font.weight:    Font.ExtraBold
                     }
                     
