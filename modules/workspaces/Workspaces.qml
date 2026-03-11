@@ -27,6 +27,9 @@ Item {
         
         color: Colors.color3
         opacity: 0.325
+
+        Behavior on width { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
+        Behavior on height { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
     }
 
     ListView {
@@ -40,6 +43,10 @@ Item {
         
         interactive: false
 
+        displaced: Transition {
+            NumberAnimation { properties: "x,y"; duration: Animations.normal; easing.type: Animations.easeOut }
+        }
+
         implicitWidth:  root.isHorizontal ? contentWidth  : root.baseSize
         implicitHeight: root.isHorizontal ? root.baseSize : contentHeight
 
@@ -50,6 +57,9 @@ Item {
 
             width:  root.isHorizontal ? layout.implicitWidth : root.baseSize
             height: root.isHorizontal ? root.baseSize    : layout.implicitHeight
+
+            Behavior on width { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
+            Behavior on height { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
 
             Rectangle {
                 anchors.centerIn: layout

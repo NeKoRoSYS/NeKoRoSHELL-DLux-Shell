@@ -85,21 +85,21 @@ Scope {
             Row {
                 visible: Config.isHorizontal; spacing: 8
                 anchors { left: parent.left; leftMargin: 12; verticalCenter: parent.verticalCenter }
-                populate: animPopulateMove; add: animAdd; move: animPopulateMove
+                populate: animPopulateMove; add: animAdd
                 Repeater { model: Config.isHorizontal ? root.layoutLeft : []; delegate: moduleDelegate }
             }
 
             Row {
                 visible: Config.isHorizontal; spacing: 8
                 anchors.centerIn: parent
-                populate: animPopulateMove; add: animAdd; move: animPopulateMove
+                populate: animPopulateMove; add: animAdd
                 Repeater { model: Config.isHorizontal ? root.layoutCenter : []; delegate: moduleDelegate }
             }
 
             Row {
                 visible: Config.isHorizontal; spacing: 8
                 anchors { right: parent.right; rightMargin: 12; verticalCenter: parent.verticalCenter }
-                populate: animPopulateMove; add: animAdd; move: animPopulateMove
+                populate: animPopulateMove; add: animAdd
                 Repeater { model: Config.isHorizontal ? root.layoutRight : []; delegate: moduleDelegate }
             }
 
@@ -107,21 +107,21 @@ Scope {
             Column {
                 visible: !Config.isHorizontal; spacing: 8
                 anchors { top: parent.top; topMargin: 12; horizontalCenter: parent.horizontalCenter }
-                populate: animPopulateMove; add: animAdd; move: animPopulateMove
+                populate: animPopulateMove; add: animAdd
                 Repeater { model: !Config.isHorizontal ? root.layoutLeft : []; delegate: moduleDelegate }
             }
 
             Column {
                 visible: !Config.isHorizontal; spacing: 8
                 anchors.centerIn: parent
-                populate: animPopulateMove; add: animAdd; move: animPopulateMove
+                populate: animPopulateMove; add: animAdd
                 Repeater { model: !Config.isHorizontal ? root.layoutCenter : []; delegate: moduleDelegate }
             }
 
             Column {
                 visible: !Config.isHorizontal; spacing: 8
                 anchors { bottom: parent.bottom; bottomMargin: 12; horizontalCenter: parent.horizontalCenter }
-                populate: animPopulateMove; add: animAdd; move: animPopulateMove
+                populate: animPopulateMove; add: animAdd
                 Repeater { model: !Config.isHorizontal ? root.layoutRight : []; delegate: moduleDelegate }
             }
         }
