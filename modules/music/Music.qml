@@ -1,3 +1,4 @@
+// modules/music/Music.qml
 import QtQuick
 import Quickshell
 import Quickshell.Services.Mpris
@@ -5,7 +6,8 @@ import qs.globals
 import qs.components
 
 Rectangle {
-    id: spotifyWidget
+    id: musicWidget
+    visible: player !== null
     width: parent.width
     height: 120
     radius: 14
@@ -16,16 +18,45 @@ Rectangle {
 
     property MprisPlayer player: null
 
-    function updatePlayer() {
-        let p = null;
-        for (let i = 0; i < Mpris.players.values.length; i++) {
-            if (Mpris.players.values[i].dbusName.indexOf("spotify") !== -1 || 
-                Mpris.players.values[i].identity.toLowerCase() === "spotify") {
-                p = Mpris.players.values[i];
-                break;
+    function isMusicPlayer(player) {
+        if (!player) return false;
+        
+        let id = (player.identity || player.dbusName || "").toLowerCase();
+        
+        const blockedApps = [
+            "firefox", "chromium", "brave", "vivaldi", "edge", "opera",
+            "mpv", "vlc", "smplayer", "celluloid",
+            "kdeconnect", "gsconnect"
+        ];
+
+        for (let i = 0; i < blockedApps.length; i++) {
+            if (id.indexOf(blockedApps[i]) !== -1) {
+                return false;
             }
         }
-        spotifyWidget.player = p;
+        return true;
+    }
+
+    function updatePlayer() {
+        let players = Mpris.players.values;
+        let activePlayer = null;
+        let fallbackPlayer = null;
+
+        for (let i = 0; i < players.length; i++) {
+            let p = players[i];
+            
+            if (isMusicPlayer(p)) {
+                
+                if (!fallbackPlayer) fallbackPlayer = p;
+                
+                if (p.playbackState === MprisPlaybackState.Playing) {
+                    activePlayer = p;
+                    break;
+                }
+            }
+        }
+        
+        musicWidget.player = activePlayer || fallbackPlayer;
     }
 
     Connections {
@@ -49,7 +80,7 @@ Rectangle {
 
             Image {
                 anchors.fill: parent
-                source: spotifyWidget.player && spotifyWidget.player.trackArtUrl ? spotifyWidget.player.trackArtUrl : ""
+                source: musicWidget.player && musicWidget.player.trackArtUrl ? musicWidget.player.trackArtUrl : ""
                 fillMode: Image.PreserveAspectCrop
                 asynchronous: true
             }
@@ -76,7 +107,7 @@ Rectangle {
                 spacing: 2
                 
                 Text {
-                    text: spotifyWidget.player ? (spotifyWidget.player.trackTitle || "Unknown Title") : "Spotify Not Running"
+                    text: musicWidget.player ? (musicWidget.player.trackTitle || "Unknown Title") : "No Music Playing"
                     color: Colors.foreground
                     font.family: "JetBrainsMono Nerd Font"
                     font.pixelSize: 15
@@ -86,7 +117,7 @@ Rectangle {
                 }
 
                 Text {
-                    text: spotifyWidget.player ? (spotifyWidget.player.trackArtist || "Unknown Artist") : "Play some music!"
+                    text: musicWidget.player ? (musicWidget.player.trackArtist || "Unknown Artist") : "Play some music!"
                     color: Colors.color7
                     font.family: "JetBrainsMono Nerd Font"
                     font.pixelSize: 12
@@ -106,12 +137,12 @@ Rectangle {
                 property bool isSeeking: false
                 
                 Component.onCompleted: {
-                    if (spotifyWidget.player && spotifyWidget.player.length > 0) {
-                        value = spotifyWidget.player.position / spotifyWidget.player.length;
+                    if (musicWidget.player && musicWidget.player.length > 0) {
+                        value = musicWidget.player.position / musicWidget.player.length;
                     }
                 }
                 
-                enableWave: spotifyWidget.player && spotifyWidget.player.playbackState === MprisPlaybackState.Playing && !pressed
+                enableWave: musicWidget.player && musicWidget.player.playbackState === MprisPlaybackState.Playing && !pressed
 
                 Timer {
                     id: seekDebounce
@@ -120,21 +151,21 @@ Rectangle {
                 }
 
                 FrameAnimation {
-                    running: spotifyWidget.player && spotifyWidget.player.playbackState === MprisPlaybackState.Playing
+                    running: musicWidget.player && musicWidget.player.playbackState === MprisPlaybackState.Playing
                     onTriggered: {
-                        if (spotifyWidget.player && spotifyWidget.player.length > 0) {
+                        if (musicWidget.player && musicWidget.player.length > 0) {
                             if (!barSlide.pressed && !barSlide.isSeeking) {
-                                barSlide.value = spotifyWidget.player.position / spotifyWidget.player.length;
+                                barSlide.value = musicWidget.player.position / musicWidget.player.length;
                             }
-                            spotifyWidget.player.positionChanged();
+                            musicWidget.player.positionChanged();
                         }
                     }
                 }
 
                 onPressedChanged: {
-                    if (!pressed && spotifyWidget.player && spotifyWidget.player.canSeek) {
+                    if (!pressed && musicWidget.player && musicWidget.player.canSeek) {
                         barSlide.isSeeking = true;
-                        spotifyWidget.player.position = value * spotifyWidget.player.length;
+                        musicWidget.player.position = value * musicWidget.player.length;
                         seekDebounce.restart();
                     }
                 }
@@ -154,19 +185,19 @@ Rectangle {
                     MouseArea {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
-                        onClicked: if (spotifyWidget.player) spotifyWidget.player.previous()
+                        onClicked: if (musicWidget.player) musicWidget.player.previous()
                     }
                 }
 
                 Text {
-                    text: spotifyWidget.player && spotifyWidget.player.playbackState === MprisPlaybackState.Playing ? "󰏤" : "󰐊"
+                    text: musicWidget.player && musicWidget.player.playbackState === MprisPlaybackState.Playing ? "󰏤" : "󰐊"
                     font.family: "JetBrainsMono Nerd Font"
                     font.pixelSize: 24
                     color: Colors.foreground
                     MouseArea {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
-                        onClicked: if (spotifyWidget.player) spotifyWidget.player.togglePlaying()
+                        onClicked: if (musicWidget.player) musicWidget.player.togglePlaying()
                     }
                 }
 
@@ -178,7 +209,7 @@ Rectangle {
                     MouseArea {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
-                        onClicked: if (spotifyWidget.player) spotifyWidget.player.next()
+                        onClicked: if (musicWidget.player) musicWidget.player.next()
                     }
                 }
             }

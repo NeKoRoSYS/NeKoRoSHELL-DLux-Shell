@@ -129,36 +129,13 @@ Item {
                             text: {
                                 let appClass = "";
                                 if (modelData.wayland && modelData.wayland.appId) {
-                                    appClass = modelData.wayland.appId.toLowerCase();
+                                    appClass = modelData.wayland.appId;
                                 } else {
                                     let ipc = modelData.lastIpcObject || {};
-                                    appClass = (ipc["class"] || ipc["initialClass"] || modelData.title || "?").toLowerCase();
+                                    appClass = (ipc["class"] || ipc["initialClass"] || modelData.title || "?");
                                 }
                                 
-                                const iconMap = {
-                                    "firefox": "󰈹",
-                                    "kitty": "󰄛",
-                                    "alacritty": "󰄛",
-                                    "discord": "󰙯",
-                                    "vesktop": "󰙯",
-                                    "code": "󰨞",
-                                    "code-oss": "󰨞",
-                                    "unity": "󰚯",
-                                    "unityhub": "󰚯",
-                                    "thunar": "󰉋",
-                                    "nautilus": "󰉋",
-                                    "spotify": "󰓇",
-                                    "steam": "󰓓",
-                                    "obs": "󰑋",
-                                    "vlc": "󰕼",
-                                    "mpv": "󰕼",
-                                    "org.kde.dolphin": "󰉋"
-                                };
-
-                                if (iconMap[appClass]) {
-                                    return iconMap[appClass];
-                                }
-                                return appClass.substring(0, 1).toUpperCase();
+                                return Icons.getIcon(appClass);
                             }
                             
                             color: appMouseArea.containsMouse ? "black" : (isFocusedApp ? Colors.color3 : "white")

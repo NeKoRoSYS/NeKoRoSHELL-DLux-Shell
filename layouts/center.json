@@ -1,5 +1,5 @@
 {
-  "left":   [],
+  "left":   ["music"],
   "center": ["workspaces", "clock", "buttons"],
   "right":  []
 }

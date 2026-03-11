@@ -55,7 +55,7 @@ Item {
             labelFont:   root.barFont
             buttonSize:  root.baseSize
             buttonColor: Colors.color3
-            onButtonClicked: EventBus.togglePanel("theming")
+            onButtonClicked: EventBus.togglePanel("settings")
         }
 
         Button {

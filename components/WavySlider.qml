@@ -5,7 +5,6 @@ import qs.globals
 Slider {
     id: slider
 
-    // Defaulting to NeKoRoSHELL colors
     property color activeColor: Colors.color3
     property color inactiveColor: Colors.color8
     
@@ -126,7 +125,7 @@ Slider {
         id: handleRect
         x: slider.leftPadding + slider.visualPosition * (slider.availableWidth - width)
         y: slider.topPadding + slider.availableHeight / 2 - height / 2
-        width: 14 // Slightly smaller to match the aesthetic
+        width: 14 
         height: 14
         radius: 1000
         color: slider.activeColor

@@ -1,6 +1,7 @@
 // shell.qml — entry point
 //@ pragma UseQApplication
 import Quickshell
+import Quickshell.Wayland
 import QtQuick
 import qs.globals
 import qs.components
@@ -24,13 +25,42 @@ Scope {
 
     property string activePanel: ""
 
+    Variants {
+        model: Quickshell.screens
+
+        PanelWindow {
+            required property var modelData
+            screen: modelData
+
+            anchors { top: true; bottom: true; left: true; right: true }
+            
+            margins {
+                top:    Config.navbarLocation === "top"    ? loader.barSize : 0
+                bottom: Config.navbarLocation === "bottom" ? loader.barSize : 0
+                left:   Config.navbarLocation === "left"   ? loader.barSize : 0
+                right:  Config.navbarLocation === "right"  ? loader.barSize : 0
+            }
+
+            WlrLayershell.layer: WlrLayer.Top
+            exclusionMode: ExclusionMode.Ignore
+            
+            color: "transparent"
+            visible: shell.activePanel !== ""
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: shell.activePanel = ""
+            }
+        }
+    }
+
     Dashboard {
         showPanel:    shell.activePanel === "dashboard"
         navbarOffset: loader.barSize
     }
 
     Settings {
-        showPanel:      shell.activePanel === "theming"
+        showPanel:      shell.activePanel === "settings"
         navbarOffset:   loader.barSize
         bordersEnabled: Config.enableBorders
         lightMode:      Config.lightMode
@@ -38,6 +68,11 @@ Scope {
 
     Tray {
         showPanel:    shell.activePanel === "tray"
+        navbarOffset: loader.barSize
+    }
+    
+    WallpaperPicker {
+        showPanel:    shell.activePanel === "wallpaper"
         navbarOffset: loader.barSize
     }
 

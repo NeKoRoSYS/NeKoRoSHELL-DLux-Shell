@@ -48,14 +48,18 @@ Singleton {
         const waybarText = Config.lightMode 
             ? "@define-color text-invert #F5F5F5;\\n@define-color text #121212;\\n"
             : "@define-color text #F5F5F5;\\n@define-color text-invert #121212;\\n";
-            
+        
         const rofiText = Config.lightMode
             ? "* { text: #121212; text-invert: #F5F5F5; }"
             : "* { text: #F5F5F5; text-invert: #121212; }";
 
-        const wallustBase = `wallust run "${Config.wallpaperPath}" -q -C ~/.config/wallust/${wallustConfig} || ` +
-                            `wallust run "${Config.wallpaperPath}" -q -C ~/.config/wallust/${wallustConfig} -b full -t 5`;
-        
+        const filename = Config.wallpaperPath.split('/').pop();
+        const thumbPath = Quickshell.env("HOME") + "/.cache/quickshell/wallpaper-thumbs/" + filename + ".jpg";
+
+        const wallustBase = `TARGET="${Config.wallpaperPath}"; [ -f "${thumbPath}" ] && TARGET="${thumbPath}"; ` +
+                            `wallust run "$TARGET" -q -C ~/.config/wallust/${wallustConfig} || ` +
+                            `wallust run "$TARGET" -q -C ~/.config/wallust/${wallustConfig} -b full -t 5`;
+
         const cmdString = `${wallustBase} && ` +
                           `printf "${waybarText}" >> ~/.cache/wallust/colors-waybar.css && ` +
                           `echo "${rofiText}" >> ~/.cache/wallust/colors-rofi.rasi && ` +

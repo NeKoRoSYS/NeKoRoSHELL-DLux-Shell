@@ -8,7 +8,7 @@ Panel {
     id: settingsPanel
 
     panelWidth:  400
-    panelHeight: 625
+    panelHeight: 650
 
     property bool bordersEnabled: Config.enableBorders
     property bool lightMode: Config.lightMode
@@ -61,33 +61,38 @@ Panel {
                 anchors.horizontalCenter: parent.horizontalCenter
             }
 
-            Rectangle {
-                width: parent.width
-                height: 35
-                radius: 8
-                color: Colors.color0
-                border.color: Colors.color8
-                border.width: 2
-                clip: true
+            Button {
 
-                TextInput {
-                    id: wpInput
-                    anchors.fill: parent
-                    anchors.margins: 10
-                    verticalAlignment: TextInput.AlignVCenter
-                    color: Colors.foreground
-                    font.family: "JetBrainsMono Nerd Font"
-                    font.pixelSize: 11
-                    text: Config.wallpaperPath
-                    selectByMouse: true
-                    
-                    onAccepted: {
-                        Config.saveSetting("wallpaperPath", text)
-                        Colors.reloadColors()
-                        wpInput.focus = false
-                    }
-                }
+                onButtonClicked: EventBus.togglePanel("wallpaper")
             }
+
+            // Rectangle {
+            //     width: parent.width
+            //     height: 35
+            //     radius: 8
+            //     color: Colors.color0
+            //     border.color: Colors.color8
+            //     border.width: 2
+            //     clip: true
+
+            //     TextInput {
+            //         id: wpInput
+            //         anchors.fill: parent
+            //         anchors.margins: 10
+            //         verticalAlignment: TextInput.AlignVCenter
+            //         color: Colors.foreground
+            //         font.family: "JetBrainsMono Nerd Font"
+            //         font.pixelSize: 11
+            //         text: Config.wallpaperPath
+            //         selectByMouse: true
+                    
+            //         onAccepted: {
+            //             Config.saveSetting("wallpaperPath", text)
+            //             Colors.reloadColors()
+            //             wpInput.focus = false
+            //         }
+            //     }
+            // }
         }
 
         Rectangle { width: parent.width; height: 1; color: Colors.color8; opacity: 0.5 }
@@ -124,7 +129,7 @@ Panel {
                      buttonSize: 40; buttonColor: Colors.color3
                      onButtonClicked: EventBus.changeLocation("right") }
         }
-
+        
         Rectangle { width: parent.width; height: 1; color: Colors.color8; opacity: 0.5 }
 
         // ── Layout switcher ───────────────────────────────────────────────

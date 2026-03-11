@@ -26,6 +26,8 @@ NeKoRoSHELL DLux is currently being developed by one person (*cough* [CONTRIBUTI
 | 📋 **TODO** | **STATUS** |
 | :---: | :---: |
 | Improve base theme | 🛠 |
+| Replace swww | ✅ |
+| Replace mpvpaper | ✅ |
 | Replace waybar | ✅ |
 | Replace rofi | 🛠 |
 | Replace wlogout | 🛠 |

@@ -5,6 +5,7 @@ import QtQuick
 import qs.modules.clock
 import qs.modules.workspaces
 import qs.modules.media
+import qs.modules.music
 import qs.modules.buttons
 
 
@@ -16,6 +17,7 @@ QtObject {
             case "clock":           return clockComponent
             case "workspaces":      return workspacesComponent
             case "media":           return mediaComponent
+            case "music":           return musicComponent
             case "buttons":         return buttonsComponent
             default:
                 console.warn("ModuleRegistry: unknown module '" + name + "'")
@@ -26,5 +28,6 @@ QtObject {
     property Component clockComponent:         Clock          {}
     property Component workspacesComponent:    Workspaces     {}
     property Component mediaComponent:         Media          {}
+    property Component musicComponent:         Music          {}
     property Component buttonsComponent:       Buttons        {}
 }

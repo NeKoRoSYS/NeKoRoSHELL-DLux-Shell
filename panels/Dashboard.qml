@@ -1,12 +1,13 @@
 // panels/Dashboard.qml
 import QtQuick
+import qs.modules.music
 import qs.components
 import qs.globals
 
 Panel {
     id: dashboardPanel
 
-    panelWidth:      400
+    panelWidth:      800
     panelHeight:     475
     animationPreset: "slide"
 
@@ -35,6 +36,6 @@ Panel {
 
         Rectangle { width: parent.width; height: 1; color: Colors.color8; opacity: 0.5 }
 
-        Spotify { }
+        Music { }
     }
 }

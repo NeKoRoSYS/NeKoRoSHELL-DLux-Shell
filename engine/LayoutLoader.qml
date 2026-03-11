@@ -44,7 +44,11 @@ Scope {
 
     Transition {
         id: animPopulateMove
-        NumberAnimation { properties: "x,y"; duration: Animations.normal; easing.type: Animations.easeOut }
+        ParallelAnimation {
+            NumberAnimation { properties: "x,y"; duration: Animations.normal; easing.type: Animations.easeOut }
+            NumberAnimation { property: "opacity"; to: 1.0; duration: Animations.normal; easing.type: Animations.easeOut }
+            NumberAnimation { property: "scale"; to: 1.0; duration: Animations.normal; easing.type: Animations.easeOut }
+        }
     }
 
     Transition {

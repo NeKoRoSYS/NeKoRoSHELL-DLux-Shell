@@ -5,3 +5,5 @@ singleton Config     1.0 Config.qml
 singleton Animations 1.0 Animations.qml
 singleton Time       1.0 Time.qml
 singleton EventBus   1.0 EventBus.qml
+singleton Icons      1.0 Icons.qml
+singleton WallpaperManager 1.0 WallpaperManager.qml
