@@ -47,7 +47,7 @@ Item {
             labelFont:   root.barFont
             buttonSize:  root.baseSize
             buttonColor: Colors.color3
-            onButtonClicked: Quickshell.execDetached({ command: ["swaync-client", "-t"] })
+            onButtonClicked: EventBus.togglePanel("notifications")
         }
 
         Button {

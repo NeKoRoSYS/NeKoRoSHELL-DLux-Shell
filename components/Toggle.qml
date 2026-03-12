@@ -8,10 +8,18 @@ Item {
     property string labelText: "Setting"
     property bool checked: true
     
+    property string toggleStyle: "slider" // slider || checkbox
+    
     signal toggled(bool newState)
 
     implicitWidth: parent ? parent.width : 200
     implicitHeight: 30
+
+    MouseArea {
+        anchors.fill: parent
+        cursorShape: Qt.PointingHandCursor
+        onClicked: root.toggled(!root.checked)
+    }
 
     Text {
         anchors.left: parent.left
@@ -25,6 +33,7 @@ Item {
 
     Rectangle {
         id: track
+        visible: root.toggleStyle === "slider"
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
         width: 44
@@ -47,15 +56,38 @@ Item {
             Behavior on x { NumberAnimation { duration: 150; easing.type: Easing.OutQuad } }
 
             Text {
-                text: root.checked == true ? "|" : "O"
+                text: root.checked ? "|" : "O"
                 anchors.centerIn: parent
             }
         }
+    }
 
-        MouseArea {
-            anchors.fill: parent
-            cursorShape: Qt.PointingHandCursor
-            onClicked: root.toggled(!root.checked)
+    Rectangle {
+        id: checkboxTrack
+        visible: root.toggleStyle === "checkbox"
+        anchors.right: parent.right
+        anchors.verticalCenter: parent.verticalCenter
+        width: 24
+        height: 24
+        radius: width / 2
+        
+        color: root.checked ? Colors.color3 : "transparent"
+        border.width: root.checked ? 0 : 2
+        border.color: root.checked ? "transparent" : Colors.color8
+        
+        Behavior on color { ColorAnimation { duration: 150 } }
+
+        Text {
+            text: "" 
+            color: "white"
+            font.family: "JetBrainsMono Nerd Font"
+            font.pixelSize: 14
+            anchors.centerIn: parent
+            
+            scale: root.checked ? 1 : 0
+            opacity: root.checked ? 1 : 0
+            Behavior on scale { NumberAnimation { duration: 200; easing.type: Easing.OutBack } }
+            Behavior on opacity { NumberAnimation { duration: 150 } }
         }
     }
 }

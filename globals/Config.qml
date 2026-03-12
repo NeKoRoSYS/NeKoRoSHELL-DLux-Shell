@@ -18,6 +18,8 @@ Singleton {
     property bool lightMode: false
     property string wallpaperPath: "/home/nekorosys/.config/wallpapers/1145396.png"
 
+    property bool dndEnabled:       false
+
     readonly property bool isHorizontal: navbarLocation === "top" || navbarLocation === "bottom"
 
     FileView {
@@ -32,12 +34,14 @@ Singleton {
             property string activeLayout:   "default"
             property bool lightMode: false
             property string wallpaperPath: ""
+            property bool dndEnabled:       false
 
             onNavbarLocationChanged: root.navbarLocation = navbarLocation
             onEnableBordersChanged:  root.enableBorders  = enableBorders
             onActiveLayoutChanged:   root.activeLayout   = activeLayout
             onLightModeChanged:      root.lightMode      = lightMode
             onWallpaperPathChanged:  root.wallpaperPath  = wallpaperPath
+            onDndEnabledChanged:     root.dndEnabled  = dndEnabled
         }
     }
 
@@ -54,6 +58,7 @@ Singleton {
         if (key === "activeLayout")   root.activeLayout   = value;
         if (key === "lightMode")      root.lightMode      = value;
         if (key === "wallpaperPath")  root.wallpaperPath  = value;
+        if (key === "dndEnabled")  root.dndEnabled  = value;
 
         saveTimer.restart();
     }
@@ -65,7 +70,8 @@ Singleton {
             activeLayout: root.activeLayout,
             navbarLayout: root.navbarLayout,
             lightMode: root.lightMode,
-            wallpaperPath: root.wallpaperPath
+            wallpaperPath: root.wallpaperPath,
+            dndEnabled: root.dndEnabled
         };
 
         let jsonString = JSON.stringify(fileData, null, 2);

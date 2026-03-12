@@ -2,6 +2,7 @@
 //@ pragma UseQApplication
 import Quickshell
 import Quickshell.Wayland
+import Quickshell.Services.Notifications
 import QtQuick
 import qs.globals
 import qs.components
@@ -49,7 +50,11 @@ Scope {
 
             MouseArea {
                 anchors.fill: parent
-                onClicked: shell.activePanel = ""
+                onClicked: {
+                    if (shell.activePanel !== "") {
+                        EventBus.togglePanel(shell.activePanel) 
+                    }
+                }
             }
         }
     }
@@ -74,12 +79,31 @@ Scope {
         navbarOffset: loader.barSize
         anchorAlignment: "end"
     }
+
+    Launcher {
+        showPanel:    shell.activePanel === "launcher"
+        navbarOffset: loader.barSize
+        anchorEdge: "bottom"
+        anchorAlignment: "center"
+    }
     
     WallpaperPicker {
         showPanel:    shell.activePanel === "wallpaper"
         navbarOffset: loader.barSize
         anchorEdge: "bottom"
         anchorAlignment: "center"
+    }
+
+    Notifications {
+        showPanel:    shell.activePanel === "notifications"
+        navbarOffset: loader.barSize
+        anchorEdge: "right"
+        anchorAlignment: "center"
+    }
+
+    Overview {
+        showPanel:    shell.activePanel === "overview"
+        navbarOffset: loader.barSize
     }
 
     Connections {
@@ -101,5 +125,9 @@ Scope {
             Config.saveSetting("lightMode", state)
             Colors.reloadColors()
         }
+    }
+
+    Component.onCompleted: {
+        console.log("Notification Daemon Active: " + Notifs.bodySupported)
     }
 }

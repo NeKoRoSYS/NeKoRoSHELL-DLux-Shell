@@ -2,5 +2,8 @@ module qs.panels
 
 Dashboard  1.0 Dashboard.qml
 Settings   1.0 Settings.qml
+Overview   1.0 Overview.qml
+Launcher   1.0 Launcher.qml
 WallpaperPicker   1.0 WallpaperPicker.qml
+Notifications   1.0 Notifications.qml
 Tray  1.0 Tray.qml

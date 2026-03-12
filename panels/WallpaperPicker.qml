@@ -1,101 +1,191 @@
 // panels/WallpaperPicker.qml
 import QtQuick
+import Quickshell.Wayland
 import qs.globals
 import qs.components
 
 Panel {
     id: wpPanel
 
+    edgePadding: 15
     panelWidth:  800
     panelHeight: 550
     animationPreset: "slide"
+    keyboardFocus: WlrKeyboardFocus.Exclusive
 
-    Column {
+    Rectangle {
+        id: wpRoot
         anchors.fill: parent
-        anchors.margins: 0
-        spacing: 15
+        color: Colors.background
+        border.color: Colors.color13
+        border.width: 2
+        radius: 10
+        clip: true
 
-        Row {
-            anchors.horizontalCenter: parent.horizontalCenter
-            spacing: 20
-            
-            Text {
-                text: "   Wallpapers"
-                color: Colors.foreground
-                font.family: "JetBrainsMono Nerd Font"
-                font.pixelSize: 18
-                font.weight: Font.ExtraBold
-                anchors.verticalCenter: parent.verticalCenter
-            }
+        property string searchQuery: ""
+        property var filteredWallpapers: WallpaperManager.wallpapers
 
-            Button {
-                labelText: ""
-                labelFont: "JetBrainsMono Nerd Font"
-                buttonSize: 30
-                buttonColor: Colors.color3
-                onButtonClicked: WallpaperManager.setRandom()
-                anchors.verticalCenter: parent.verticalCenter
+        Connections {
+            target: wpPanel
+            function onShowPanelChanged() {
+                if (!wpPanel.showPanel) {
+                    wpRoot.searchQuery = ""
+                }
             }
         }
 
-        Rectangle { width: parent.width; height: 1; color: Colors.color8; opacity: 0.5 }
+        function fuzzyMatch(str, pattern) {
+            pattern = pattern.toLowerCase().replace(/\s+/g, "");
+            str = str.toLowerCase();
+            let patternIdx = 0;
+            for (let i = 0; i < str.length && patternIdx < pattern.length; i++) {
+                if (str[i] === pattern[patternIdx]) {
+                    patternIdx++;
+                }
+            }
+            return patternIdx === pattern.length;
+        }
 
-        GridView {
-            width: parent.width
-            height: parent.height - 60
-            cellWidth:  parent.width / 4
-            cellHeight: 140
-            clip: true
-            model: WallpaperManager.wallpapers
+        function updateSearch() {
+            if (wpRoot.searchQuery.trim() === "") {
+                wpRoot.filteredWallpapers = WallpaperManager.wallpapers;
+            } else {
+                wpRoot.filteredWallpapers = WallpaperManager.wallpapers.filter(wp => wpRoot.fuzzyMatch(wp.name, wpRoot.searchQuery));
+            }
+        }
 
-            delegate: Item {
-                width: GridView.view.cellWidth
-                height: GridView.view.cellHeight
+        onSearchQueryChanged: updateSearch()
 
-                Rectangle {
+        Connections {
+            target: WallpaperManager
+            function onWallpapersChanged() { wpRoot.updateSearch() }
+        }
+
+        Column {
+            anchors.fill: parent
+            anchors.margins: 15
+            spacing: 15
+
+            Row {
+                anchors.horizontalCenter: parent.horizontalCenter
+                spacing: 20
+                 
+                Text {
+                    text: "   Wallpapers"
+                    color: Colors.foreground
+                    font.family: "JetBrains Mono"
+                    font.pixelSize: 18
+                    font.weight: Font.ExtraBold
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                Button {
+                    labelText: ""
+                    labelFont: "JetBrainsMono Nerd Font"
+                    buttonSize: 30
+                    buttonColor: Colors.color3
+                    onButtonClicked: WallpaperManager.setRandom()
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+            }
+
+            // ── Search Bar ────────────────────────────────────────────────────
+            Rectangle {
+                width: parent.width
+                height: 36
+                color: Colors.color0
+                border.color: Colors.color8
+                border.width: 1
+                radius: 5
+
+                TextInput {
+                    id: searchInput
                     anchors.fill: parent
                     anchors.margins: 8
-                    radius: 8
-                    color: Colors.color0
-                    border.color: Config.wallpaperPath === modelData.path ? Colors.color2 : "transparent"
-                    border.width: 2
+                    verticalAlignment: TextInput.AlignVCenter
+                    color: Colors.foreground
+                    font.family: "JetBrains Mono"
+                    font.pixelSize: 14
                     clip: true
+                    text: wpRoot.searchQuery
+                    onTextEdited: wpRoot.searchQuery = text
 
-                    Image {
-                        anchors.fill: parent
-                        source: "file://" + modelData.thumb
-                        fillMode: Image.PreserveAspectCrop
-                        asynchronous: true
-                        
-                        onStatusChanged: {
-                            if (status === Image.Error) {
-                                source = "file://" + modelData.path
-                            }
-                        }
+                    Text {
+                        text: "  Search wallpapers..."
+                        color: Colors.color8
+                        font.family: "JetBrains Mono"
+                        font.pixelSize: 14
+                        visible: !parent.text && !parent.activeFocus
+                        anchors.verticalCenter: parent.verticalCenter
                     }
+                    Keys.onEscapePressed: EventBus.togglePanel("wallpaper")
+                }
+            }
+            // ──────────────────────────────────────────────────────────────────
+
+            Rectangle { width: parent.width; height: 1; color: Colors.color8; opacity: 0.5 }
+
+            GridView {
+                id: wpGrid
+                width: parent.width
+                height: parent.height - 115
+                cellWidth:  parent.width / 4
+                cellHeight: 140
+                clip: true
+                
+                model: wpRoot.filteredWallpapers
+
+                delegate: Item {
+                    width: wpGrid.cellWidth
+                    height: wpGrid.cellHeight
 
                     Rectangle {
-                        anchors.bottom: parent.bottom
-                        width: parent.width
-                        height: 24
-                        color: "#99000000"
-
-                        Text {
-                            anchors.centerIn: parent
-                            text: modelData.name
-                            color: "white"
-                            font.family: "JetBrainsMono Nerd Font"
-                            font.pixelSize: 10
-                            elide: Text.ElideRight
-                            width: parent.width - 10
-                            horizontalAlignment: Text.AlignHCenter
-                        }
-                    }
-
-                    MouseArea {
                         anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
-                        onClicked: WallpaperManager.setWallpaper(modelData.path)
+                        anchors.margins: 8
+                        radius: 5
+                        color: Colors.color0
+                        
+                        border.color: Config.wallpaperPath === modelData.path ? Colors.color5 : Colors.color13
+                        border.width: 2
+                        clip: true
+
+                        Image {
+                            anchors.fill: parent
+                            source: "file://" + modelData.thumb
+                            fillMode: Image.PreserveAspectCrop
+                            asynchronous: true
+                            
+                            onStatusChanged: {
+                                if (status === Image.Error) {
+                                    source = "file://" + modelData.path
+                                }
+                            }
+                        }
+
+                        Rectangle {
+                            anchors.bottom: parent.bottom
+                            width: parent.width
+                            height: 24
+                            color: Config.wallpaperPath === modelData.path ? Colors.color5 : "#B3000000"
+
+                            Text {
+                                anchors.centerIn: parent
+                                text: modelData.name
+                                color: "white"
+                                font.family: "JetBrains Mono"
+                                font.pixelSize: 12
+                                elide: Text.ElideRight
+                                width: parent.width - 10
+                                horizontalAlignment: Text.AlignHCenter
+                                font.weight: Config.wallpaperPath === modelData.path ? Font.Bold : Font.Normal
+                            }
+                        }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: WallpaperManager.setWallpaper(modelData.path)
+                        }
                     }
                 }
             }

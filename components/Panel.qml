@@ -8,7 +8,10 @@ import qs.globals
 Scope {
     id: rootScope
 
+    property alias  screen:          panelWindow.screen
+
     property bool   showPanel:       false
+    property real   edgePadding:     25
     property real   panelWidth:      400
     property real   panelHeight:     400
     property real   navbarOffset:    0
@@ -59,6 +62,7 @@ Scope {
     readonly property real tensionY: anchorEdge === "top"  ? -filletOffset : anchorEdge === "bottom" ? filletOffset : 0
 
     PanelWindow {
+        id: panelWindow
         visible: rootScope.showPanel || rootScope.animProgress > 0
         color:   "transparent"
 
@@ -118,7 +122,7 @@ Scope {
 
                 Item {
                     anchors.fill:    parent
-                    anchors.margins: 25
+                    anchors.margins: rootScope.edgePadding
                     clip: true
 
                     Loader {

@@ -10,8 +10,9 @@ Panel {
 
     property int trayItemCount: SystemTray.items.values.length
     panelWidth:      400
-    panelHeight:     85 + (trayItemCount > 0 ? (trayItemCount * 44) : 25)
+    panelHeight:     85 + (trayItemCount > 0 ? (trayItemCount * 58) : 25)
     animationPreset: "slide"
+    edgePadding:     15
 
     Behavior on panelHeight {
         NumberAnimation {
@@ -20,93 +21,109 @@ Panel {
         }
     }
 
-    Column {
-        width: parent.width
-        spacing: 4
+    Rectangle {
+        id: launcherRoot
+        anchors.fill: parent
+        color: Colors.background
+        border.color: Colors.color13
+        border.width: 2
+        radius: 10
+        clip: true
 
-        Text {
-            text:           "󱊣  Tray"
-            color:          Colors.foreground
-            font.family:    "JetBrainsMono Nerd Font"
-            font.pixelSize: 14
-            font.weight:    Font.ExtraBold
-            anchors.horizontalCenter: parent.horizontalCenter
-            bottomPadding:  4
-        }
+        Column {
+            anchors.fill: parent
+            anchors.margins: 15
+            width: parent.width
+            spacing: 10
 
-        Rectangle {
-            width: parent.width; height: 1
-            color: Colors.color8; opacity: 0.5
-        }
+            Item {
+                width: parent.width
+                height: 30 
+                
+                Text {
+                    text:           "󱊣  Tray"
+                    color:           Colors.foreground
+                    font.family:     "JetBrainsMono Nerd Font"
+                    font.pixelSize:  18
+                    font.weight:     Font.ExtraBold
+                    anchors.centerIn: parent 
+                }
+            }
 
-        Repeater {
-            model: SystemTray.items.values
+            Rectangle {
+                width: parent.width; height: 1
+                color: Colors.color8; opacity: 0.5
+            }
 
-            delegate: Rectangle {
-                id: trayRow
-                required property var modelData
+            Repeater {
+                model: SystemTray.items.values
 
-                width:  parent.width
-                height: 40
-                color:  itemHover.containsMouse ? Colors.color1 : Colors.color3
-                radius: 8
-                Behavior on color { ColorAnimation { duration: 150 } }
+                delegate: Rectangle {
+                    id: trayRow
+                    required property var modelData
 
-                Row {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.left:          parent.left
-                    anchors.leftMargin:    8
-                    spacing: 10
+                    width:  parent.width
+                    height: 40
+                    color:  itemHover.containsMouse ? Colors.color1 : Colors.color3
+                    radius: 8
+                    Behavior on color { ColorAnimation { duration: 150 } }
 
-                    Image {
-                        width:  24; height: 24
-                        source: trayRow.modelData.icon
+                    Row {
                         anchors.verticalCenter: parent.verticalCenter
-                        smooth: true
+                        anchors.left:          parent.left
+                        anchors.leftMargin:    8
+                        spacing: 10
+
+                        Image {
+                            width:  24; height: 24
+                            source: trayRow.modelData.icon
+                            anchors.verticalCenter: parent.verticalCenter
+                            smooth: true
+                        }
+
+                        Text {
+                            text:           trayRow.modelData.tooltip?.title || trayRow.modelData.title || ""
+                            color:          itemHover.containsMouse ? "white" : Colors.foreground
+                            font.family:    "JetBrainsMono Nerd Font"
+                            font.pixelSize: 12
+                            elide:          Text.ElideRight
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
                     }
 
-                    Text {
-                        text:           trayRow.modelData.tooltip?.title || trayRow.modelData.title || ""
-                        color:          itemHover.containsMouse ? "white" : Colors.foreground
-                        font.family:    "JetBrainsMono Nerd Font"
-                        font.pixelSize: 12
-                        elide:          Text.ElideRight
-                        anchors.verticalCenter: parent.verticalCenter
+                    // QsMenuAnchor must be a child of the item it anchors to
+                    QsMenuAnchor {
+                        id: menuAnchor
+                        anchor.window: trayRow.QsWindow.window
+                        menu: trayRow.modelData.menu
                     }
-                }
 
-                // QsMenuAnchor must be a child of the item it anchors to
-                QsMenuAnchor {
-                    id: menuAnchor
-                    anchor.window: trayRow.QsWindow.window
-                    menu: trayRow.modelData.menu
-                }
+                    MouseArea {
+                        id: itemHover
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        cursorShape:  Qt.PointingHandCursor
+                        acceptedButtons: Qt.LeftButton | Qt.RightButton
 
-                MouseArea {
-                    id: itemHover
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    cursorShape:  Qt.PointingHandCursor
-                    acceptedButtons: Qt.LeftButton | Qt.RightButton
-
-                    onClicked: (event) => {
-                        if (event.button === Qt.RightButton && trayRow.modelData.hasMenu) {
-                            menuAnchor.open()
-                        } else {
-                            trayRow.modelData.activate()
+                        onClicked: (event) => {
+                            if (event.button === Qt.RightButton && trayRow.modelData.hasMenu) {
+                                menuAnchor.open()
+                            } else {
+                                trayRow.modelData.activate()
+                            }
                         }
                     }
                 }
             }
-        }
 
-        Text {
-            visible:        trayPanel.trayItemCount === 0
-            text:           "No tray items"
-            color:          Colors.color8
-            font.family:    "JetBrainsMono Nerd Font"
-            font.pixelSize: 12
-            anchors.horizontalCenter: parent.horizontalCenter
+            Text {
+                visible:        trayPanel.trayItemCount === 0
+                text:           "No tray items"
+                color:          Colors.color8
+                font.family:    "JetBrainsMono Nerd Font"
+                font.pixelSize: 12
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
         }
     }
 }
