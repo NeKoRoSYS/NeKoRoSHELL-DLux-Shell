@@ -18,7 +18,7 @@ Powered by Hyprland and Quickshell, **NeKoRoSHELL DLux** strives to achieve what
 
 ### Roadmap
 
-NeKoRoSHELL DLux is currently being developed by one person (*cough* [CONTRIBUTING](https://github.com/NeKoRoSYS/NeKoRoSHELL-DLux-Shell/tree/main?tab=contributing-ov-file#) *cough*) and is constantly under rigorous quality assurance for improvement. We always aim to keep a "no-break" promise for every update so that you can safely update to later versions without expecting any breakages.
+NeKoRoSHELL DLux is currently being developed by two people (*cough* [CONTRIBUTING](https://github.com/NeKoRoSYS/NeKoRoSHELL-DLux-Shell/tree/main?tab=contributing-ov-file#) *cough*) and is constantly under rigorous quality assurance for improvement. We always aim to keep a "no-break" promise for every update so that you can safely update to later versions without expecting any breakages.
 
 <br>
 <div align="center">
@@ -35,6 +35,12 @@ NeKoRoSHELL DLux is currently being developed by one person (*cough* [CONTRIBUTI
 | Port all necessary bash scripts into native QML modules/functionality | ⏳ |
 
 </div>
+<br>
+
+## Acknowledgements
+<br>
+- Amelie ([@S-e-r-a-p-h-i-n-e](https://github.com/S-e-r-a-p-h-i-n-e)) for revamping the project architecture! Your contributions made DLux more modular and easier to maintain.
+
 <br>
 
 ## Star History
