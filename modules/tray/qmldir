@@ -1,0 +1,2 @@
+module qs.modules.tray
+singleton Tray 1.0 Tray.qml

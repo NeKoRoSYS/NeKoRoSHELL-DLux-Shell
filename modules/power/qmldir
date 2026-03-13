@@ -1,0 +1,2 @@
+module qs.modules.power
+singleton Power 1.0 Power.qml

@@ -20,8 +20,8 @@ Scope {
         enabled:      Config.enableBorders
         location:     Config.navbarLocation
         borderColor:  Colors.background
-        borderWidth:  10
-        cornerRadius: 20
+        borderWidth:  Style.borderWidth
+        cornerRadius: Style.cornerRadius
     }
 
     property string activePanel: ""
@@ -106,6 +106,72 @@ Scope {
         navbarOffset: loader.barSize
     }
 
+    Variants {
+        model: Quickshell.screens
+
+        PanelWindow {
+            required property var modelData
+            screen: modelData
+
+            anchors { top: true; right: true }
+            
+            margins {
+                top:    (Config.navbarLocation === "top"    ? loader.barSize : 0) + 15
+                bottom: (Config.navbarLocation === "bottom" ? loader.barSize : 0) + 15
+                left:   (Config.navbarLocation === "left"   ? loader.barSize : 0) + 15
+                right:  (Config.navbarLocation === "right"  ? loader.barSize : 0) + 15
+            }
+            
+            WlrLayershell.layer: WlrLayer.Overlay
+            exclusionMode: ExclusionMode.Ignore
+            
+            color: "transparent"
+            
+            visible: Notifs.activePopups.length > 0
+            
+            width: 400
+            height: popupList.contentHeight
+
+            ListView {
+                id: popupList
+                anchors.fill: parent
+                spacing: 15
+                interactive: false
+                
+                model: Notifs.activePopups
+                
+                add: Transition {
+                    NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 250 }
+                    NumberAnimation { property: "x"; from: 50; to: 0; duration: 250; easing.type: Easing.OutBack }
+                }
+                remove: Transition {
+                    NumberAnimation { property: "opacity"; to: 0; duration: 200 }
+                }
+                displaced: Transition {
+                    NumberAnimation { properties: "x,y"; duration: 250; easing.type: Easing.OutCubic }
+                }
+
+                delegate: NotificationCard {
+                    id: card
+                    notification: modelData 
+                    
+                    Timer {
+                        running: notification.expireTimeout !== 0
+                        interval: notification.expireTimeout > 0 ? notification.expireTimeout : 5000
+                        onTriggered: Notifs.removePopup(notification)
+                    }
+                    
+                    Connections {
+                        target: notification
+                        function onClosed() {
+                            Notifs.removePopup(notification)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     Connections {
         target: EventBus
 
@@ -129,5 +195,14 @@ Scope {
 
     Component.onCompleted: {
         console.log("Notification Daemon Active: " + Notifs.bodySupported)
+        let extra = [
+            "/usr/share/pixmaps",
+            Qt.resolvedUrl("file://" + Quickshell.env("HOME") + "/.local/share/icons"),
+            Qt.resolvedUrl("file://" + Quickshell.env("HOME") + "/.icons"),
+        ]
+        for (let p of extra) {
+            if (!(Qt.iconSearchPaths ?? []).includes(p))
+                Qt.iconSearchPaths = (Qt.iconSearchPaths ?? []).concat([p])
+        }
     }
 }

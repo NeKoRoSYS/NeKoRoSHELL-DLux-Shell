@@ -1,3 +1,4 @@
 module qs.modules.clock
 
-Clock 1.0 Clock.qml
+singleton Clock 1.0 Clock.qml
+ClockView 1.0 ClockView.qml

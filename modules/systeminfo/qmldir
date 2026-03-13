@@ -1,0 +1,2 @@
+module qs.modules.systeminfo
+singleton SystemInfo 1.0 SystemInfo.qml

@@ -2,3 +2,5 @@ module qs.engine
 
 singleton ModuleRegistry 1.0 ModuleRegistry.qml
 LayoutLoader             1.0 LayoutLoader.qml
+SlotLayout               1.0 SlotLayout.qml
+PillGroup                1.0 PillGroup.qml

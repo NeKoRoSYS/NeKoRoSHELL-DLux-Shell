@@ -1,5 +1,7 @@
 {
-  "left":   [],
-  "center": ["clock"],
-  "right":  ["buttons"]
+  "left": [],
+  "center": [
+    "clock"
+  ],
+  "right": []
 }

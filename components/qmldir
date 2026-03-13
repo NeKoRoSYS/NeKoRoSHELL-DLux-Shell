@@ -10,3 +10,5 @@ Wallpaper        1.0 Wallpaper.qml
 Spotify          1.0 Spotify.qml
 WavySlider       1.0 WavySlider.qml
 WorkspaceView    1.0 WorkspaceView.qml
+DynamicChip    1.0 DynamicChip.qml
+StaticChip    1.0 StaticChip.qml

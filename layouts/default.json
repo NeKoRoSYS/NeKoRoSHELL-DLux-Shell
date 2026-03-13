@@ -1,5 +1,11 @@
 {
-  "left":   ["workspaces"],
-  "center": ["clock"],
-  "right":  ["buttons"]
+  "left": [
+    "workspaces"
+  ],
+  "center": [
+    "clock"
+  ],
+  "right": [
+    ["tray", "notifications", "settings", "power"]
+  ]
 }

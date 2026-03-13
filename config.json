@@ -2,7 +2,7 @@
   "navbarLocation": "top",
   "enableBorders": true,
   "activeLayout": "center",
-  "lightMode": true,
-  "wallpaperPath": "/home/nekorosys/.config/wallpapers/windows-11.jpg",
+  "lightMode": false,
+  "wallpaperPath": "/home/nekorosys/.config/wallpapers/HA-BjRsaIAE9zD9.jpg",
   "dndEnabled": true
 }

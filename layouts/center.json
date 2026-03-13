@@ -1,5 +1,12 @@
 {
-  "left":   ["music"],
-  "center": ["workspaces", "clock", "buttons"],
-  "right":  []
+  "left": [
+  ],
+  "center": [
+    "workspaces",
+    ["media", "cava", "clock"], 
+    ["tray", "notifications", "settings", "power"]
+  ],
+  "right": [
+    "idleinhibitor"
+  ]
 }

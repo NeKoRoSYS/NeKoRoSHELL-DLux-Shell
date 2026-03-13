@@ -9,8 +9,8 @@ import qs.globals
 Scope {
     id: root
 
-    readonly property real   barSize: 40
-    readonly property string barFont: "JetBrainsMono Nerd Font"
+    readonly property real   barSize: Style.barSize
+    readonly property string barFont: "JetBrainsMono Nerd Font" 
 
     property var layoutLeft:   []
     property var layoutCenter: []
@@ -22,43 +22,12 @@ Scope {
             property var left:   []
             property var center: []
             property var right:  []
-            onLeftChanged:   root.layoutLeft   = left   || []
-            onCenterChanged: root.layoutCenter = center || []
-            onRightChanged:  root.layoutRight  = right  || []
-        }
-    }
-
-    // ── SHARED COMPONENTS & TRANSITIONS ──────────────────────────────
-    Component {
-        id: moduleDelegate
-        Loader {
-            id: modLoader
-            required property string modelData
-            sourceComponent: ModuleRegistry.resolve(modelData)
             
-            Binding { when: modLoader.status === Loader.Ready; target: modLoader.item; property: "isHorizontal"; value: Config.isHorizontal }
-            Binding { when: modLoader.status === Loader.Ready; target: modLoader.item; property: "barThickness"; value: root.barSize }
-            Binding { when: modLoader.status === Loader.Ready; target: modLoader.item; property: "barFont";      value: root.barFont }
+            onLeftChanged:   root.layoutLeft   = JSON.parse(JSON.stringify(left   || []))
+            onCenterChanged: root.layoutCenter = JSON.parse(JSON.stringify(center || []))
+            onRightChanged:  root.layoutRight  = JSON.parse(JSON.stringify(right  || []))
         }
     }
-
-    Transition {
-        id: animPopulateMove
-        ParallelAnimation {
-            NumberAnimation { properties: "x,y"; duration: Animations.normal; easing.type: Animations.easeOut }
-            NumberAnimation { property: "opacity"; to: 1.0; duration: Animations.normal; easing.type: Animations.easeOut }
-            NumberAnimation { property: "scale"; to: 1.0; duration: Animations.normal; easing.type: Animations.easeOut }
-        }
-    }
-
-    Transition {
-        id: animAdd
-        ParallelAnimation {
-            NumberAnimation { property: "opacity"; to: 1.0; duration: Animations.normal }
-            NumberAnimation { property: "scale"; to: 1.0; duration: Animations.normal; easing.type: Animations.easeOut }
-        }
-    }
-    // ─────────────────────────────────────────────────────────────────
 
     Variants {
         model: Quickshell.screens
@@ -67,8 +36,8 @@ Scope {
             id: bar
             required property var modelData
 
-            screen: modelData
-            color:  Colors.background
+            screen:        modelData
+            color:         Config.enableBorders ? Colors.background : "transparent"
             exclusionMode: ExclusionMode.Auto
 
             anchors {
@@ -78,51 +47,61 @@ Scope {
                 right:  Config.navbarLocation !== "left"
             }
 
-            implicitHeight: Config.isHorizontal ? root.barSize : 0
-            implicitWidth:  Config.isHorizontal ? 0            : root.barSize
+            implicitHeight: Config.isHorizontal ? Style.barSize : 0
+            implicitWidth:  Config.isHorizontal ? 0             : Style.barSize
 
-            // ── HORIZONTAL ────────────────────────────────────────────────
-            Row {
-                visible: Config.isHorizontal; spacing: 8
-                anchors { left: parent.left; leftMargin: 12; verticalCenter: parent.verticalCenter }
-                populate: animPopulateMove; add: animAdd
-                Repeater { model: Config.isHorizontal ? root.layoutLeft : []; delegate: moduleDelegate }
+            component BarSlot: SlotLayout {
+                isHorizontal: Config.isHorizontal
+                moduleSize:   Style.moduleSize
+                barFont:      root.barFont
             }
 
-            Row {
-                visible: Config.isHorizontal; spacing: 8
+            // ── Horizontal ────────────────────────────────────────────────
+            BarSlot {
+                visible:    Config.isHorizontal
+                modules:    root.layoutLeft
+                barScreen:  bar.modelData
+                anchors.left:           parent.left
+                anchors.leftMargin:     Style.barPadding
+                anchors.verticalCenter: parent.verticalCenter
+            }
+            BarSlot {
+                visible:   Config.isHorizontal
+                modules:   root.layoutCenter
+                barScreen: bar.modelData
                 anchors.centerIn: parent
-                populate: animPopulateMove; add: animAdd
-                Repeater { model: Config.isHorizontal ? root.layoutCenter : []; delegate: moduleDelegate }
+            }
+            BarSlot {
+                visible:    Config.isHorizontal
+                modules:    root.layoutRight
+                barScreen:  bar.modelData
+                anchors.right:          parent.right
+                anchors.rightMargin:    Style.barPadding
+                anchors.verticalCenter: parent.verticalCenter
             }
 
-            Row {
-                visible: Config.isHorizontal; spacing: 8
-                anchors { right: parent.right; rightMargin: 12; verticalCenter: parent.verticalCenter }
-                populate: animPopulateMove; add: animAdd
-                Repeater { model: Config.isHorizontal ? root.layoutRight : []; delegate: moduleDelegate }
+            // ── Vertical ──────────────────────────────────────────────────
+            BarSlot {
+                visible:   !Config.isHorizontal
+                modules:   root.layoutLeft
+                barScreen: bar.modelData
+                anchors.top:              parent.top
+                anchors.topMargin:        Style.barPadding
+                anchors.horizontalCenter: parent.horizontalCenter
             }
-
-            // ── VERTICAL ──────────────────────────────────────────────────
-            Column {
-                visible: !Config.isHorizontal; spacing: 8
-                anchors { top: parent.top; topMargin: 12; horizontalCenter: parent.horizontalCenter }
-                populate: animPopulateMove; add: animAdd
-                Repeater { model: !Config.isHorizontal ? root.layoutLeft : []; delegate: moduleDelegate }
-            }
-
-            Column {
-                visible: !Config.isHorizontal; spacing: 8
+            BarSlot {
+                visible:   !Config.isHorizontal
+                modules:   root.layoutCenter
+                barScreen: bar.modelData
                 anchors.centerIn: parent
-                populate: animPopulateMove; add: animAdd
-                Repeater { model: !Config.isHorizontal ? root.layoutCenter : []; delegate: moduleDelegate }
             }
-
-            Column {
-                visible: !Config.isHorizontal; spacing: 8
-                anchors { bottom: parent.bottom; bottomMargin: 12; horizontalCenter: parent.horizontalCenter }
-                populate: animPopulateMove; add: animAdd
-                Repeater { model: !Config.isHorizontal ? root.layoutRight : []; delegate: moduleDelegate }
+            BarSlot {
+                visible:   !Config.isHorizontal
+                modules:   root.layoutRight
+                barScreen: bar.modelData
+                anchors.bottom:           parent.bottom
+                anchors.bottomMargin:     Style.barPadding
+                anchors.horizontalCenter: parent.horizontalCenter
             }
         }
     }

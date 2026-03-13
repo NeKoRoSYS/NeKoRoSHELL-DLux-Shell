@@ -24,9 +24,9 @@ Panel {
         clip: true
 
         function clearAllNotifications() {
-            let notifs = Notifs.notifications;
+            let notifs = Notifs.trackedNotifications;
             for (let i = notifs.length - 1; i >= 0; i--) {
-                notifs[i].close();
+                notifs[i].dismiss();
             }
         }
 
@@ -81,7 +81,7 @@ Panel {
                 clip: true
                 spacing: 10
                 
-                model: Notifs.notifications
+                model: Notifs.trackedNotifications
                 
                 section.property: "appName"
                 section.criteria: ViewSection.FullString

@@ -1,0 +1,2 @@
+module qs.modules.idleinhibitor
+singleton IdleInhibitor 1.0 IdleInhibitor.qml
