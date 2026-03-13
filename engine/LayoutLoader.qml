@@ -37,7 +37,7 @@ Scope {
             required property var modelData
 
             screen:        modelData
-            color:         Config.enableBorders ? Colors.background : "transparent"
+            color:         Colors.background
             exclusionMode: ExclusionMode.Auto
 
             anchors {
