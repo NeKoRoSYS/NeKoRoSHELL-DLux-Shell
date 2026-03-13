@@ -1,14 +1,14 @@
 module qs.components
 
+AnimatedElement  1.0 AnimatedElement.qml
 Button           1.0 Button.qml
-Toggle           1.0 Toggle.qml
+DynamicChip      1.0 DynamicChip.qml
+NotificationCard 1.0 NotificationCard.qml
 Panel            1.0 Panel.qml
 ScreenBorder     1.0 ScreenBorder.qml
-AnimatedElement  1.0 AnimatedElement.qml
-NotificationCard 1.0 NotificationCard.qml
-Wallpaper        1.0 Wallpaper.qml
 Spotify          1.0 Spotify.qml
+StaticChip       1.0 StaticChip.qml
+Toggle           1.0 Toggle.qml
+Wallpaper        1.0 Wallpaper.qml
 WavySlider       1.0 WavySlider.qml
 WorkspaceView    1.0 WorkspaceView.qml
-DynamicChip    1.0 DynamicChip.qml
-StaticChip    1.0 StaticChip.qml

@@ -2,7 +2,7 @@
 import QtQuick
 import Quickshell
 import Quickshell.Services.Mpris
-import qs.globals
+import qs.global
 import qs.components
 
 Rectangle {

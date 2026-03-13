@@ -4,7 +4,7 @@ pragma Singleton
 import QtQuick
 import Quickshell
 import Quickshell.Hyprland
-import qs.globals
+import qs.global
 
 QtObject {
     readonly property var workspaces: Hyprland.workspaces

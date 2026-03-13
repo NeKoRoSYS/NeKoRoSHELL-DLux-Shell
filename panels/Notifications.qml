@@ -3,7 +3,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Wayland
 import Quickshell.Services.Notifications
-import qs.globals
+import qs.global
 import qs.components
 
 Panel {

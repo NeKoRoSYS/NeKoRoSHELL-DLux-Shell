@@ -1,6 +1,6 @@
 // components/Toggle.qml
 import QtQuick
-import qs.globals
+import qs.global
 
 Item {
     id: root

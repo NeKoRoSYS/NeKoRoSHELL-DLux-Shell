@@ -2,7 +2,7 @@
 import Quickshell
 import QtQuick
 import qs.components
-import qs.globals
+import qs.global
 
 Panel {
     id: settingsPanel

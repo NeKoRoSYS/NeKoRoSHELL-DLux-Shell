@@ -3,7 +3,7 @@
 import Quickshell
 import QtQuick
 import QtQuick.Shapes
-import qs.globals
+import qs.global
 
 Scope {
     id: border

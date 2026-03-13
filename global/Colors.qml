@@ -1,4 +1,4 @@
-// quickshell/shared/Colors.qml
+// global/Colors.qml
 pragma Singleton
 
 import QtQuick

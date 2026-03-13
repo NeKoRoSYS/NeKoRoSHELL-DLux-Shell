@@ -1,4 +1,4 @@
-// globals/Style.qml
+// global/Style.qml
 pragma Singleton
 
 import QtQuick

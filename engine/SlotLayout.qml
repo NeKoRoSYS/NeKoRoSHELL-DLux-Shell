@@ -1,7 +1,7 @@
 // engine/SlotLayout.qml
 pragma ComponentBehavior: Bound
 import QtQuick
-import qs.globals
+import qs.global
 
 Item {
     id: root

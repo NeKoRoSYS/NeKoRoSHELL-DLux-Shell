@@ -1,4 +1,4 @@
-// globals/Time.qml
+// global/Time.qml
 pragma Singleton
 
 import Quickshell

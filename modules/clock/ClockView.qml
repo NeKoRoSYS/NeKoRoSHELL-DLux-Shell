@@ -1,6 +1,6 @@
 // modules/clock/ClockView.qml
 import QtQuick
-import qs.globals
+import qs.global
 import qs.modules.clock
 
 Item {

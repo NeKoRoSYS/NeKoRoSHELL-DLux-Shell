@@ -1,7 +1,7 @@
 // components/NotificationCard.qml
 import QtQuick
 import Quickshell.Services.Notifications
-import qs.globals
+import qs.global
 
 Rectangle {
     id: cardRoot

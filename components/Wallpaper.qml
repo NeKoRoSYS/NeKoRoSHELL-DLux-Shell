@@ -3,7 +3,7 @@ import Quickshell
 import Quickshell.Wayland
 import QtQuick
 import QtMultimedia
-import qs.globals
+import qs.global
 
 Scope {
     id: rootScope

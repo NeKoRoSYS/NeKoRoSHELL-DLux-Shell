@@ -3,7 +3,7 @@
     "workspaces"
   ],
   "center": [
-    ["media", "cava"], "clock"
+    ["media", "cava", "clock"]
   ],
   "right": [
     ["tray", "notifications", "settings", "power"]

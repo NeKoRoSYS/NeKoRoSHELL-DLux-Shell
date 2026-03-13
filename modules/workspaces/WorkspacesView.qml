@@ -1,6 +1,6 @@
 // modules/workspaces/WorkspacesView.qml
 import QtQuick
-import qs.globals
+import qs.global
 import qs.modules.workspaces
 
 Item {

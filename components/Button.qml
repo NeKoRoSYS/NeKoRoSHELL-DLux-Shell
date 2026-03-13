@@ -1,6 +1,6 @@
 // components/Button.qml
 import QtQuick
-import qs.globals
+import qs.global
 
 Rectangle {
     id: root

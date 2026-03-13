@@ -1,7 +1,7 @@
 // panels/WallpaperPicker.qml
 import QtQuick
 import Quickshell.Wayland
-import qs.globals
+import qs.global
 import qs.components
 
 Panel {

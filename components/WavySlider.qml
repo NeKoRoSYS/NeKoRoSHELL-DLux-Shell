@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Controls
-import qs.globals
+import qs.global
 
 Slider {
     id: slider

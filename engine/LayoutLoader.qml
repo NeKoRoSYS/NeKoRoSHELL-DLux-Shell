@@ -4,7 +4,7 @@ pragma ComponentBehavior: Bound
 import Quickshell
 import Quickshell.Io
 import QtQuick
-import qs.globals
+import qs.global
 
 Scope {
     id: root

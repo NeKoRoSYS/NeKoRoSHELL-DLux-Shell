@@ -1,4 +1,4 @@
-// globals/EventBus.qml
+// global/EventBus.qml
 pragma Singleton
 import QtQuick
 import Quickshell

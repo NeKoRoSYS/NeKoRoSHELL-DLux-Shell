@@ -1,4 +1,4 @@
-// globals/Config.qml
+// global/Config.qml
 pragma Singleton
 
 import QtQuick

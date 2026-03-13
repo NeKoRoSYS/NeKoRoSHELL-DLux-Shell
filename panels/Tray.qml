@@ -3,7 +3,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Services.SystemTray
 import qs.components
-import qs.globals
+import qs.global
 
 Panel {
     id: trayPanel

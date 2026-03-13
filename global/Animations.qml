@@ -1,4 +1,4 @@
-// globals/Animations.qml
+// global/Animations.qml
 pragma Singleton
 
 import QtQuick

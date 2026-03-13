@@ -1,4 +1,4 @@
-// globals/Icons.qml
+// global/Icons.qml
 pragma Singleton
 
 import QtQuick

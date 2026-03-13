@@ -1,7 +1,9 @@
+// global/Notifs.qml
+
 pragma Singleton
+
 import QtQuick
 import Quickshell.Services.Notifications
-import qs.globals
 
 NotificationServer {
     id: server

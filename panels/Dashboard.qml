@@ -2,7 +2,7 @@
 import QtQuick
 import qs.modules.music
 import qs.components
-import qs.globals
+import qs.global
 
 Panel {
     id: dashboardPanel

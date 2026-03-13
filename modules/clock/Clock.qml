@@ -2,7 +2,7 @@
 pragma Singleton
 
 import QtQuick
-import qs.globals
+import qs.global
 
 QtObject {
     readonly property string moduleType: "custom"

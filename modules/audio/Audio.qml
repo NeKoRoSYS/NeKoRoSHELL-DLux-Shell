@@ -6,7 +6,7 @@ pragma Singleton
 import QtQuick
 import Quickshell
 import Quickshell.Io
-import qs.globals
+import qs.global
 
 QtObject {
     // ── Module identity ───────────────────────────────────────────────────

@@ -3,7 +3,7 @@ pragma Singleton
 
 import QtQuick
 import Quickshell
-import qs.globals
+import qs.global
 
 QtObject {
     readonly property string moduleType: "static"

@@ -4,7 +4,7 @@ import Quickshell
 import Quickshell.Wayland
 import Quickshell.Services.Notifications
 import QtQuick
-import qs.globals
+import qs.global
 import qs.components
 import qs.engine
 import qs.panels
