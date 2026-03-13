@@ -38,9 +38,9 @@ NeKoRoSHELL DLux is currently being developed by two people (*cough* [CONTRIBUTI
 <br>
 
 ## Acknowledgements
-<br>
-- Amelie ([@S-e-r-a-p-h-i-n-e](https://github.com/S-e-r-a-p-h-i-n-e)) for revamping the project architecture! Your contributions made DLux more modular and easier to maintain.
 
+- Amelie ([@S-e-r-a-p-h-i-n-e](https://github.com/S-e-r-a-p-h-i-n-e)) for revamping the project architecture! Your contributions made DLux more modular and easier to maintain.
+<br>
 <br>
 
 ## Star History
