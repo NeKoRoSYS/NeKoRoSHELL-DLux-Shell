@@ -16,19 +16,15 @@ Powered by Hyprland and Quickshell, **NeKoRoSHELL DLux** strives to achieve what
 
 <br>
 
-![Screenshot](showcase/image-5.png) 
+![Screenshot](showcase/showcase-1.png) 
 <br>
 <br>
 <br>
-![Screenshot](showcase/image-3.png) 
+![Screenshot](showcase/showcase-2.png) 
 <br>
 <br>
 <br>
-![Screenshot](showcase/image-1.png) 
-<br>
-<br>
-<br>
-![Screenshot](showcase/image-2.png) 
+![Screenshot](showcase/showcase-3.png) 
 <br>
 <br>
 
