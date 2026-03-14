@@ -86,8 +86,8 @@ Panel {
         }
 
         onSearchQueryChanged: {
-            updateSearch();
             if (wallhavenMode) searchDebounce.restart();
+            updateSearch();
         }
 
         Connections {
@@ -153,7 +153,10 @@ Panel {
                     font.pixelSize: 14
                     clip: true
                     text: wpRoot.searchQuery
-                    onTextEdited: wpRoot.searchQuery = text
+                    onTextEdited: {
+                        wpRoot.searchQuery = text;
+                        wpRoot.updateSearch(); 
+                    }
 
                     Text {
                         text: "  Search wallpapers..."

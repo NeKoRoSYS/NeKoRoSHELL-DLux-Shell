@@ -19,14 +19,13 @@ QtObject {
         
         adapter: JsonAdapter {
             id: wpAdapter
+            
             property var wallpapers: []
             
             onWallpapersChanged: {
-                if (Array.isArray(wallpapers) && wallpapers.length > 0) {
+                if (wallpapers) {
                     root.wallpapers = wallpapers;
                     root.isLoading = false;
-                } else {
-                    console.warn("WallpaperManager: Received invalid or empty JSON. Skipping update.");
                 }
             }
         }
@@ -54,6 +53,7 @@ QtObject {
 
     function downloadWallpaper(url) {
         if (!url) return;
+        
         let fileName = url.split('/').pop().split('?')[0];
         if (!fileName) fileName = "dl_" + Date.now() + ".jpg";
         let fullPath = Quickshell.env("HOME") + "/.config/wallpapers/" + fileName;
@@ -87,11 +87,7 @@ QtObject {
 
     function refresh() {
         root.isLoading = true;
-
-        if (root.scanner.running) {
-            root.scanner.terminate();
-        }
-
+        root.scanner.running = false;
         root.scanner.running = true;
     }
 

@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# quickshell/scripts/wallpaper-utils.sh
 set -euo pipefail
 
 WALL_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/wallpapers"
