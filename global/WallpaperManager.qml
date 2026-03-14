@@ -11,19 +11,22 @@ QtObject {
     
     property var wallpapers: []
     property bool isLoading: false
+    property var wallhavenResults: []
+    property bool isSearching: false
 
     property var jsonLoader: FileView {
         path: Quickshell.env("HOME") + "/.cache/quickshell/wallpapers.json"
         
         adapter: JsonAdapter {
             id: wpAdapter
-            
             property var wallpapers: []
             
             onWallpapersChanged: {
-                if (wallpapers) {
+                if (Array.isArray(wallpapers) && wallpapers.length > 0) {
                     root.wallpapers = wallpapers;
                     root.isLoading = false;
+                } else {
+                    console.warn("WallpaperManager: Received invalid or empty JSON. Skipping update.");
                 }
             }
         }
@@ -34,8 +37,61 @@ QtObject {
         running: true
     }
 
+    property var downloaderComponent: Component {
+        Process {
+            property string targetPath: ""
+            onExited: (exitCode) => {
+                if (exitCode === 0 && targetPath !== "") {
+                    let path = root.jsonLoader.path;
+                    root.jsonLoader.path = "";
+                    root.jsonLoader.path = path;
+                    root.setWallpaper(targetPath);
+                }
+                this.destroy();
+            }
+        }
+    }
+
+    function downloadWallpaper(url) {
+        if (!url) return;
+        let fileName = url.split('/').pop().split('?')[0];
+        if (!fileName) fileName = "dl_" + Date.now() + ".jpg";
+        let fullPath = Quickshell.env("HOME") + "/.config/wallpapers/" + fileName;
+
+        let proc = downloaderComponent.createObject(root, {
+            command: ["bash", Quickshell.env("HOME") + "/.config/quickshell/scripts/download-wallpaper.sh", url],
+            targetPath: fullPath
+        });
+        proc.running = true;
+    }
+
+    function searchWallhaven(query) {
+        if (query.length < 3) return;
+        root.isSearching = true;
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", "https://wallhaven.cc/api/v1/search?q=" + encodeURIComponent(query));
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                let res = JSON.parse(xhr.responseText);
+                root.wallhavenResults = res.data.map(item => ({
+                    name: "WH-" + item.id,
+                    path: item.path,
+                    thumb: item.thumbs.original || item.thumbs.large,
+                    isRemote: true
+                }));
+                root.isSearching = false;
+            }
+        };
+        xhr.send();
+    }
+
     function refresh() {
         root.isLoading = true;
+
+        if (root.scanner.running) {
+            root.scanner.terminate();
+        }
+
         root.scanner.running = true;
     }
 

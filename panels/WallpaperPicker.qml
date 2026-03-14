@@ -13,6 +13,13 @@ Panel {
     animationPreset: "slide"
     keyboardFocus: WlrKeyboardFocus.Exclusive
 
+    Connections {
+        target: WallpaperManager
+        function onWallhavenResultsChanged() { 
+            if (wpRoot.wallhavenMode) wpRoot.updateSearch(); 
+        }
+    }
+
     Rectangle {
         id: wpRoot
         anchors.fill: parent
@@ -24,12 +31,23 @@ Panel {
 
         property string searchQuery: ""
         property var filteredWallpapers: WallpaperManager.wallpapers
+        property bool wallhavenMode: false
 
         Connections {
             target: wpPanel
             function onShowPanelChanged() {
                 if (!wpPanel.showPanel) {
                     wpRoot.searchQuery = ""
+                }
+            }
+        }
+
+        Timer {
+            id: searchDebounce
+            interval: 500
+            onTriggered: {
+                if (wpRoot.wallhavenMode && wpRoot.searchQuery.length >= 3) {
+                    WallpaperManager.searchWallhaven(wpRoot.searchQuery);
                 }
             }
         }
@@ -47,14 +65,30 @@ Panel {
         }
 
         function updateSearch() {
-            if (wpRoot.searchQuery.trim() === "") {
-                wpRoot.filteredWallpapers = WallpaperManager.wallpapers;
-            } else {
-                wpRoot.filteredWallpapers = WallpaperManager.wallpapers.filter(wp => wpRoot.fuzzyMatch(wp.name, wpRoot.searchQuery));
+            let query = wpRoot.searchQuery.trim();
+            if (query.startsWith("http")) {
+                wpRoot.filteredWallpapers = [{
+                    name: "󰇚  Download Link...",
+                    path: query,
+                    thumb: "",
+                    isDownloadAction: true
+                }];
+            } 
+            else if (wpRoot.wallhavenMode) {
+                if (query.length >= 3) WallpaperManager.searchWallhaven(query);
+                wpRoot.filteredWallpapers = WallpaperManager.wallhavenResults;
+            } 
+            else {
+                wpRoot.filteredWallpapers = WallpaperManager.wallpapers.filter(
+                    wp => wpRoot.fuzzyMatch(wp.name, query)
+                );
             }
         }
 
-        onSearchQueryChanged: updateSearch()
+        onSearchQueryChanged: {
+            updateSearch();
+            if (wallhavenMode) searchDebounce.restart();
+        }
 
         Connections {
             target: WallpaperManager
@@ -87,6 +121,17 @@ Panel {
                     onButtonClicked: WallpaperManager.setRandom()
                     anchors.verticalCenter: parent.verticalCenter
                 }
+
+                Button {
+                    labelText: wpRoot.wallhavenMode ? "󰈹" : "󰉉"
+                    labelFont: "JetBrainsMono Nerd Font"
+                    buttonSize: 30
+                    buttonColor: Colors.color3
+                    onButtonClicked: {
+                        wpRoot.wallhavenMode = !wpRoot.wallhavenMode;
+                        wpRoot.updateSearch();
+                    }
+                }
             }
 
             // ── Search Bar ────────────────────────────────────────────────────
@@ -118,6 +163,13 @@ Panel {
                         visible: !parent.text && !parent.activeFocus
                         anchors.verticalCenter: parent.verticalCenter
                     }
+
+                    Binding {
+                        target: wpRoot
+                        property: "searchQuery"
+                        value: searchInput.text
+                    }
+
                     Keys.onEscapePressed: EventBus.togglePanel("wallpaper")
                 }
             }
@@ -151,13 +203,17 @@ Panel {
 
                         Image {
                             anchors.fill: parent
-                            source: "file://" + modelData.thumb
+                            source: {
+                                if (!modelData.thumb) return "";
+                                if (modelData.thumb.startsWith("http")) return modelData.thumb;
+                                return "file://" + modelData.thumb;
+                            }
                             fillMode: Image.PreserveAspectCrop
                             asynchronous: true
                             
                             onStatusChanged: {
-                                if (status === Image.Error) {
-                                    source = "file://" + modelData.path
+                                if (status === Image.Error && !modelData.path.startsWith("http")) {
+                                    source = "file://" + modelData.path;
                                 }
                             }
                         }
@@ -184,7 +240,15 @@ Panel {
                         MouseArea {
                             anchors.fill: parent
                             cursorShape: Qt.PointingHandCursor
-                            onClicked: WallpaperManager.setWallpaper(modelData.path)
+                            onClicked: {
+                                console.log("Clicked: " + modelData.path); // Debug check
+                                if (modelData.isDownloadAction === true || modelData.isRemote === true) {
+                                    WallpaperManager.downloadWallpaper(modelData.path);
+                                    wpRoot.searchQuery = ""; 
+                                } else {
+                                    WallpaperManager.setWallpaper(modelData.path);
+                                }
+                            }
                         }
                     }
                 }
