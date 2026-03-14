@@ -12,10 +12,11 @@ Item {
     property var    barScreen:    null // Required to prevent Engine crashes!
 
     readonly property real buttonSize: barThickness
+    readonly property bool isActive: Media.hasPlayer
 
-    visible:        Media.hasPlayer
-    implicitWidth:  visible ? (isHorizontal ? titlePill.width : barThickness) : 0
-    implicitHeight: visible ? (isHorizontal ? barThickness : verticalControls.implicitHeight) : 0
+    visible:        isActive
+    implicitWidth:  isActive ? (isHorizontal ? titlePill.width : barThickness) : 0
+    implicitHeight: isActive ? (isHorizontal ? barThickness : verticalControls.implicitHeight) : 0
     clip:           true
 
     Text {

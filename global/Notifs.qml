@@ -1,9 +1,9 @@
 // global/Notifs.qml
-
 pragma Singleton
 
 import QtQuick
 import Quickshell.Services.Notifications
+import qs.global
 
 NotificationServer {
     id: server
@@ -14,26 +14,19 @@ NotificationServer {
 
     property var activePopups: []
 
-    function addPopup(notification) {
-        let arr = activePopups;
-        arr.push(notification);
-        activePopups = arr;
-    }
-
     function removePopup(notification) {
-        let arr = activePopups;
-        let idx = arr.indexOf(notification);
+        let idx = activePopups.indexOf(notification);
         if (idx !== -1) {
-            arr.splice(idx, 1);
-            activePopups = arr;
+            let newArr = activePopups.slice();
+            newArr.splice(idx, 1);
+            activePopups = newArr;
         }
     }
 
     onNotification: (notification) => {
         notification.tracked = true;
-        
         if (!Config.dndEnabled) {
-            addPopup(notification);
+            activePopups = activePopups.concat([notification]);
         }
     }
 }

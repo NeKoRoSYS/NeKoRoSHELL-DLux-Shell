@@ -23,22 +23,36 @@ Item {
 
     Component {
         id: rowComp
-        Row { spacing: 8; Repeater { model: root.modules; delegate: slotDelegate } }
+        Row { spacing: Style.slotSpacing; Repeater { model: root.modules; delegate: slotDelegate } }
     }
     
     Component {
         id: colComp
-        Column { spacing: 8; Repeater { model: root.modules; delegate: slotDelegate } }
+        Column { spacing: Style.slotSpacing; Repeater { model: root.modules; delegate: slotDelegate } }
     }
 
     component SlotEntry: Item {
         required property var modelData
         readonly property bool isGroup: typeof modelData !== "string"
         
-        implicitWidth:  isGroup ? pill.implicitWidth  : mod.implicitWidth
-        implicitHeight: isGroup ? pill.implicitHeight : mod.implicitHeight
+        readonly property bool itemActive: mod.item ? ("isActive" in mod.item ? mod.item.isActive : true) : true
+        readonly property bool isActive: isGroup ? pill.hasContent : (mod.status === Loader.Ready ? itemActive : true)
+        
+        readonly property real targetWidth:  isGroup ? pill.implicitWidth  : mod.implicitWidth
+        readonly property real targetHeight: isGroup ? pill.implicitHeight : mod.implicitHeight
+
+        implicitWidth:  isActive ? targetWidth  : 0
+        implicitHeight: isActive ? targetHeight : 0
         width: implicitWidth
         height: implicitHeight
+        opacity: isActive ? 1 : 0
+
+        Behavior on implicitWidth  { enabled: !isGroup; NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
+        Behavior on implicitHeight { enabled: !isGroup; NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
+        Behavior on opacity        { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
+
+        visible: opacity > 0 || (root.isHorizontal ? implicitWidth > 0 : implicitHeight > 0)
+        clip: true
 
         PillGroup {
             id: pill

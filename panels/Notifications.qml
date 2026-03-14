@@ -9,10 +9,22 @@ import qs.components
 Panel {
     id: ncPanel
 
-    panelWidth: 420
-    panelHeight: 700
+    property int maxPanelHeight: 700
+    property int notifCount: Notifs.trackedNotifications.values.length
+    
+    property int trackedContentHeight: 58
+
+    panelWidth:  420
+    panelHeight: 720
     animationPreset: "slide"
     edgePadding: 15
+
+    Behavior on panelHeight {
+        NumberAnimation {
+            duration: Animations.normal
+            easing.type: Animations.easeOut
+        }
+    }
 
     Rectangle {
         id: ncRoot
@@ -24,9 +36,9 @@ Panel {
         clip: true
 
         function clearAllNotifications() {
-            let notifs = Notifs.trackedNotifications;
-            for (let i = notifs.length - 1; i >= 0; i--) {
-                notifs[i].dismiss();
+            let vals = Notifs.trackedNotifications.values;
+            for (let i = vals.length - 1; i >= 0; i--) {
+                if (vals[i]) vals[i].dismiss();
             }
         }
 
@@ -74,47 +86,80 @@ Panel {
 
             Rectangle { width: parent.width; height: 2; color: Colors.color13 }
 
-            ListView {
-                id: notifList
+            Flickable {
                 width: parent.width
-                height: parent.height - 60
+                height: parent.height - 62 
+                
+                contentHeight: notifCol.childrenRect.height 
                 clip: true
-                spacing: 10
-                
-                model: Notifs.trackedNotifications
-                
-                section.property: "appName"
-                section.criteria: ViewSection.FullString
-                section.delegate: Item {
-                    width: notifList.width
-                    height: 30
+                interactive: contentHeight > height
+
+                Column {
+                    id: notifCol
+                    width: parent.width
+                    spacing: 10
                     
-                    Text {
-                        anchors.bottom: parent.bottom
-                        anchors.bottomMargin: 5
-                        text: section
-                        color: Colors.color5
-                        font.family: "JetBrains Mono"
-                        font.weight: Font.Bold
-                        font.pixelSize: 13
-                        font.capitalization: Font.AllUppercase
+                    property int realHeight: childrenRect.height
+                    
+                    onRealHeightChanged: {
+                        if (realHeight > 50) { 
+                            ncPanel.trackedContentHeight = realHeight;
+                        }
+                    }
+
+                    Repeater {
+                        id: rep
+                        model: Notifs.trackedNotifications
+                        
+                        delegate: Item {
+                            width: notifCol.width
+                            
+                            property string currentApp: modelData.appName
+                            property string previousApp: index > 0 ? Notifs.trackedNotifications.values[index - 1].appName : ""
+                            property bool showSection: index === 0 || currentApp !== previousApp
+                            
+                            height: (showSection ? 40 : 0) + notifCard.height 
+                            
+                            Item {
+                                id: sectionHeader
+                                width: parent.width
+                                height: 30
+                                visible: showSection
+                                
+                                Text {
+                                    anchors.bottom: parent.bottom
+                                    anchors.bottomMargin: 5
+                                    text: currentApp
+                                    color: Colors.color5
+                                    font.family: "JetBrains Mono"
+                                    font.weight: Font.Bold
+                                    font.pixelSize: 13
+                                    font.capitalization: Font.AllUppercase
+                                }
+                            }
+
+                            NotificationCard {
+                                id: notifCard
+                                width: parent.width
+                                anchors.top: showSection ? sectionHeader.bottom : parent.top
+                                anchors.topMargin: showSection ? 10 : 0
+                                notification: modelData 
+                            }
+                        }
                     }
                 }
-
-                delegate: NotificationCard {
-                    notification: modelData 
-                }
-
-                Text {
-                    anchors.centerIn: parent
-                    text: "No new notifications\nYou're all caught up!"
-                    color: Colors.color8
-                    font.family: "JetBrains Mono"
-                    font.pixelSize: 14
-                    horizontalAlignment: Text.AlignHCenter
-                    visible: notifList.count === 0
-                }
             }
+        }
+        
+        Text {
+            anchors.centerIn: parent
+            anchors.verticalCenterOffset: 30 
+            text: "No new notifications\nYou're all caught up!"
+            color: Colors.color8
+            font.family: "JetBrains Mono"
+            font.pixelSize: 14
+            horizontalAlignment: Text.AlignHCenter
+            visible: ncPanel.notifCount === 0
         }
     }
 }

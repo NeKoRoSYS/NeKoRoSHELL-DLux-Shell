@@ -50,6 +50,7 @@ Scope {
 
             MouseArea {
                 anchors.fill: parent
+                enabled: shell.activePanel !== ""
                 onClicked: {
                     if (shell.activePanel !== "") {
                         EventBus.togglePanel(shell.activePanel) 
@@ -126,15 +127,17 @@ Scope {
             exclusionMode: ExclusionMode.Ignore
             
             color: "transparent"
-            
             visible: Notifs.activePopups.length > 0
             
             width: 400
-            height: popupList.contentHeight
+            height: Math.max(1, popupList.contentHeight)
 
             ListView {
                 id: popupList
-                anchors.fill: parent
+                
+                width: parent.width
+                height: contentHeight
+                
                 spacing: 15
                 interactive: false
                 
@@ -156,11 +159,11 @@ Scope {
                     notification: modelData 
                     
                     Timer {
-                        running: notification.expireTimeout !== 0
-                        interval: notification.expireTimeout > 0 ? notification.expireTimeout : 5000
-                        onTriggered: Notifs.removePopup(notification)
+                        running: true
+                        interval: (notification && notification.expireTimeout > 0) ? notification.expireTimeout : 5000
+                        onTriggered: Notifs.removePopup(notification) 
                     }
-                    
+
                     Connections {
                         target: notification
                         function onClosed() {

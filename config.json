@@ -1,8 +1,8 @@
 {
   "navbarLocation": "top",
-  "enableBorders": false,
-  "activeLayout": "media",
+  "enableBorders": true,
+  "activeLayout": "center",
   "lightMode": false,
-  "wallpaperPath": "/home/nekorosys/.config/wallpapers/HA-BjRsaIAE9zD9.jpg",
-  "dndEnabled": true
+  "wallpaperPath": "/home/nekorosys/.config/wallpapers/replicate-prediction-3mbemajfrsrgm0cenag9j452cr.png",
+  "dndEnabled": false
 }

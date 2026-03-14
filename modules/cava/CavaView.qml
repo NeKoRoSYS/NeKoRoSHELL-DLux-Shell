@@ -9,10 +9,11 @@ Item {
     property bool   inPill:       false
     property string barFont:      "JetBrainsMono Nerd Font"
 
-    visible:        Cava.present
-    
-    implicitWidth:  visible ? (root.isHorizontal ? label.implicitWidth + 20 : root.barThickness) : 0
-    implicitHeight: visible ? (root.isHorizontal ? root.barThickness : label.implicitWidth + 20) : 0
+    readonly property bool isActive: Cava.present && !Cava.isSilent
+
+    visible:        isActive
+    implicitWidth:  isActive ? (root.isHorizontal ? label.implicitWidth + 20 : root.barThickness) : 0
+    implicitHeight: isActive ? (root.isHorizontal ? root.barThickness : label.implicitWidth + 20) : 0
 
     Text {
         id: label
