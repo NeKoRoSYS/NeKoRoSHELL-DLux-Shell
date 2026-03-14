@@ -16,6 +16,22 @@ Powered by Hyprland and Quickshell, **NeKoRoSHELL DLux** strives to achieve what
 
 <br>
 
+![Screenshot](showcase/image-5.png) 
+<br>
+<br>
+<br>
+![Screenshot](showcase/image-3.png) 
+<br>
+<br>
+<br>
+![Screenshot](showcase/image-1.png) 
+<br>
+<br>
+<br>
+![Screenshot](showcase/image-2.png) 
+<br>
+<br>
+
 ### Roadmap
 
 NeKoRoSHELL DLux is currently being developed by two people (*cough* [CONTRIBUTING](https://github.com/NeKoRoSYS/NeKoRoSHELL-DLux-Shell/tree/main?tab=contributing-ov-file#) *cough*) and is constantly under rigorous quality assurance for improvement. We always aim to keep a "no-break" promise for every update so that you can safely update to later versions without expecting any breakages.
