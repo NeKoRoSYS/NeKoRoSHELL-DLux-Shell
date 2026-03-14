@@ -2,7 +2,8 @@
   "navbarLocation": "top",
   "enableBorders": true,
   "activeLayout": "center",
+  "enableParallax": true,
   "lightMode": false,
-  "wallpaperPath": "/home/nekorosys/.config/wallpapers/wallhaven-vpol95.jpg",
+  "wallpaperPath": "/home/nekorosys/.config/wallpapers/mylivewallpapers.com-Neon-Genesis-Evangelion.mp4",
   "dndEnabled": false
 }

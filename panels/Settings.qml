@@ -8,7 +8,7 @@ Panel {
     id: settingsPanel
 
     panelWidth:  400
-    panelHeight: 625
+    panelHeight: 665
 
     property bool bordersEnabled: Config.enableBorders
     property bool lightMode: Config.lightMode
@@ -55,6 +55,12 @@ Panel {
                     labelText: "Light Mode"
                     checked: settingsPanel.lightMode
                     onToggled: (state) => EventBus.toggleLightMode(state)
+                }
+
+                Toggle {
+                    labelText: "Wallpaper Parallax"
+                    checked: Config.enableParallax
+                    onToggled: (state) => Config.saveSetting("enableParallax", state)
                 }
             }
 

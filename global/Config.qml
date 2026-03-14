@@ -15,6 +15,7 @@ Singleton {
     property bool   enableBorders:  true
     property string activeLayout:   "default"
     
+    property bool enableParallax: false
     property bool lightMode: false
     property string wallpaperPath: "/home/nekorosys/.config/wallpapers/1145396.png"
 
@@ -32,6 +33,7 @@ Singleton {
             property string navbarLocation: "top"
             property bool   enableBorders:  true
             property string activeLayout:   "default"
+            property bool enableParallax: false
             property bool lightMode: false
             property string wallpaperPath: ""
             property bool dndEnabled:       false
@@ -39,9 +41,10 @@ Singleton {
             onNavbarLocationChanged: root.navbarLocation = navbarLocation
             onEnableBordersChanged:  root.enableBorders  = enableBorders
             onActiveLayoutChanged:   root.activeLayout   = activeLayout
+            onEnableParallaxChanged:      root.enableParallax = enableParallax
             onLightModeChanged:      root.lightMode      = lightMode
             onWallpaperPathChanged:  root.wallpaperPath  = wallpaperPath
-            onDndEnabledChanged:     root.dndEnabled  = dndEnabled
+            onDndEnabledChanged:     root.dndEnabled     = dndEnabled
         }
     }
 
@@ -56,6 +59,7 @@ Singleton {
         if (key === "navbarLocation") root.navbarLocation = value;
         if (key === "enableBorders")  root.enableBorders  = value;
         if (key === "activeLayout")   root.activeLayout   = value;
+        if (key === "enableParallax") root.enableParallax = value;
         if (key === "lightMode")      root.lightMode      = value;
         if (key === "wallpaperPath")  root.wallpaperPath  = value;
         if (key === "dndEnabled")  root.dndEnabled  = value;
@@ -69,6 +73,7 @@ Singleton {
             enableBorders: root.enableBorders,
             activeLayout: root.activeLayout,
             navbarLayout: root.navbarLayout,
+            enableParallax: root.enableParallax,
             lightMode: root.lightMode,
             wallpaperPath: root.wallpaperPath,
             dndEnabled: root.dndEnabled

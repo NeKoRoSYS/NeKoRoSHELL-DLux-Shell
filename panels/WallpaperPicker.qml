@@ -38,8 +38,15 @@ Panel {
             function onShowPanelChanged() {
                 if (!wpPanel.showPanel) {
                     wpRoot.searchQuery = ""
+                } else {
+                    searchInput.forceActiveFocus()
                 }
             }
+        }
+
+        Shortcut {
+            sequence: "Escape"
+            onActivated: EventBus.togglePanel("wallpaper")
         }
 
         Timer {
@@ -153,7 +160,7 @@ Panel {
                     font.pixelSize: 14
                     clip: true
                     text: wpRoot.searchQuery
-                    onTextEdited: {
+                    onTextChanged: {
                         wpRoot.searchQuery = text;
                         wpRoot.updateSearch(); 
                     }
@@ -172,11 +179,8 @@ Panel {
                         property: "searchQuery"
                         value: searchInput.text
                     }
-
-                    Keys.onEscapePressed: EventBus.togglePanel("wallpaper")
                 }
             }
-            // ──────────────────────────────────────────────────────────────────
 
             Rectangle { width: parent.width; height: 1; color: Colors.color8; opacity: 0.5 }
 
