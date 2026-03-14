@@ -47,6 +47,8 @@ QtObject {
 [general]
 framerate=60
 bars=10
+sensitivity=100
+
 [output]
 method=raw
 data_format=ascii
