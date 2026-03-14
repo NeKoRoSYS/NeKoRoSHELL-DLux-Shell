@@ -150,14 +150,17 @@ Rectangle {
                     onTriggered: barSlide.isSeeking = false
                 }
 
-                FrameAnimation {
+                Timer {
+                    id: progressTimer
+                    interval: 250
                     running: musicWidget.player && musicWidget.player.playbackState === MprisPlaybackState.Playing
+                    repeat: true
                     onTriggered: {
                         if (musicWidget.player && musicWidget.player.length > 0) {
                             if (!barSlide.pressed && !barSlide.isSeeking) {
                                 barSlide.value = musicWidget.player.position / musicWidget.player.length;
                             }
-                            musicWidget.player.positionChanged();
+                            musicWidget.player.positionChanged(); 
                         }
                     }
                 }

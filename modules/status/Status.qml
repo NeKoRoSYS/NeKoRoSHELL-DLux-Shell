@@ -53,7 +53,7 @@ QtObject {
     property int  blCurrent:    100
     property bool hasBacklight: false
     
-    readonly property int    blPercent: root.blMax > 0 ? Math.round(root.blCurrent / root.blMax * 100) : 0
+    readonly property int blPercent: root.blMax > 0 ? Math.round(root.blCurrent / root.blMax * 100) : 0
     readonly property string blIcon: {
         let p = root.blPercent
         if (p > 87) return "󰛨"
@@ -65,23 +65,20 @@ QtObject {
     
     function setBacklight(v) {
         let next = Math.max(1, Math.min(root.blMax, v))
-        Quickshell.execDetached({ command: ["/bin/bash", "-c",
-            "echo " + next + " > /sys/class/backlight/intel_backlight/brightness"] })
+        Quickshell.execDetached({ command: ["brightnessctl", "set", next.toString()] })
         root.blCurrent = next
     }
     
     function stepBacklight(d) { root.setBacklight(root.blCurrent + Math.round(root.blMax * 0.05) * d) }
 
-    // ── Polling ───────────────────────────────────────────────────────────
     property var _batProc: Process {
         id: batProc
         command: ["/bin/bash", "-c",
-            "cap=$(cat /sys/class/power_supply/BAT0/capacity 2>/dev/null); " +
-            "sta=$(cat /sys/class/power_supply/BAT0/status   2>/dev/null); " +
+            "cap=$(cat /sys/class/power_supply/BAT*/capacity 2>/dev/null | head -1); " +
+            "sta=$(cat /sys/class/power_supply/BAT*/status   2>/dev/null | head -1); " +
             "[ -n \"$cap\" ] && echo \"$cap $sta\""]
             
         property string buf: ""
-        
         stdout: SplitParser { onRead: (l) => { batProc.buf = l.trim() } }
         onExited: {
             let parts = batProc.buf.split(" ")
@@ -97,12 +94,11 @@ QtObject {
     property var _blProc: Process {
         id: blProc
         command: ["/bin/bash", "-c",
-            "max=$(cat /sys/class/backlight/intel_backlight/max_brightness 2>/dev/null); " +
-            "cur=$(cat /sys/class/backlight/intel_backlight/brightness     2>/dev/null); " +
+            "max=$(brightnessctl max 2>/dev/null); " +
+            "cur=$(brightnessctl get 2>/dev/null); " +
             "[ -n \"$max\" ] && echo \"$max $cur\""]
             
         property string buf: ""
-        
         stdout: SplitParser { onRead: (l) => { blProc.buf = l.trim() } }
         onExited: {
             let parts = blProc.buf.split(" ")
@@ -114,9 +110,31 @@ QtObject {
             blProc.buf = ""
         }
     }
+
+    property var _batListener: Process {
+        command: ["udevadm", "monitor", "--subsystem-match=power_supply"]
+        running: true
+        stdout: SplitParser {
+            onRead: () => {
+                batProc.running = false
+                batProc.running = true
+            }
+        }
+    }
+
+    property var _blListener: Process {
+        command: ["sh", "-c", "while inotifywait -e modify /sys/class/backlight/intel_backlight/brightness 2>/dev/null; do echo 'changed'; done"]
+        running: true
+        stdout: SplitParser {
+            onRead: () => {
+                blProc.running = false
+                blProc.running = true
+            }
+        }
+    }
     
-    property var _batTimer: Timer { interval: 30000; running: true; repeat: true; onTriggered: batProc.running = true }
-    property var _blTimer:  Timer { interval: 2000;  running: true; repeat: true; onTriggered: blProc.running  = true }
-    
-    Component.onCompleted: { batProc.running = true; blProc.running = true }
+    Component.onCompleted: { 
+        batProc.running = true
+        blProc.running = true 
+    }
 }

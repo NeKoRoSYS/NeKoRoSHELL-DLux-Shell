@@ -103,13 +103,16 @@ Panel {
                 filtered = launcherRoot.allAppsRaw.filter(app => launcherRoot.fuzzyMatch(app.name, launcherRoot.searchQuery));
             }
 
-            for (let i = 0; i < filtered.length; i++) {
-                appsModel.append({
-                    "appName": filtered[i].name,
-                    "appIcon": filtered[i].icon,
-                    "appExec": filtered[i].exec
-                });
+            let batchedApps = filtered.map(app => ({
+                "appName": app.name,
+                "appIcon": app.icon,
+                "appExec": app.exec
+            }));
+
+            if (batchedApps.length > 0) {
+                appsModel.append(batchedApps);
             }
+            
             launcherRoot.selectedIndex = 0;
         }
 

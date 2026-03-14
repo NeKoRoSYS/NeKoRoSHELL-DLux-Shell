@@ -58,6 +58,18 @@ QtObject {
             _buf = ""
         }
     }
-    property var _timer: Timer { interval: 10000; running: true; repeat: true; onTriggered: netProc.running = true }
+
+    property var _netMon: Process {
+        id: netMon
+        command: ["ip", "monitor", "link", "address"]
+        running: true
+        stdout: SplitParser { 
+            onRead: (line) => {
+                netProc.running = false
+                netProc.running = true
+            } 
+        }
+    }
+
     Component.onCompleted: netProc.running = true
 }

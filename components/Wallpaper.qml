@@ -29,11 +29,29 @@ Scope {
             property string resolvedPath: rawPath.startsWith("~") ? rawPath.replace("~", Quickshell.env("HOME")) : rawPath
             property bool isVideo: rawPath.match(/\.(mp4|webm|mkv|mov|avi)$/i) !== null
 
-            property bool isDesktopFocused: Hyprland.activeToplevel === null
+            property var focusedWs: typeof Hyprland !== "undefined" ? Hyprland.focusedWorkspace : null
+            
+            property int focusedWindowCount: (focusedWs && focusedWs.toplevels && focusedWs.toplevels.values) ? focusedWs.toplevels.values.length : 0
+            
+            property bool isWorkspaceEmpty: focusedWindowCount === 0
+            property bool isGlobalFocusEmpty: true
+            
+            property bool isDesktopFocused: isWorkspaceEmpty || isGlobalFocusEmpty
             property bool shouldPlayVideo: isVideo && isDesktopFocused
 
+            function updateFocus() {
+                wallpaperWindow.isGlobalFocusEmpty = !Hyprland.activeToplevel;
+            }
+
+            Connections {
+                target: Hyprland
+                ignoreUnknownSignals: true
+                function onActiveToplevelChanged() { wallpaperWindow.updateFocus() }
+                function onFocusedWorkspaceChanged() { wallpaperWindow.updateFocus() } 
+            }
+
             onShouldPlayVideoChanged: {
-                if (isVideo) {
+                if (isVideo && player.source.toString() !== "") {
                     if (shouldPlayVideo) player.play()
                     else player.pause()
                 }
@@ -54,6 +72,10 @@ Scope {
                 if (!isVideo && resolvedPath !== "") {
                     path1 = "file://" + resolvedPath;
                     useFirst = true;
+                }
+                
+                if (typeof Hyprland !== "undefined") {
+                    wallpaperWindow.updateFocus();
                 }
             }
 

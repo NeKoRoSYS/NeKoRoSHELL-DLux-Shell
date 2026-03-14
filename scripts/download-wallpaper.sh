@@ -13,7 +13,7 @@ FILENAME=$(basename "$URL" | cut -d? -f1)
 [[ -z "$FILENAME" ]] && FILENAME="dl_$(date +%s).jpg"
 TARGET="$WALL_DIR/$FILENAME"
 
-curl -sL "$URL" -o "$TARGET"
+curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" -sL "$URL" -o "$TARGET"
 
 ext="${FILENAME##*.}"
 thumb="$THUMB_CACHE/${FILENAME}.jpg"

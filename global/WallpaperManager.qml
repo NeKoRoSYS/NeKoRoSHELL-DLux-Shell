@@ -14,8 +14,13 @@ QtObject {
     property var wallhavenResults: []
     property bool isSearching: false
 
+    signal wallhavenFetched()
+    
     property var jsonLoader: FileView {
         path: Quickshell.env("HOME") + "/.cache/quickshell/wallpapers.json"
+        
+        watchChanges: true
+        onFileChanged: reload()
         
         adapter: JsonAdapter {
             id: wpAdapter
@@ -39,11 +44,9 @@ QtObject {
     property var downloaderComponent: Component {
         Process {
             property string targetPath: ""
-            onExited: (exitCode) => {
+            
+            onExited: function(exitCode) { 
                 if (exitCode === 0 && targetPath !== "") {
-                    let path = root.jsonLoader.path;
-                    root.jsonLoader.path = "";
-                    root.jsonLoader.path = path;
                     root.setWallpaper(targetPath);
                 }
                 this.destroy();
@@ -72,13 +75,16 @@ QtObject {
         xhr.open("GET", "https://wallhaven.cc/api/v1/search?q=" + encodeURIComponent(query));
         xhr.onreadystatechange = function() {
             if (xhr.readyState === XMLHttpRequest.DONE) {
-                let res = JSON.parse(xhr.responseText);
-                root.wallhavenResults = res.data.map(item => ({
-                    name: "WH-" + item.id,
-                    path: item.path,
-                    thumb: item.thumbs.original || item.thumbs.large,
-                    isRemote: true
-                }));
+                if (xhr.status === 200) { 
+                    let res = JSON.parse(xhr.responseText);
+                    root.wallhavenResults = res.data.map(item => ({
+                        name: "WH-" + item.id,
+                        path: item.path,
+                        thumb: item.thumbs.original || item.thumbs.large,
+                        isRemote: true
+                    }));
+                    root.wallhavenFetched(); 
+                }
                 root.isSearching = false;
             }
         };

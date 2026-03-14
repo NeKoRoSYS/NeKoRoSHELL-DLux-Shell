@@ -53,7 +53,7 @@ Panel {
             id: searchDebounce
             interval: 500
             onTriggered: {
-                if (wpRoot.wallhavenMode && wpRoot.searchQuery.length >= 3) {
+                if (wpRoot.wallhavenMode) {
                     WallpaperManager.searchWallhaven(wpRoot.searchQuery);
                 }
             }
@@ -73,6 +73,7 @@ Panel {
 
         function updateSearch() {
             let query = wpRoot.searchQuery.trim();
+            
             if (query.startsWith("http")) {
                 wpRoot.filteredWallpapers = [{
                     name: "󰇚  Download Link...",
@@ -82,7 +83,6 @@ Panel {
                 }];
             } 
             else if (wpRoot.wallhavenMode) {
-                if (query.length >= 3) WallpaperManager.searchWallhaven(query);
                 wpRoot.filteredWallpapers = WallpaperManager.wallhavenResults;
             } 
             else {
@@ -93,13 +93,17 @@ Panel {
         }
 
         onSearchQueryChanged: {
-            if (wallhavenMode) searchDebounce.restart();
+            if (wallhavenMode) {
+                searchDebounce.restart();
+            }
             updateSearch();
         }
 
         Connections {
             target: WallpaperManager
-            function onWallpapersChanged() { wpRoot.updateSearch() }
+            function onWallhavenFetched() { 
+                if (wpRoot.wallhavenMode) wpRoot.updateSearch(); 
+            }
         }
 
         Column {
@@ -160,9 +164,8 @@ Panel {
                     font.pixelSize: 14
                     clip: true
                     text: wpRoot.searchQuery
-                    onTextChanged: {
-                        wpRoot.searchQuery = text;
-                        wpRoot.updateSearch(); 
+                    onTextEdited: {
+                        wpRoot.searchQuery = text
                     }
 
                     Text {
@@ -172,12 +175,6 @@ Panel {
                         font.pixelSize: 14
                         visible: !parent.text && !parent.activeFocus
                         anchors.verticalCenter: parent.verticalCenter
-                    }
-
-                    Binding {
-                        target: wpRoot
-                        property: "searchQuery"
-                        value: searchInput.text
                     }
                 }
             }

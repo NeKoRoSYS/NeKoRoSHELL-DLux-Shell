@@ -59,6 +59,21 @@ QtObject {
     function pollSrc()        { srcProc.running  = true }
 
     // ── Polling ───────────────────────────────────────────────────────────
+    property var _subProc: Process {
+        id: subProc
+        command: ["pactl", "subscribe"]
+        running: true
+        stdout: SplitParser {
+            onRead: (line) => {
+                if (line.includes("Event 'change' on sink ")) {
+                    Audio.pollSink()
+                } else if (line.includes("Event 'change' on source ")) {
+                    Audio.pollSrc()
+                }
+            }
+        }
+    }
+
     property var _sinkProc: Process {
         id: sinkProc
         command: ["/bin/bash", "-c",
@@ -73,6 +88,7 @@ QtObject {
             _buf = ""
         }
     }
+
     property var _srcProc: Process {
         id: srcProc
         command: ["/bin/bash", "-c",
@@ -87,7 +103,12 @@ QtObject {
             _buf = ""
         }
     }
+
+    Component.onCompleted: {
+        sinkProc.running = true;
+        srcProc.running = true;
+    }
+
     property var _sinkTimer: Timer { interval: 1000; running: true; repeat: true; onTriggered: sinkProc.running = true }
     property var _srcTimer:  Timer { interval: 1000; running: true; repeat: true; onTriggered: srcProc.running  = true }
-    Component.onCompleted: { sinkProc.running = true; srcProc.running = true }
 }
