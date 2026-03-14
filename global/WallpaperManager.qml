@@ -20,7 +20,10 @@ QtObject {
         path: Quickshell.env("HOME") + "/.cache/quickshell/wallpapers.json"
         
         watchChanges: true
-        onFileChanged: reload()
+        onFileChanged: {
+            console.log("JSON changed on disk, reloading...");
+            reload();
+        }
         
         adapter: JsonAdapter {
             id: wpAdapter
@@ -43,13 +46,16 @@ QtObject {
 
     property var downloaderComponent: Component {
         Process {
+            id: dlProc 
             property string targetPath: ""
             
             onExited: function(exitCode) { 
                 if (exitCode === 0 && targetPath !== "") {
                     root.setWallpaper(targetPath);
+                } else {
+                    console.log("Download failed with exit code:", exitCode);
                 }
-                this.destroy();
+                dlProc.destroy(); 
             }
         }
     }

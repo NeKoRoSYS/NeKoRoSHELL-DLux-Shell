@@ -18,6 +18,10 @@ Panel {
         function onWallhavenResultsChanged() { 
             if (wpRoot.wallhavenMode) wpRoot.updateSearch(); 
         }
+
+        function onWallpapersChanged() {
+            if (!wpRoot.wallhavenMode) wpRoot.updateSearch();
+        }
     }
 
     Rectangle {

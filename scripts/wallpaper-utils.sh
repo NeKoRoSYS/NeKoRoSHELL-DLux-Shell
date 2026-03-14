@@ -23,8 +23,8 @@ for file in "$WALL_DIR"/*.{jpg,jpeg,png,mp4,mkv,webm}; do
     if [ ! -f "$thumb" ]; then
         ext="${filename##*.}"
         case "${ext,,}" in
-            mp4|mkv|webm) nice -n 19 ffmpeg -y -discard nokey -i "$file" -ss 00:00:02 -frames:v 1 -vf "scale=200:-1" "$thumb" >/dev/null 2>&1 ;;
-            *) nice -n 19 magick "$file" -thumbnail 200x "$thumb" >/dev/null 2>&1 ;;
+            mp4|mkv|webm) nice -n 19 ffmpeg -y -discard nokey -i "$file" -ss 00:00:02 -frames:v 1 -vf "scale=200:-1" "$thumb" >/dev/null 2>&1 || true ;;
+            *) nice -n 19 magick "$file" -thumbnail 200x "$thumb" >/dev/null 2>&1 || nice -n 19 convert "$file" -thumbnail 200x "$thumb" >/dev/null 2>&1 || true ;;
         esac
     fi
 
@@ -34,4 +34,5 @@ for file in "$WALL_DIR"/*.{jpg,jpeg,png,mp4,mkv,webm}; do
 done
 
 echo -e "\n] }" >> "$TMP_JSON"
+
 mv "$TMP_JSON" "$JSON_OUT"
