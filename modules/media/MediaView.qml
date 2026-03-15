@@ -37,7 +37,7 @@ Item {
         width:   Math.min(titleMetrics.implicitWidth + root.buttonSize + 20, 250)
         height:  root.buttonSize
         radius:  height / 2
-        color: titleArea.containsMouse ? "white" : Colors.color3
+        color: titleArea.containsMouse ? "white" : Config.transparentNavbar ? Colors.background : Colors.color3
         Behavior on color { ColorAnimation { duration: 150 } }
 
         Text {
@@ -46,7 +46,7 @@ Item {
             horizontalAlignment: Text.AlignHCenter
 
             text:             Media.title
-            color:            titleArea.containsMouse ? "black" : "white"
+            color:            titleArea.containsMouse ? "black" : Config.lightMode && Config.transparentNavbar ? "black" : "white"
             font.family:      root.barFont
             font.pixelSize:   root.buttonSize * 0.52
             font.weight:      Font.Bold
@@ -83,13 +83,13 @@ Item {
 
         Rectangle {
             width: root.buttonSize; height: width; radius: width / 2
-            color: prevArea.containsMouse ? "white" : Colors.color3
+            color: prevArea.containsMouse ? "white" : Config.transparentNavbar && Config.transparentNavbar ? Colors.background : Colors.color3
             Behavior on color { ColorAnimation { duration: 150 } }
             anchors.horizontalCenter: parent.horizontalCenter
             Text {
                 anchors.centerIn: parent
                 text:           "󰒮"
-                color:          prevArea.containsMouse ? "black" : "white"
+                color:          prevArea.containsMouse ? "black" : Config.lightMode ? "black" : "white"
                 font.family:    root.barFont
                 font.pixelSize: parent.width * 0.55
             }
@@ -104,13 +104,13 @@ Item {
 
         Rectangle {
             width: root.buttonSize; height: width; radius: width / 2
-            color: playArea.containsMouse ? "white" : Colors.color3
+            color: playArea.containsMouse ? "white" : Config.transparentNavbar ? Colors.background : Colors.color3
             Behavior on color { ColorAnimation { duration: 150 } }
             anchors.horizontalCenter: parent.horizontalCenter
             Text {
                 anchors.centerIn: parent
                 text:           Media.isPlaying ? "󰏤" : "󰐊"
-                color:          playArea.containsMouse ? "black" : "white"
+                color:          playArea.containsMouse ? "black" : Config.lightMode && Config.transparentNavbar ? "black" : "white"
                 font.family:    root.barFont
                 font.pixelSize: parent.width * 0.65
             }
@@ -130,13 +130,13 @@ Item {
 
         Rectangle {
             width: root.buttonSize; height: width; radius: width / 2
-            color: nextArea.containsMouse ? "white" : Colors.color3
+            color: nextArea.containsMouse ? "white" : Config.transparentNavbar ? Colors.background : Colors.color3
             Behavior on color { ColorAnimation { duration: 150 } }
             anchors.horizontalCenter: parent.horizontalCenter
             Text {
                 anchors.centerIn: parent
                 text:           "󰒭"
-                color:          nextArea.containsMouse ? "black" : "white"
+                color:          nextArea.containsMouse ? "black" : Config.lightMode && Config.transparentNavbar ? "black" : "white"
                 font.family:    root.barFont
                 font.pixelSize: parent.width * 0.55
             }

@@ -11,101 +11,89 @@ Item {
     property var  items:        []
     property var  barScreen:    null
 
-    implicitWidth:  isHorizontal ? hRow.implicitWidth : barThickness
-    implicitHeight: isHorizontal ? barThickness       : vCol.implicitHeight
+    implicitWidth:  grid.implicitWidth
+    implicitHeight: grid.implicitHeight
 
-    component ChipDelegate: Rectangle {
-        required property var modelData
+    Grid {
+        id: grid
+        anchors.centerIn: parent
+        
+        rows: root.isHorizontal ? 1 : -1
+        columns: root.isHorizontal ? -1 : 1
+        spacing: root.isHorizontal ? 6 : 4
+        
+        Repeater {
+            model: root.items
+            delegate: Rectangle {
+                required property var modelData
+                
+                readonly property color resolvedBg: Config.transparentNavbar ? Colors.background : Colors.color3
+                readonly property color resolvedFg: Config.lightMode && Config.transparentNavbar ? "black" : "white"
 
-        readonly property color resolvedBg: Colors.color3
-        readonly property color resolvedFg: "white"
+                implicitWidth: root.isHorizontal ? 
+                    (iconText.implicitWidth + labelText.implicitWidth + (iconText.visible && labelText.visible ? 5 : 0) + root.barThickness * 0.6) : root.barThickness
+                implicitHeight: root.isHorizontal ? 
+                    root.barThickness : (iconText.implicitHeight + labelText.implicitHeight + (iconText.visible && labelText.visible ? 2 : 0) + root.barThickness * 0.6)
+                
+                radius: root.isHorizontal ? height / 2 : root.barThickness / 2
+                color: resolvedBg
+                Behavior on color { ColorAnimation { duration: 150 } }
 
-        implicitWidth:  root.isHorizontal ? (hInner.implicitWidth + root.barThickness * 0.6) : root.barThickness
-        implicitHeight: root.isHorizontal ? root.barThickness : (vInner.implicitHeight + root.barThickness * 0.6)
-        radius: root.isHorizontal ? height / 2 : root.barThickness / 2
-        color:  resolvedBg
-        Behavior on color { ColorAnimation { duration: 150 } }
+                Item {
+                    anchors.centerIn: parent
+                    width: root.isHorizontal ? 
+                        (iconText.implicitWidth + labelText.implicitWidth + (iconText.visible && labelText.visible ? 5 : 0)) : Math.max(iconText.implicitWidth, labelText.implicitWidth)
+                    height: root.isHorizontal ? 
+                        Math.max(iconText.implicitHeight, labelText.implicitHeight) : (iconText.implicitHeight + labelText.implicitHeight)
 
-        // ── Horizontal: icon beside label ─────────────────────────────────
-        Row {
-            id: hInner
-            visible:          root.isHorizontal
-            anchors.centerIn: parent
-            spacing: 5
+                    Text {
+                        id: iconText
+                        visible: (modelData.icon ?? "") !== ""
+                        text: modelData.icon ?? ""
+                        font.family: Style.barFont
+                        font.pixelSize: root.isHorizontal ? (root.barThickness * 0.55) : (root.barThickness * 0.40)
+                        color: resolvedFg
+                        
+                        anchors.top: root.isHorizontal ? undefined : parent.top
+                        anchors.left: root.isHorizontal ? parent.left : undefined
+                        anchors.horizontalCenter: root.isHorizontal ? undefined : parent.horizontalCenter
+                        anchors.verticalCenter: root.isHorizontal ? parent.verticalCenter : undefined
+                    }
 
-            Text {
-                visible:        (modelData.icon ?? "") !== ""
-                text:           modelData.icon ?? ""
-                font.family:    Style.barFont
-                font.pixelSize: root.barThickness * 0.55
-                color:          resolvedFg
-                anchors.verticalCenter: parent.verticalCenter
-            }
-            Text {
-                visible:        (modelData.label ?? "") !== ""
-                text:           modelData.label ?? ""
-                font.family:    Style.barFont
-                font.pixelSize: root.barThickness * 0.48
-                font.weight:    Font.Bold
-                color:          resolvedFg
-                anchors.verticalCenter: parent.verticalCenter
-            }
-        }
+                    Text {
+                        id: labelText
+                        visible: (modelData.label ?? "") !== ""
+                        text: modelData.label ?? ""
+                        font.family: Style.barFont
+                        font.pixelSize: root.isHorizontal ? (root.barThickness * 0.48) : (root.barThickness * 0.34)
+                        font.weight: Font.Bold
+                        color: resolvedFg
+                        
+                        anchors.top: root.isHorizontal ? undefined : iconText.bottom
+                        anchors.left: root.isHorizontal ? (iconText.visible ? iconText.right : parent.left) : undefined
+                        anchors.leftMargin: root.isHorizontal && iconText.visible ? 5 : 0
+                        anchors.topMargin: !root.isHorizontal && iconText.visible ? 2 : 0
+                        anchors.horizontalCenter: root.isHorizontal ? undefined : parent.horizontalCenter
+                        anchors.verticalCenter: root.isHorizontal ? parent.verticalCenter : undefined
+                    }
+                }
 
-        // ── Vertical: icon over label, both centered independently ────────
-        Column {
-            id: vInner
-            visible:          !root.isHorizontal
-            anchors.centerIn: parent
-            spacing: 0
-
-            Text {
-                anchors.horizontalCenter: parent.horizontalCenter
-                text:           modelData.icon ?? ""
-                font.family:    Style.barFont
-                font.pixelSize: root.barThickness * 0.40
-                color:          resolvedFg
-            }
-            Text {
-                anchors.horizontalCenter: parent.horizontalCenter
-                text:           modelData.label ?? ""
-                font.family:    Style.barFont
-                font.pixelSize: root.barThickness * 0.34
-                font.weight:    Font.Bold
-                color:          resolvedFg
-            }
-        }
-
-        MouseArea {
-            anchors.fill:    parent
-            cursorShape:     Qt.PointingHandCursor
-            acceptedButtons: Qt.LeftButton | Qt.RightButton
-            onClicked: (e) => {
-                if (e.button === Qt.RightButton) {
-                    if (modelData.onRightClicked) modelData.onRightClicked(root.barScreen, e)
-                } else {
-                    if (modelData.onClicked) modelData.onClicked(root.barScreen, e)
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    acceptedButtons: Qt.LeftButton | Qt.RightButton
+                    onClicked: (e) => {
+                        if (e.button === Qt.RightButton) {
+                            if (modelData.onRightClicked) modelData.onRightClicked(root.barScreen, e)
+                        } else {
+                            if (modelData.onClicked) modelData.onClicked(root.barScreen, e)
+                        }
+                    }
+                    onWheel: (e) => { 
+                        if (modelData.onScrolled) modelData.onScrolled(e.angleDelta.y > 0 ? 1 : -1, e) 
+                    }
                 }
             }
-            onWheel: (e) => { 
-                if (modelData.onScrolled) modelData.onScrolled(e.angleDelta.y > 0 ? 1 : -1, e) 
-            }
         }
-    }
-
-    Row {
-        id: hRow
-        visible:          root.isHorizontal
-        anchors.centerIn: parent
-        spacing: 6
-        Repeater { model: root.isHorizontal ? root.items : []; delegate: ChipDelegate {} }
-    }
-
-    Column {
-        id: vCol
-        visible:          !root.isHorizontal
-        anchors.centerIn: parent
-        spacing: 4
-        Repeater { model: root.isHorizontal ? [] : root.items; delegate: ChipDelegate {} }
     }
 }

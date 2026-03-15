@@ -24,12 +24,12 @@ Item {
         radius: height / 2
 
         readonly property color resolvedBg: mouseArea.containsMouse
-            ? (root.item.hoverBgColor ?? "white")
+            ? "white"
             : (root.inPill 
-                ? Colors.color3 
+                ? (Config.transparentNavbar ? Colors.background : Colors.color3)
                 : (root.item.active 
-                    ? (root.item.activeColor ?? Colors.color7)
-                    : (root.item.bgColor ?? Colors.color7)))
+                    ? (Config.transparentNavbar ? Colors.background : Colors.color3)
+                    : (Config.transparentNavbar ? Colors.background : Colors.color3)))
 
         color: resolvedBg
         Behavior on color { ColorAnimation { duration: 150 } }
@@ -47,10 +47,10 @@ Item {
             color: mouseArea.containsMouse
                 ? (root.item.hoverFgColor ?? "black")
                 : (root.inPill 
-                    ? "white" 
+                    ? Config.lightMode && Config.transparentNavbar ? "black" : "white"
                     : (root.item.active
-                        ? Colors.background
-                        : (root.item.fgColor ?? Colors.color3)))
+                        ? (Config.lightMode && Config.transparentNavbar ? "black" : "white")
+                        : (root.item.fgColor ?? (Config.lightMode && Config.transparentNavbar) ? "black" : "white")))
             
             Behavior on color { ColorAnimation { duration: 150 } }
         }

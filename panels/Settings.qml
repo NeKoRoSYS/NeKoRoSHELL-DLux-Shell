@@ -8,7 +8,7 @@ Panel {
     id: settingsPanel
 
     panelWidth:  400
-    panelHeight: 665
+    panelHeight: 710
 
     property bool bordersEnabled: Config.enableBorders
     property bool lightMode: Config.lightMode
@@ -18,7 +18,7 @@ Panel {
     Rectangle {
         id: launcherRoot
         anchors.fill: parent
-        color: Colors.background
+        color: "transparent"
         border.color: Colors.color13
         border.width: 2
         radius: 10
@@ -45,6 +45,12 @@ Panel {
                 width: parent.width
                 spacing: 15
                 
+                Toggle {
+                    labelText: "Transparent Navbar"
+                    checked: Config.transparentNavbar
+                    onToggled: (state) => Config.saveSetting("transparentNavbar", state)
+                }
+
                 Toggle {
                     labelText: "Show Borders"
                     checked: settingsPanel.bordersEnabled

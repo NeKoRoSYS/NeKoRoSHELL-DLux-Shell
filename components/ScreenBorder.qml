@@ -58,7 +58,7 @@ Scope {
                 implicitHeight: border.cornerRadius
                 implicitWidth:  border.cornerRadius
                 color:   "transparent"
-                visible: border.enabled || border.location === "top" || border.location === "left"
+                visible: !Config.transparentNavbar && (border.enabled || border.location === "top" || border.location === "left")
                 Shape {
                     width: border.cornerRadius; height: border.cornerRadius
                     preferredRendererType: Shape.CurveRenderer
@@ -77,7 +77,7 @@ Scope {
                 implicitHeight: border.cornerRadius
                 implicitWidth:  border.cornerRadius
                 color:   "transparent"
-                visible: border.enabled || border.location === "top" || border.location === "right"
+                visible: !Config.transparentNavbar && (border.enabled || border.location === "top" || border.location === "right")
                 Shape {
                     width: border.cornerRadius; height: border.cornerRadius
                     preferredRendererType: Shape.CurveRenderer
@@ -96,7 +96,7 @@ Scope {
                 implicitHeight: border.cornerRadius
                 implicitWidth:  border.cornerRadius
                 color:   "transparent"
-                visible: border.enabled || border.location === "bottom" || border.location === "left"
+                visible: !Config.transparentNavbar && (border.enabled || border.location === "bottom" || border.location === "left")
                 Shape {
                     width: border.cornerRadius; height: border.cornerRadius
                     preferredRendererType: Shape.CurveRenderer
@@ -115,7 +115,7 @@ Scope {
                 implicitHeight: border.cornerRadius
                 implicitWidth:  border.cornerRadius
                 color:   "transparent"
-                visible: border.enabled || border.location === "bottom" || border.location === "right"
+                visible: !Config.transparentNavbar && (border.enabled || border.location === "bottom" || border.location === "right")
                 Shape {
                     width: border.cornerRadius; height: border.cornerRadius
                     preferredRendererType: Shape.CurveRenderer

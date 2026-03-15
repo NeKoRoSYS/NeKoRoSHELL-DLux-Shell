@@ -15,7 +15,7 @@ Panel {
     Rectangle {
         id: launcherRoot
         anchors.fill: parent
-        color: Colors.background
+        color: "transparent"
         border.color: Colors.color13
         border.width: 2
         radius: 10

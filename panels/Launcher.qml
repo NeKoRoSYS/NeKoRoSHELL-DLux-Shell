@@ -19,7 +19,7 @@ Panel {
     Rectangle {
         id: launcherRoot
         anchors.fill: parent
-        color: Colors.background
+        color: "transparent"
         border.color: Colors.color13
         border.width: 2
         radius: 10
@@ -28,6 +28,8 @@ Panel {
         property string searchQuery: ""
         property var allAppsRaw: [] 
         property int selectedIndex: 0
+
+        Component.onCompleted: focusTimer.restart()
 
         onSearchQueryChanged: updateSearch()
 
@@ -57,14 +59,24 @@ Panel {
                     launcherRoot.searchQuery = ""
                     launcherRoot.selectedIndex = 0
                     searchInput.forceActiveFocus()
+
+                    focusTimer.restart()
                     
                     if (launcherRoot.allAppsRaw.length === 0) {
                         appsProcess.running = true
                     } else {
                         launcherRoot.updateSearch()
                     }
+                } else {
+                    searchInput.focus = false
                 }
             }
+        }
+
+        Timer {
+            id: focusTimer
+            interval: 15
+            onTriggered: searchInput.forceActiveFocus()
         }
 
         function parseAppsJson() {

@@ -36,8 +36,8 @@ Item {
         implicitWidth:    timeMetrics.implicitWidth + 30
         height:           root.pillThickness
         radius:           height / 2
-        
-        color: hMouseArea.containsMouse ? "white" : Colors.color3
+
+        color: hMouseArea.containsMouse ? "white" : Config.transparentNavbar ? Colors.background : Colors.color3
         Behavior on color { ColorAnimation { duration: 150 } }
 
         Text {
@@ -53,7 +53,7 @@ Item {
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment:   Text.AlignVCenter
             
-            color: hMouseArea.containsMouse ? Colors.color3 : "white"
+            color: hMouseArea.containsMouse ? Colors.color3 : Config.lightMode && Config.transparentNavbar ? "black" : "white"
             Behavior on color { ColorAnimation { duration: 150 } }
         }
         
@@ -76,7 +76,7 @@ Item {
         height: timeMetrics.implicitHeight + 30
         radius: width / 2
         
-        color: vMouseArea.containsMouse ? "white" : Colors.color3
+        color: vMouseArea.containsMouse ? "white" : Config.transparentNavbar ? Colors.background : Colors.color3
         Behavior on color { ColorAnimation { duration: 150 } }
 
         Column {
@@ -111,7 +111,7 @@ Item {
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment:   Text.AlignVCenter
                 
-                color: "white"
+                color: Config.lightMode && Config.transparentNavbar ? "black" : "white"
             }
             Text {
                 visible: !vMouseArea.containsMouse
@@ -125,7 +125,7 @@ Item {
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment:   Text.AlignVCenter
                 
-                color: "white"
+                color: Config.lightMode && Config.transparentNavbar ? "black" : "white"
             }
         }
         

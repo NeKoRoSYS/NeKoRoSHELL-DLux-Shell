@@ -26,7 +26,7 @@ Item {
     Rectangle {
         anchors.fill: parent
         radius:       Math.min(width, height) / 2
-        color:        Colors.color3
+        color:        Colors.background
         opacity:      root.hasContent ? Style.pillOpacity : 0
         Behavior on opacity { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
     }

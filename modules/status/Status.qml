@@ -12,7 +12,6 @@ QtObject {
 
     readonly property var items: {
         let out = []
-        
         if (root.hasBattery) {
             out.push({
                 icon:    root.battIcon,
@@ -73,16 +72,13 @@ QtObject {
 
     property var _batProc: Process {
         id: batProc
-        command: ["/bin/bash", "-c",
-            "cap=$(cat /sys/class/power_supply/BAT*/capacity 2>/dev/null | head -1); " +
-            "sta=$(cat /sys/class/power_supply/BAT*/status   2>/dev/null | head -1); " +
-            "[ -n \"$cap\" ] && echo \"$cap $sta\""]
+        command: ["/bin/bash", "-c", "cat /sys/class/power_supply/BAT*/capacity /sys/class/power_supply/BAT*/status 2>/dev/null"]
             
         property string buf: ""
-        stdout: SplitParser { onRead: (l) => { batProc.buf = l.trim() } }
+        stdout: SplitParser { onRead: (l) => { batProc.buf += l.trim() + " " } }
         onExited: {
-            let parts = batProc.buf.split(" ")
-            if (parts[0] && parts[0] !== "") {
+            let parts = batProc.buf.trim().split(" ")
+            if (parts.length >= 2 && parts[0] !== "") {
                 root.battPercent = parseInt(parts[0]) || 0
                 root.battStatus  = parts[1] || "Unknown"
                 root.hasBattery  = true
@@ -93,16 +89,13 @@ QtObject {
     
     property var _blProc: Process {
         id: blProc
-        command: ["/bin/bash", "-c",
-            "max=$(brightnessctl max 2>/dev/null); " +
-            "cur=$(brightnessctl get 2>/dev/null); " +
-            "[ -n \"$max\" ] && echo \"$max $cur\""]
+        command: ["/bin/bash", "-c", "echo $(brightnessctl max 2>/dev/null) $(brightnessctl get 2>/dev/null)"]
             
         property string buf: ""
         stdout: SplitParser { onRead: (l) => { blProc.buf = l.trim() } }
         onExited: {
             let parts = blProc.buf.split(" ")
-            if (parts[0] && parts[0] !== "") {
+            if (parts.length >= 2 && parts[0] !== "") {
                 root.blMax        = parseInt(parts[0]) || 100
                 root.blCurrent    = parseInt(parts[1]) || 100
                 root.hasBacklight = true
@@ -123,7 +116,7 @@ QtObject {
     }
 
     property var _blListener: Process {
-        command: ["sh", "-c", "while inotifywait -e modify /sys/class/backlight/intel_backlight/brightness 2>/dev/null; do echo 'changed'; done"]
+        command: ["inotifywait", "-m", "-e", "modify", "/sys/class/backlight/intel_backlight/brightness"]
         running: true
         stdout: SplitParser {
             onRead: () => {

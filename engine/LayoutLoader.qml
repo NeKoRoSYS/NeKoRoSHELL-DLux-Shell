@@ -2,6 +2,7 @@
 pragma ComponentBehavior: Bound
 
 import Quickshell
+import Quickshell.Wayland
 import Quickshell.Io
 import QtQuick
 import qs.global
@@ -37,8 +38,10 @@ Scope {
             required property var modelData
 
             screen:        modelData
-            color:         Colors.background
+            color:         "transparent"
+            WlrLayershell.layer:         WlrLayer.Overlay
             exclusionMode: ExclusionMode.Auto
+            WlrLayershell.namespace:     "quickshell-navbar"
 
             anchors {
                 top:    Config.navbarLocation !== "bottom"
@@ -47,8 +50,36 @@ Scope {
                 right:  Config.navbarLocation !== "left"
             }
 
-            implicitHeight: Config.isHorizontal ? Style.barSize : 0
-            implicitWidth:  Config.isHorizontal ? 0             : Style.barSize
+            property real edgeMargin: Config.transparentNavbar ? Style.borderWidth + 5 : 0
+            Behavior on edgeMargin {
+                NumberAnimation { duration: 250; easing.type: Easing.OutCubic } //
+            }
+
+            margins {
+                top:    anchors.top    ? edgeMargin : 0
+                bottom: anchors.bottom ? edgeMargin : 0
+                left:   anchors.left   ? edgeMargin : 0
+                right:  anchors.right  ? edgeMargin : 0
+            }
+
+            property real activeSize: Config.transparentNavbar ? Style.moduleSize : Style.barSize
+            
+            Behavior on activeSize { 
+                NumberAnimation { duration: 250; easing.type: Easing.OutCubic } 
+            }
+
+            implicitHeight: Config.isHorizontal ? activeSize : 0
+            implicitWidth:  Config.isHorizontal ? 0          : activeSize
+
+            Rectangle {
+                anchors.fill: parent
+                color: Colors.background
+                opacity: Config.transparentNavbar ? 0.0 : 1.0
+                
+                Behavior on opacity { 
+                    NumberAnimation { duration: 250; easing.type: Easing.OutCubic } 
+                }
+            }
 
             component BarSlot: SlotLayout {
                 isHorizontal: Config.isHorizontal

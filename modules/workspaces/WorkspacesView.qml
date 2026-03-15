@@ -1,7 +1,7 @@
 // modules/workspaces/WorkspacesView.qml
 import QtQuick
 import qs.global
-import qs.modules.workspaces
+import qs.components
 
 Item {
     id: root
@@ -23,7 +23,7 @@ Item {
         height: !root.isHorizontal ? (container.implicitHeight + 15) : root.baseSize
         radius: (!root.isHorizontal ? width : height) / 2
         
-        color: Colors.color3
+        color: Colors.background
         opacity: 0.325
 
         Behavior on width { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
@@ -59,10 +59,10 @@ Item {
                 anchors.centerIn: layout
                 visible: appRepeater.count > 1
                 
-                width:  !root.isHorizontal ? root.baseSize : (layout.implicitWidth - root.baseSize)
-                height: !root.isHorizontal ? (layout.implicitHeight - root.baseSize) : root.baseSize
+                width:  !root.isHorizontal ? root.baseSize : Math.max(0, layout.implicitWidth - root.baseSize)
+                height: !root.isHorizontal ? Math.max(0, layout.implicitHeight - root.baseSize) : root.baseSize
                 
-                color: Colors.color3
+                color: Config.transparentNavbar ? Colors.background : Colors.color3
                 radius: 1.5
             }
 
@@ -74,149 +74,50 @@ Item {
 
                 move: Transition { NumberAnimation { properties: "x,y"; duration: Animations.normal; easing.type: Animations.easeOut } }
 
-                // ── Empty workspace dot ───────────────────────────────────────
-                Item {
-                    property bool ready: false
-                    Component.onCompleted: ready = true
-                    readonly property bool showEmpty: ready && appRepeater.count === 0
+                property bool ready: false
+                Component.onCompleted: ready = true
 
-                    implicitWidth:  showEmpty ? root.baseSize : 0
-                    implicitHeight: showEmpty ? root.baseSize : 0
-                    width: implicitWidth
-                    height: implicitHeight
-                    opacity: showEmpty ? 1 : 0
-                    scale:   showEmpty ? 1 : 0.01
-
-                    Behavior on implicitWidth  { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
-                    Behavior on implicitHeight { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
-                    Behavior on opacity        { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
-                    Behavior on scale          { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
-                    visible: opacity > 0 || implicitWidth > 0
-
-                    Rectangle {
-                        anchors.centerIn: parent
-                        height:  root.baseSize; width: height; radius: height / 2
-                        color: wsMouseArea.containsMouse ? "white" : (wsDelegate.modelData.focused ? "white" : Colors.color3)
-                        Behavior on color { ColorAnimation { duration: 150 } }
-
-                        Text {
-                            anchors.centerIn: parent
-                            anchors.horizontalCenterOffset: 1
-                            text: wsDelegate.modelData.focused ? "󰣇" : wsDelegate.modelData.name
-                            color: wsMouseArea.containsMouse ? "black" : (wsDelegate.modelData.focused ? "black" : "white")
-                            Behavior on color { ColorAnimation { duration: 150 } }
-                            font.family: root.barFont
-                            font.pixelSize: parent.height / 2
-                            font.weight: Font.ExtraBold
-                        }
-
-                        MouseArea {
-                            id: wsMouseArea
-                            anchors.fill: parent
-                            cursorShape:  Qt.PointingHandCursor
-                            hoverEnabled: true
-                            onClicked:    Workspaces.activate(wsDelegate.modelData)
-                        }
-                    }
+                WorkspaceDot {
+                    baseSize: root.baseSize
+                    barFont: root.barFont
+                    
+                    showDot: layout.ready && appRepeater.count === 0
+                    isFocused: wsDelegate.modelData.focused
+                    dotText: isFocused ? "󰣇" : wsDelegate.modelData.name
+                    labelFont.pixelSize: root.baseSize / 2
+                    labelFont.weight: Font.ExtraBold
+                    textOffsetX: 1
+                    area.onClicked: Workspaces.activate(wsDelegate.modelData)
                 }
 
-                // ── App dots ──────────────────────────────────────────────────
                 Repeater {
                     id: appRepeater
                     model: wsDelegate.modelData.toplevels
-
-                    delegate: Item {
-                        id: appContainer
-                        required property var modelData
-                        required property int index
+                    delegate: WorkspaceDot {
+                        baseSize: root.baseSize
+                        barFont: root.barFont
                         
-                        readonly property bool isFocusedApp: modelData.activated && wsDelegate.modelData.focused
-                        
-                        property bool ready: false
-                        Component.onCompleted: ready = true
-                        readonly property bool showApp: ready && index < root.maxIcons
-
-                        implicitWidth:  showApp ? root.baseSize : 0
-                        implicitHeight: showApp ? root.baseSize : 0
-                        width: implicitWidth
-                        height: implicitHeight
-                        opacity: showApp ? 1 : 0
-                        scale:   showApp ? 1 : 0.01
-
-                        Behavior on implicitWidth  { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
-                        Behavior on implicitHeight { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
-                        Behavior on opacity        { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
-                        Behavior on scale          { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
-                        visible: opacity > 0 || implicitWidth > 0
-
-                        Rectangle {
-                            anchors.centerIn: parent
-                            height: root.baseSize; width: height; radius: height / 2
-                            color: appMouseArea.containsMouse ? "white" : (isFocusedApp ? "white" : Colors.color3)
-                            Behavior on color { ColorAnimation { duration: 150 } }
-
-                            Text {
-                                anchors.centerIn: parent
-                                anchors.horizontalCenterOffset: 0.25; anchors.verticalCenterOffset: 1
-                                text: Workspaces.iconFor(modelData)
-                                color: appMouseArea.containsMouse ? "black" : (isFocusedApp ? Colors.color3 : "white")
-                                Behavior on color { ColorAnimation { duration: 150 } }
-                                font.family: root.barFont; font.pixelSize: parent.height / 1.85
-                            }
-
-                            MouseArea {
-                                id: appMouseArea
-                                anchors.fill: parent
-                                cursorShape: Qt.PointingHandCursor
-                                hoverEnabled: true
-                                onClicked: Workspaces.focusWindow(modelData.address)
-                            }
-                        }
+                        showDot: layout.ready && index < root.maxIcons
+                        isFocused: modelData.activated && wsDelegate.modelData.focused
+                        dotText: Workspaces.iconFor(modelData)
+                        labelFont.pixelSize: root.baseSize / 1.85
+                        textOffsetX: 0.25
+                        textOffsetY: 1
+                        area.onClicked: Workspaces.focusWindow(modelData.address)
                     }
                 }
 
-                // ── Overflow dot ───────────────────────────────────────────────
-                Item {
-                    property bool ready: false
-                    Component.onCompleted: ready = true
-                    readonly property bool showOverflow: ready && appRepeater.count > root.maxIcons
-
-                    implicitWidth:  showOverflow ? root.baseSize : 0
-                    implicitHeight: showOverflow ? root.baseSize : 0
-                    width: implicitWidth
-                    height: implicitHeight
-                    opacity: showOverflow ? 1 : 0
-                    scale:   showOverflow ? 1 : 0.01
-
-                    Behavior on implicitWidth  { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
-                    Behavior on implicitHeight { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
-                    Behavior on opacity        { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
-                    Behavior on scale          { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
-                    visible: opacity > 0 || implicitWidth > 0
-
-                    Rectangle {
-                        anchors.centerIn: parent
-                        height: root.baseSize; width: height; radius: height / 2
-                        color: overflowMouseArea.containsMouse ? "white" : Colors.color3
-                        Behavior on color { ColorAnimation { duration: 150 } }
-                        
-                        Text {
-                            anchors.centerIn: parent
-                            anchors.horizontalCenterOffset: -2; anchors.verticalCenterOffset: 1
-                            text: "+" + (appRepeater.count - root.maxIcons)
-                            color: overflowMouseArea.containsMouse ? "black" : "white"
-                            Behavior on color { ColorAnimation { duration: 150 } }
-                            font.family: root.barFont; font.pixelSize: parent.height / 2; font.weight: Font.ExtraBold
-                        }
-                        
-                        MouseArea {
-                            id: overflowMouseArea
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                            hoverEnabled: true
-                            onClicked: Workspaces.activate(wsDelegate.modelData)
-                        }
-                    }
+                WorkspaceDot {
+                    baseSize: root.baseSize
+                    barFont: root.barFont
+                    
+                    showDot: layout.ready && appRepeater.count > root.maxIcons
+                    dotText: "+" + (appRepeater.count - root.maxIcons)
+                    labelFont.pixelSize: root.baseSize / 2
+                    labelFont.weight: Font.ExtraBold
+                    textOffsetX: -2
+                    textOffsetY: 1
+                    area.onClicked: Workspaces.activate(wsDelegate.modelData)
                 }
             }
 

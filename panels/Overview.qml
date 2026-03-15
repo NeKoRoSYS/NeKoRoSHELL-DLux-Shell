@@ -27,7 +27,7 @@ Panel {
 
     panelWidth: contentW
     panelHeight: (tileH * rows) + (spacingAmount * (rows + 1)) + 100
-    animationPreset: "slide"
+    animationPreset: "fade"
     anchorAlignment: "center"
     
     onShowPanelChanged: {
@@ -50,7 +50,7 @@ Panel {
     Rectangle {
         id: overviewRoot
         anchors.fill: parent
-        color: Colors.background
+        color: "transparent"
         border.color: Colors.color13
         border.width: 2
         radius: 10

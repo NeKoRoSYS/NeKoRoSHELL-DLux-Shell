@@ -17,7 +17,7 @@ Scope {
     Wallpaper { }
 
     ScreenBorder {
-        enabled:      Config.enableBorders
+        enabled:      Config.enableBorders && !Config.transparentNavbar
         location:     Config.navbarLocation
         borderColor:  Colors.background
         borderWidth:  Style.borderWidth
@@ -105,6 +105,7 @@ Scope {
     Overview {
         showPanel:    shell.activePanel === "overview"
         navbarOffset: loader.barSize
+        anchorEdge: "center"
     }
 
     Variants {

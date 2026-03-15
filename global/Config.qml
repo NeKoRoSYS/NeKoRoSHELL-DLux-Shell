@@ -12,6 +12,7 @@ Singleton {
     readonly property string tmpPath:    Quickshell.env("HOME") + "/.config/quickshell/.config.json.tmp"
 
     property string navbarLocation: "top"
+    property bool   transparentNavbar: false
     property bool   enableBorders:  true
     property string activeLayout:   "default"
     
@@ -31,6 +32,7 @@ Singleton {
             id: configAdapter
 
             property string navbarLocation: "top"
+            property bool   transparentNavbar: false
             property bool   enableBorders:  true
             property string activeLayout:   "default"
             property bool enableParallax: false
@@ -39,6 +41,7 @@ Singleton {
             property bool dndEnabled:       false
 
             onNavbarLocationChanged: root.navbarLocation = navbarLocation
+            onTransparentNavbarChanged: root.transparentNavbar = transparentNavbar
             onEnableBordersChanged:  root.enableBorders  = enableBorders
             onActiveLayoutChanged:   root.activeLayout   = activeLayout
             onEnableParallaxChanged:      root.enableParallax = enableParallax
@@ -57,6 +60,7 @@ Singleton {
 
     function saveSetting(key, value) {
         if (key === "navbarLocation") root.navbarLocation = value;
+        if (key === "transparentNavbar")  root.transparentNavbar  = value;
         if (key === "enableBorders")  root.enableBorders  = value;
         if (key === "activeLayout")   root.activeLayout   = value;
         if (key === "enableParallax") root.enableParallax = value;
@@ -70,6 +74,7 @@ Singleton {
     function executeSave() {
         let fileData = {
             navbarLocation: root.navbarLocation,
+            transparentNavbar: root.transparentNavbar,
             enableBorders: root.enableBorders,
             activeLayout: root.activeLayout,
             navbarLayout: root.navbarLayout,

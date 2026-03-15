@@ -90,12 +90,12 @@ Scope {
                 }
             }
 
-            property bool parallaxEnabledSafe: ("enableParallax" in Config) ? Config.enableParallax : (("parallaxEnabled" in Config) ? Config.parallaxEnabled : true)
+            property bool parallaxEnabledSafe: ("enableParallax" in Config) ? Config.enableParallax : true
 
             Item {
                 id: parallaxContainer
                 anchors.fill: parent
-                scale: wallpaperWindow.parallaxEnabledSafe ? 1.05 : 1
+                scale: wallpaperWindow.parallaxEnabledSafe ? 1.07 : 1
                 
                 property real targetX: 0
                 property real targetY: 0

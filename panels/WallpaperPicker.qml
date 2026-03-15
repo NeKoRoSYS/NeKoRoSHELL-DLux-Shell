@@ -27,7 +27,7 @@ Panel {
     Rectangle {
         id: wpRoot
         anchors.fill: parent
-        color: Colors.background
+        color: "transparent"
         border.color: Colors.color13
         border.width: 2
         radius: 10
@@ -37,15 +37,24 @@ Panel {
         property var filteredWallpapers: WallpaperManager.wallpapers
         property bool wallhavenMode: false
 
+        Component.onCompleted: focusTimer.restart()
+
         Connections {
             target: wpPanel
             function onShowPanelChanged() {
                 if (!wpPanel.showPanel) {
                     wpRoot.searchQuery = ""
+                    searchInput.focus = false
                 } else {
-                    searchInput.forceActiveFocus()
+                    focusTimer.restart()
                 }
             }
+        }
+
+        Timer {
+            id: focusTimer
+            interval: 15
+            onTriggered: searchInput.forceActiveFocus()
         }
 
         Shortcut {
@@ -160,6 +169,7 @@ Panel {
 
                 TextInput {
                     id: searchInput
+                    focus: true
                     anchors.fill: parent
                     anchors.margins: 8
                     verticalAlignment: TextInput.AlignVCenter

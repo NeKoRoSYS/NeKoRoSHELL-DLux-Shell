@@ -15,7 +15,7 @@ Panel {
     property int trackedContentHeight: 58
 
     panelWidth:  420
-    panelHeight: 720
+    panelHeight: 600
     animationPreset: "slide"
     edgePadding: 15
 
@@ -29,7 +29,7 @@ Panel {
     Rectangle {
         id: ncRoot
         anchors.fill: parent
-        color: Colors.background
+        color: "transparent"
         border.color: Colors.color13
         border.width: 2
         radius: 10
