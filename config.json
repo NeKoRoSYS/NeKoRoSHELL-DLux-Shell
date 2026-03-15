@@ -4,7 +4,7 @@
   "enableBorders": true,
   "activeLayout": "center",
   "enableParallax": true,
-  "lightMode": false,
-  "wallpaperPath": "/home/nekorosys/.config/wallpapers/Neon-Genesis-Evangelion.mp4",
+  "lightMode": true,
+  "wallpaperPath": "/home/nekorosys/.config/wallpapers/wallhaven-jew775.jpg",
   "dndEnabled": false
 }
