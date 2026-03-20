@@ -48,6 +48,7 @@ Scope {
         showPanel:    shell.activePanel === "advanced"
         navbarOffset: loader.barSize
         panelId:      "advanced"
+        anchorAlignment: "end"
     }
 
     Tray {

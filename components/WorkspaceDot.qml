@@ -21,15 +21,14 @@ Item {
     implicitWidth:  showDot ? baseSize : 0
     implicitHeight: showDot ? baseSize : 0
     width: implicitWidth; height: implicitHeight
+
     opacity: showDot ? 1 : 0
     scale:   showDot ? 1 : 0.01
 
-    Behavior on implicitWidth  { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
-    Behavior on implicitHeight { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
-    Behavior on opacity        { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
-    Behavior on scale          { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
+    Behavior on opacity { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
+    Behavior on scale   { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
     
-    visible: opacity > 0 || implicitWidth > 0
+    visible: showDot
 
     Rectangle {
         anchors.centerIn: parent

@@ -15,6 +15,10 @@ Item {
 
     implicitWidth:  isHorizontal ? (container.implicitWidth + 15) : barThickness
     implicitHeight: isHorizontal ? barThickness : (container.implicitHeight + 15)
+
+    Behavior on implicitWidth  { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
+    Behavior on implicitHeight { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
+
     clip: false
 
     Rectangle {
@@ -22,12 +26,9 @@ Item {
         width:  !root.isHorizontal ? root.baseSize : (container.implicitWidth + 15)
         height: !root.isHorizontal ? (container.implicitHeight + 15) : root.baseSize
         radius: (!root.isHorizontal ? width : height) / 2
-        
+
         color: Colors.background
         opacity: 0.325
-
-        Behavior on width { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
-        Behavior on height { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
     }
 
     ListView {
@@ -39,10 +40,6 @@ Item {
 
         model: Workspaces.workspaces
         interactive: false
-
-        add: Transition { NumberAnimation { properties: "opacity,scale"; from: 0; to: 1; duration: Animations.normal; easing.type: Animations.easeOut } }
-        remove: Transition { NumberAnimation { properties: "opacity,scale"; to: 0; duration: Animations.normal; easing.type: Animations.easeOut } }
-        displaced: Transition { NumberAnimation { properties: "x,y"; duration: Animations.normal; easing.type: Animations.easeOut } }
 
         implicitWidth:  root.isHorizontal ? contentWidth  : root.baseSize
         implicitHeight: root.isHorizontal ? root.baseSize : contentHeight

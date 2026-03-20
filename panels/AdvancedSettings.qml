@@ -8,101 +8,116 @@ import qs.global
 Panel {
     id: advPanel
 
+    panelWidth:  400
+    panelHeight: 500
+
     // ── Tab state ─────────────────────────────────────────────────────────
     property int activeTab: 0   // 0 = Navbar, 1 = Panels
+    edgePadding: 15
 
-    Column {
+    Rectangle {
+        id: advRoot
         anchors.fill: parent
-        spacing: 0
+        color: "transparent"
+        border.color: Colors.color13
+        border.width: 2
+        radius: 10
+        clip: true
 
-        // ── Header ────────────────────────────────────────────────────────
-        Text {
-            id: advHeader
-            text:           "󰒓  Advanced Settings"
-            color:          Colors.foreground
-            font.family:    Style.barFont
-            font.pixelSize: 18
-            font.weight:    Font.ExtraBold
-            anchors.horizontalCenter: parent.horizontalCenter
-            bottomPadding:  12
-        }
+        Column {
+            anchors.fill: parent
+            anchors.margins: advPanel.edgePadding
+            spacing: 0
 
-        // ── Tab bar ───────────────────────────────────────────────────────
-        Item {
-            id: advTabBar
-            width:  parent.width
-            height: 36
+            // ── Header ────────────────────────────────────────────────────────
+            Text {
+                id: advHeader
+                text:           "󰒓  Advanced Settings"
+                color:          Colors.foreground
+                font.family:    Style.barFont
+                font.pixelSize: 18
+                font.weight:    Font.ExtraBold
+                anchors.horizontalCenter: parent.horizontalCenter
+                bottomPadding:  12
+            }
 
-            Row {
-                anchors.centerIn: parent
-                spacing: 8
+            // ── Tab bar ───────────────────────────────────────────────────────
+            Item {
+                id: advTabBar
+                width:  parent.width
+                height: 36
 
-                Repeater {
-                    model: ["Navbar", "Panels"]
-                    delegate: Rectangle {
-                        required property string modelData
-                        required property int    index
+                Row {
+                    anchors.centerIn: parent
+                    spacing: 8
 
-                        width:  100
-                        height: 30
-                        radius: 15
-                        color:  advPanel.activeTab === index ? Colors.color7 : Colors.color0
-                        Behavior on color { ColorAnimation { duration: 150 } }
+                    Repeater {
+                        model: ["Navbar", "Panels"]
+                        delegate: Rectangle {
+                            required property string modelData
+                            required property int    index
 
-                        Text {
-                            anchors.centerIn: parent
-                            text:        parent.modelData
-                            color:       advPanel.activeTab === parent.index ? Colors.background : Colors.foreground
-                            font.family: Style.barFont
-                            font.pixelSize: 12
-                            font.weight: Font.Bold
+                            width:  100
+                            height: 30
+                            radius: 15
+                            color:  advPanel.activeTab === index ? Colors.color7 : Colors.color0
                             Behavior on color { ColorAnimation { duration: 150 } }
-                        }
 
-                        MouseArea {
-                            anchors.fill: parent
-                            cursorShape:  Qt.PointingHandCursor
-                            onClicked:    advPanel.activeTab = index
+                            Text {
+                                anchors.centerIn: parent
+                                text:        parent.modelData
+                                color:       advPanel.activeTab === parent.index ? Colors.background : Colors.foreground
+                                font.family: Style.barFont
+                                font.pixelSize: 12
+                                font.weight: Font.Bold
+                                Behavior on color { ColorAnimation { duration: 150 } }
+                            }
+
+                            MouseArea {
+                                anchors.fill: parent
+                                cursorShape:  Qt.PointingHandCursor
+                                onClicked:    advPanel.activeTab = index
+                            }
                         }
                     }
                 }
             }
-        }
 
-        Rectangle { id: advDivider; width: parent.width; height: 1; color: Colors.color8; opacity: 0.5 }
+            Item { width: 1; height: 8 }
+            Rectangle { id: advDivider; width: parent.width; height: 1; color: Colors.color8; opacity: 0.5 }
 
-        // ── Scrollable content ────────────────────────────────────────────
-        ScrollView {
-            id: scroll
-            width:  parent.width
-            height: parent.height - advHeader.implicitHeight - advTabBar.height - advDivider.height
-            clip:   true
+            // ── Scrollable content ────────────────────────────────────────────
+            ScrollView {
+                id: scroll
+                width:  parent.width
+                
+                height: parent.height - y 
+                clip:   true
 
-            ScrollBar.vertical: ScrollBar {
-                policy: ScrollBar.AsNeeded
-                contentItem: Rectangle {
-                    implicitWidth: 4
-                    radius:        2
-                    color:         Colors.color7
-                    opacity:       0.5
+                ScrollBar.vertical: ScrollBar {
+                    policy: ScrollBar.AsNeeded
+                    contentItem: Rectangle {
+                        implicitWidth: 4
+                        radius:        2
+                        color:         Colors.color7
+                        opacity:       0.5
+                    }
                 }
-            }
 
-            Loader {
-                width:           scroll.width
-                sourceComponent: advPanel.activeTab === 0 ? advPanel.navbarTabComp : advPanel.panelsTabComp
+                Loader {
+                    width:           scroll.width
+                    sourceComponent: advPanel.activeTab === 0 ? advPanel.navbarTabComp : advPanel.panelsTabComp
+                }
             }
         }
     }
 
-    // ── Tab content components ────────────────────────────────────────────
     property Component navbarTabComp: Column {
-        width:      parent ? parent.width : 0 // FIX: Safely inherit the Loader's width
+        width:      parent ? parent.width : 0
         spacing:    0
         topPadding: 12
 
         StyleSection { label: "Bar" }
-        // FIX 2: Use the magically exposed 'newValue' variable directly
         StyleField { label: "Bar Size";      value: Style.barSize;      onCommitted: Style.saveSetting("barSize", newValue) }
         StyleField { label: "Module Size";   value: Style.moduleSize;   onCommitted: Style.saveSetting("moduleSize", newValue) }
         StyleField { label: "Bar Padding";   value: Style.barPadding;   onCommitted: Style.saveSetting("barPadding", newValue) }
@@ -129,7 +144,7 @@ Panel {
     }
 
     property Component panelsTabComp: Column {
-        width:      parent ? parent.width : 0 // FIX: Safely inherit the Loader's width
+        width:      parent ? parent.width : 0 
         spacing:    0
         topPadding: 12
 

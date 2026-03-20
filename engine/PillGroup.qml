@@ -12,30 +12,62 @@ Item {
     property real moduleSize:   Style.moduleSize
     property var  modules:      []
 
-    implicitWidth:  isHorizontal ? pillRow.implicitWidth + Style.pillPadding : moduleSize
-    implicitHeight: isHorizontal ? moduleSize                                : pillCol.implicitHeight + Style.pillPadding
+    readonly property bool hasContent: isHorizontal ? (pillRow.implicitWidth > 0.01) : (pillCol.implicitHeight > 0.01)
+
+    property real currentPadding: hasContent ? Style.pillPadding : 0
+    Behavior on currentPadding { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
+
+    implicitWidth:  isHorizontal ? (pillRow.implicitWidth + currentPadding)  : (hasContent ? moduleSize : 0)
+    implicitHeight: isHorizontal ? (hasContent ? moduleSize : 0) : (pillCol.implicitHeight + currentPadding)
+    
+    Behavior on implicitWidth  { enabled: !isHorizontal; NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
+    Behavior on implicitHeight { enabled: isHorizontal;  NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
 
     Rectangle {
         anchors.fill: parent
         radius:       Style.pillRadius
         color:        Colors.color0
-        opacity:      Style.pillOpacity
+        opacity:      root.hasContent ? Style.pillOpacity : 0
+        Behavior on opacity { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
     }
 
-    component PillDelegate: Loader {
+    component PillDelegate: Item {
         required property string modelData
-        sourceComponent: ModuleRegistry.resolve(modelData)
-        Binding { when: status === Loader.Ready; target: item; property: "isHorizontal"; value: root.isHorizontal }
-        Binding { when: status === Loader.Ready; target: item; property: "barThickness";  value: root.moduleSize }
-        Binding { when: status === Loader.Ready && item !== null && item.hasOwnProperty("inPill"); target: item; property: "inPill"; value: true }
-        Binding { when: status === Loader.Ready && item !== null && item.hasOwnProperty("barScreen"); target: item; property: "barScreen"; value: root.barScreen }
+        
+        readonly property bool moduleActive: mod.item ? ("isActive" in mod.item ? mod.item.isActive : true) : true
+        
+        implicitWidth:  moduleActive ? mod.implicitWidth  : 0
+        implicitHeight: moduleActive ? mod.implicitHeight : 0
+        width: implicitWidth; height: implicitHeight
+
+        opacity: moduleActive ? 1 : 0
+        scale:   moduleActive ? 1 : 0.01
+
+        Behavior on implicitWidth  { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
+        Behavior on implicitHeight { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
+        Behavior on opacity        { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
+        Behavior on scale          { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOutBack } }
+
+        visible: opacity > 0 || (root.isHorizontal ? implicitWidth > 0 : implicitHeight > 0)
+        clip: true
+
+        Loader {
+            id: mod
+            anchors.centerIn: parent
+            sourceComponent: ModuleRegistry.resolve(parent.modelData)
+            
+            Binding { when: mod.status === Loader.Ready; target: mod.item; property: "isHorizontal"; value: root.isHorizontal }
+            Binding { when: mod.status === Loader.Ready; target: mod.item; property: "barThickness"; value: root.moduleSize }
+            Binding { when: mod.status === Loader.Ready && mod.item !== null && ("inPill" in mod.item); target: mod.item; property: "inPill"; value: true }
+            Binding { when: mod.status === Loader.Ready && mod.item !== null && ("barScreen" in mod.item); target: mod.item; property: "barScreen"; value: root.barScreen }
+        }
     }
 
     Row {
         id: pillRow
         visible:          root.isHorizontal
         anchors.centerIn: parent
-        spacing: Style.pillSpacing
+        spacing:          Style.pillSpacing
         Repeater { model: root.isHorizontal ? root.modules : []; delegate: PillDelegate {} }
     }
 
@@ -43,7 +75,7 @@ Item {
         id: pillCol
         visible:          !root.isHorizontal
         anchors.centerIn: parent
-        spacing: Style.pillSpacing
+        spacing:          Style.pillSpacing
         Repeater { model: root.isHorizontal ? [] : root.modules; delegate: PillDelegate {} }
     }
 }
