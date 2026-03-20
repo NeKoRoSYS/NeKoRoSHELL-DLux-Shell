@@ -1,4 +1,4 @@
-// modules/tray/Tray.qml  — BACKEND + MODULE DESCRIPTOR
+// modules/tray/Tray.qml
 pragma Singleton
 
 import QtQuick
@@ -9,8 +9,6 @@ QtObject {
 
     readonly property var item: ({
         icon:      "󱊣",
-        bgColor:   Colors.color7,
-        fgColor:   Colors.background,
         onClicked: function() { Tray.open() }
     })
 

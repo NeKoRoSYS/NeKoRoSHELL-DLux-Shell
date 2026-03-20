@@ -1,0 +1,2 @@
+module qs.modules.start
+singleton StartMenu 1.0 StartMenu.qml

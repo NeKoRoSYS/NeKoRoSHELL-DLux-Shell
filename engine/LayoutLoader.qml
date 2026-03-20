@@ -84,7 +84,6 @@ Scope {
             component BarSlot: SlotLayout {
                 isHorizontal: Config.isHorizontal
                 moduleSize:   Style.moduleSize
-                barFont:      root.barFont
             }
 
             // ── Horizontal ────────────────────────────────────────────────

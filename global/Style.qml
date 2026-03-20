@@ -1,4 +1,4 @@
-// global/Style.qml
+// globals/Style.qml
 pragma Singleton
 
 import QtQuick
@@ -12,7 +12,7 @@ Singleton {
     readonly property string tmpPath:   Quickshell.env("HOME") + "/.config/quickshell/.style.json.tmp"
 
     // ── Bar ───────────────────────────────────────────────────────────────
-    property real   barSize:    40
+    property real   barSize:    50
     property real   moduleSize: 28
     property string barFont:    "JetBrainsMono Nerd Font"
     property real   barPadding: 12
@@ -24,10 +24,17 @@ Singleton {
     property real pillPadding: 16
     property real pillSpacing: 6
     property real pillOpacity: 0.6
+    property real pillRadius:  999  // 999 = fully round (clamped by Rectangle)
 
     // ── Chips ─────────────────────────────────────────────────────────────
     property real chipSpacing:      6
     property real chipInnerSpacing: 5
+
+    // ── Panels ────────────────────────────────────────────────────────────
+    property real panelWidth:   400
+    property real panelHeight:  500
+    property real panelRadius:  20
+    property real panelPadding: 25
 
     // ── Border ────────────────────────────────────────────────────────────
     property real borderWidth:  10
@@ -44,8 +51,13 @@ Singleton {
             property real   pillPadding:       16
             property real   pillSpacing:       6
             property real   pillOpacity:       0.6
+            property real   pillRadius:        999
             property real   chipSpacing:       6
             property real   chipInnerSpacing:  5
+            property real   panelWidth:        400
+            property real   panelHeight:       500
+            property real   panelRadius:       20
+            property real   panelPadding:      25
             property real   borderWidth:       10
             property real   cornerRadius:      20
 
@@ -57,8 +69,13 @@ Singleton {
             onPillPaddingChanged:      root.pillPadding      = pillPadding
             onPillSpacingChanged:      root.pillSpacing      = pillSpacing
             onPillOpacityChanged:      root.pillOpacity      = pillOpacity
+            onPillRadiusChanged:       root.pillRadius       = pillRadius
             onChipSpacingChanged:      root.chipSpacing      = chipSpacing
             onChipInnerSpacingChanged: root.chipInnerSpacing = chipInnerSpacing
+            onPanelWidthChanged:       root.panelWidth       = panelWidth
+            onPanelHeightChanged:      root.panelHeight      = panelHeight
+            onPanelRadiusChanged:      root.panelRadius      = panelRadius
+            onPanelPaddingChanged:     root.panelPadding     = panelPadding
             onBorderWidthChanged:      root.borderWidth      = borderWidth
             onCornerRadiusChanged:     root.cornerRadius     = cornerRadius
         }
@@ -66,8 +83,10 @@ Singleton {
 
     readonly property var styleKeys: [
         "barSize", "moduleSize", "barFont", "barPadding",
-        "slotSpacing", "pillPadding", "pillSpacing", "pillOpacity",
-        "chipSpacing", "chipInnerSpacing", "borderWidth", "cornerRadius"
+        "slotSpacing", "pillPadding", "pillSpacing", "pillOpacity", "pillRadius",
+        "chipSpacing", "chipInnerSpacing",
+        "panelWidth", "panelHeight", "panelRadius", "panelPadding",
+        "borderWidth", "cornerRadius"
     ]
 
     function saveSetting(key, value) {

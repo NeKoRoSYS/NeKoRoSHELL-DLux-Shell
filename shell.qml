@@ -25,44 +25,12 @@ Scope {
     }
 
     property string activePanel: ""
-
-    Variants {
-        model: Quickshell.screens
-
-        PanelWindow {
-            required property var modelData
-            screen: modelData
-
-            anchors { top: true; bottom: true; left: true; right: true }
-            
-            margins {
-                top:    Config.navbarLocation === "top"    ? loader.barSize : 0
-                bottom: Config.navbarLocation === "bottom" ? loader.barSize : 0
-                left:   Config.navbarLocation === "left"   ? loader.barSize : 0
-                right:  Config.navbarLocation === "right"  ? loader.barSize : 0
-            }
-
-            WlrLayershell.layer: WlrLayer.Top
-            exclusionMode: ExclusionMode.Ignore
-            
-            color: "transparent"
-            visible: shell.activePanel !== ""
-
-            MouseArea {
-                anchors.fill: parent
-                enabled: shell.activePanel !== ""
-                onClicked: {
-                    if (shell.activePanel !== "") {
-                        EventBus.togglePanel(shell.activePanel) 
-                    }
-                }
-            }
-        }
-    }
+    property var    activeScreen: null
 
     Dashboard {
         showPanel:    shell.activePanel === "dashboard"
         navbarOffset: loader.barSize
+        panelId:      "dashboard"
         anchorEdge: "top"
         anchorAlignment: "center"
     }
@@ -70,20 +38,29 @@ Scope {
     Settings {
         showPanel:      shell.activePanel === "settings"
         navbarOffset:   loader.barSize
+        panelId:      "settings"
         bordersEnabled: Config.enableBorders
         lightMode:      Config.lightMode
         anchorAlignment: "end"
     }
 
+    AdvancedSettings {
+        showPanel:    shell.activePanel === "advanced"
+        navbarOffset: loader.barSize
+        panelId:      "advanced"
+    }
+
     Tray {
         showPanel:    shell.activePanel === "tray"
         navbarOffset: loader.barSize
+        panelId:      "tray"
         anchorAlignment: "end"
     }
 
     Launcher {
         showPanel:    shell.activePanel === "launcher"
         navbarOffset: loader.barSize
+        panelId:      "launcher"
         anchorEdge: "bottom"
         anchorAlignment: "center"
     }
@@ -91,6 +68,7 @@ Scope {
     WallpaperPicker {
         showPanel:    shell.activePanel === "wallpaper"
         navbarOffset: loader.barSize
+        panelId:      "wallpaper"
         anchorEdge: "bottom"
         anchorAlignment: "center"
     }
@@ -98,6 +76,7 @@ Scope {
     Notifications {
         showPanel:    shell.activePanel === "notifications"
         navbarOffset: loader.barSize
+        panelId:      "notifications"
         anchorEdge: "right"
         anchorAlignment: "center"
     }
@@ -105,6 +84,7 @@ Scope {
     Overview {
         showPanel:    shell.activePanel === "overview"
         navbarOffset: loader.barSize
+        panelId:      "overview"
         anchorEdge: "center"
     }
 
@@ -179,9 +159,16 @@ Scope {
     Connections {
         target: EventBus
 
-        function onTogglePanel(panelId) {
-            shell.activePanel = (shell.activePanel === panelId) ? "" : panelId
+        function onTogglePanel(panelId, screen) {
+            if (shell.activePanel === panelId) {
+                shell.activePanel = ""
+                shell.activeScreen = null
+            } else {
+                shell.activePanel = panelId
+                shell.activeScreen = screen
+            }
         }
+
         function onChangeLocation(newLocation) {
             Config.saveSetting("navbarLocation", newLocation)
         }

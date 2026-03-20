@@ -1,0 +1,2 @@
+module qs.modules.bluetooth
+singleton Bluetooth 1.0 Bluetooth.qml

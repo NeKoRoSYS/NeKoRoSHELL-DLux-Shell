@@ -5,9 +5,9 @@
   "center": [
     "workspaces",
     ["media", "cava", "clock"], 
-    ["tray", "notifications", "settings", "power"]
+    ["notifications", "settings", "power"]
   ],
   "right": [
-    "idleinhibitor"
+    ["tray", "idleinhibitor"]
   ]
 }

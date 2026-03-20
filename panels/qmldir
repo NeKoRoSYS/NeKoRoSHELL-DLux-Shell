@@ -1,5 +1,6 @@
 module qs.panels
 
+AdvancedSettings  1.0 AdvancedSettings.qml
 Dashboard  1.0 Dashboard.qml
 Settings   1.0 Settings.qml
 Overview   1.0 Overview.qml

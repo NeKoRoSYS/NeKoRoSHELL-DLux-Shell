@@ -1,18 +1,19 @@
 {
-    "barSize":    40,
-    "moduleSize": 24,
-    "barFont":    "JetBrainsMono Nerd Font",
-    "barPadding": 12,
-  
-    "slotSpacing": 8,
-  
-    "pillPadding": 16,
-    "pillSpacing": 6,
-    "pillOpacity": 0.325,
-  
-    "chipSpacing":      6,
-    "chipInnerSpacing": 5,
-  
-    "borderWidth":  10,
-    "cornerRadius": 20
-  }
+  "barSize": 40,
+  "moduleSize": 24,
+  "barFont": "JetBrainsMono Nerd Font",
+  "barPadding": 10,
+  "slotSpacing": 15,
+  "pillPadding": 16,
+  "pillSpacing": 6,
+  "pillOpacity": 0.6,
+  "pillRadius": 999,
+  "chipSpacing": 6,
+  "chipInnerSpacing": 5,
+  "panelWidth": 500,
+  "panelHeight": 500,
+  "panelRadius": 15,
+  "panelPadding": 25,
+  "borderWidth": 15,
+  "cornerRadius": 15
+}

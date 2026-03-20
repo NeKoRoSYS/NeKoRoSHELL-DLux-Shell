@@ -8,4 +8,3 @@ singleton Icons            1.0 Icons.qml
 singleton Notifs           1.0 Notifs.qml
 singleton Style            1.0 Style.qml
 singleton Time             1.0 Time.qml
-singleton WallpaperManager 1.0 WallpaperManager.qml

@@ -8,7 +8,7 @@ Panel {
     id: settingsPanel
 
     panelWidth:  400
-    panelHeight: 710
+    panelHeight: 790
 
     property bool bordersEnabled: Config.enableBorders
     property bool lightMode: Config.lightMode
@@ -86,52 +86,31 @@ Panel {
                 }
 
                 Rectangle {
-                    width:  parent.width; height: 28; radius: 14
-                    color:  Colors.color3
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width:  parent.width - 40
+                    height: 36
+                    radius: 18
+                    color:  wallArea.containsMouse ? Colors.color7 : Colors.color0
                     Behavior on color { ColorAnimation { duration: 150 } }
 
                     Text {
                         anchors.centerIn: parent
-                        text:            "Select Wallpaper"
-                        color:           "white"
-                        font.family:     "JetBrainsMono Nerd Font"
-                        font.pixelSize:  11
-                        font.weight:     Font.Bold
+                        text:           "󰒓  Select Wallpaper"
+                        color:          wallArea.containsMouse ? Colors.background : Colors.foreground
+                        Behavior on color { ColorAnimation { duration: 150 } }
+                        font.family:    Style.barFont
+                        font.pixelSize: 13
+                        font.weight:    Font.Bold
                     }
+
                     MouseArea {
+                        id: wallArea
                         anchors.fill: parent
+                        hoverEnabled: true
                         cursorShape:  Qt.PointingHandCursor
-                        onClicked:    EventBus.togglePanel("wallpaper")
+                        onClicked:    EventBus.togglePanel("wallpaper", settingsPanel.targetScreen)
                     }
                 }
-
-                // Rectangle {
-                //     width: parent.width
-                //     height: 35
-                //     radius: 8
-                //     color: Colors.color0
-                //     border.color: Colors.color8
-                //     border.width: 2
-                //     clip: true
-
-                //     TextInput {
-                //         id: wpInput
-                //         anchors.fill: parent
-                //         anchors.margins: 10
-                //         verticalAlignment: TextInput.AlignVCenter
-                //         color: Colors.foreground
-                //         font.family: "JetBrainsMono Nerd Font"
-                //         font.pixelSize: 11
-                //         text: Config.wallpaperPath
-                //         selectByMouse: true
-                        
-                //         onAccepted: {
-                //             Config.saveSetting("wallpaperPath", text)
-                //             Colors.reloadColors()
-                //             wpInput.focus = false
-                //         }
-                //     }
-                // }
             }
 
             Rectangle { width: parent.width; height: 1; color: Colors.color8; opacity: 0.5 }
@@ -207,6 +186,35 @@ Panel {
                             onClicked:    EventBus.changeLayout(parent.modelData)
                         }
                     }
+                }
+            }
+
+            Rectangle { width: parent.width; height: 1; color: Colors.color8; opacity: 0.5 }
+
+            Rectangle {
+                anchors.horizontalCenter: parent.horizontalCenter
+                width:  parent.width - 40
+                height: 36
+                radius: 18
+                color:  advArea.containsMouse ? Colors.color7 : Colors.color0
+                Behavior on color { ColorAnimation { duration: 150 } }
+
+                Text {
+                    anchors.centerIn: parent
+                    text:           "󰒓  Advanced Settings"
+                    color:          advArea.containsMouse ? Colors.background : Colors.foreground
+                    Behavior on color { ColorAnimation { duration: 150 } }
+                    font.family:    Style.barFont
+                    font.pixelSize: 13
+                    font.weight:    Font.Bold
+                }
+
+                MouseArea {
+                    id: advArea
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    cursorShape:  Qt.PointingHandCursor
+                    onClicked:    EventBus.togglePanel("advanced", settingsPanel.targetScreen)
                 }
             }
         }

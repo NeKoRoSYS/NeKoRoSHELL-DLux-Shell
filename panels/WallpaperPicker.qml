@@ -2,6 +2,7 @@
 import QtQuick
 import Quickshell.Wayland
 import qs.global
+import qs.engine
 import qs.components
 
 Panel {
@@ -14,7 +15,7 @@ Panel {
     keyboardFocus: WlrKeyboardFocus.Exclusive
 
     Connections {
-        target: WallpaperManager
+        target: WallpaperEngine
         function onWallhavenResultsChanged() { 
             if (wpRoot.wallhavenMode) wpRoot.updateSearch(); 
         }
@@ -34,10 +35,13 @@ Panel {
         clip: true
 
         property string searchQuery: ""
-        property var filteredWallpapers: WallpaperManager.wallpapers
+        property var filteredWallpapers: WallpaperEngine.wallpapers
         property bool wallhavenMode: false
 
-        Component.onCompleted: focusTimer.restart()
+        Component.onCompleted: {
+            WallpaperEngine.refresh()
+            focusTimer.restart()
+        }
 
         Connections {
             target: wpPanel
@@ -67,7 +71,7 @@ Panel {
             interval: 500
             onTriggered: {
                 if (wpRoot.wallhavenMode) {
-                    WallpaperManager.searchWallhaven(wpRoot.searchQuery);
+                    WallpaperEngine.searchWallhaven(wpRoot.searchQuery);
                 }
             }
         }
@@ -96,10 +100,10 @@ Panel {
                 }];
             } 
             else if (wpRoot.wallhavenMode) {
-                wpRoot.filteredWallpapers = WallpaperManager.wallhavenResults;
+                wpRoot.filteredWallpapers = WallpaperEngine.wallhavenResults;
             } 
             else {
-                wpRoot.filteredWallpapers = WallpaperManager.wallpapers.filter(
+                wpRoot.filteredWallpapers = WallpaperEngine.wallpapers.filter(
                     wp => wpRoot.fuzzyMatch(wp.name, query)
                 );
             }
@@ -113,7 +117,7 @@ Panel {
         }
 
         Connections {
-            target: WallpaperManager
+            target: WallpaperEngine
             function onWallhavenFetched() { 
                 if (wpRoot.wallhavenMode) wpRoot.updateSearch(); 
             }
@@ -142,7 +146,7 @@ Panel {
                     labelFont: "JetBrainsMono Nerd Font"
                     buttonSize: 30
                     buttonColor: Colors.color3
-                    onButtonClicked: WallpaperManager.setRandom()
+                    onButtonClicked: WallpaperEngine.setRandom()
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
@@ -261,10 +265,10 @@ Panel {
                             onClicked: {
                                 console.log("Clicked: " + modelData.path); // Debug check
                                 if (modelData.isDownloadAction === true || modelData.isRemote === true) {
-                                    WallpaperManager.downloadWallpaper(modelData.path);
+                                    WallpaperEngine.downloadWallpaper(modelData.path);
                                     wpRoot.searchQuery = ""; 
                                 } else {
-                                    WallpaperManager.setWallpaper(modelData.path);
+                                    WallpaperEngine.setWallpaper(modelData.path);
                                 }
                             }
                         }

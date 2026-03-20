@@ -1,4 +1,4 @@
-// global/WallpaperManager.qml
+// engine/WallpaperEngine.qml
 pragma Singleton
 
 import QtQuick

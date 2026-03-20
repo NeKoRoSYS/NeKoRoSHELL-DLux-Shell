@@ -21,7 +21,6 @@ Scope {
             required property var modelData
             property var currentScreen: modelData
 
-            // ── straight edges ────────────────────────────────────────────
             PanelWindow {
                 screen:         currentScreen
                 anchors { top: true; left: true; right: true }
@@ -51,7 +50,6 @@ Scope {
                 visible:       border.enabled && border.location !== "right"
             }
 
-            // ── corners ───────────────────────────────────────────────────
             PanelWindow {
                 screen: currentScreen
                 anchors { top: true; left: true }
