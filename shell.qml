@@ -96,6 +96,11 @@ Scope {
         anchorEdge: "center"
     }
 
+    PowerManager {
+        showPanel:    shell.activePanel === "power"
+        targetScreen: shell.activeScreen
+    }
+
     AppPreview {}
 
     Variants {

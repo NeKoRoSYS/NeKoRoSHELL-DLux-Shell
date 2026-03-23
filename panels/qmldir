@@ -3,9 +3,10 @@ module qs.panels
 AdvancedSettings  1.0 AdvancedSettings.qml
 Clipboard  1.0 Clipboard.qml
 Dashboard  1.0 Dashboard.qml
-Settings   1.0 Settings.qml
-Overview   1.0 Overview.qml
 Launcher   1.0 Launcher.qml
-WallpaperPicker   1.0 WallpaperPicker.qml
 Notifications   1.0 Notifications.qml
+Overview   1.0 Overview.qml
+PowerManager   1.0 PowerManager.qml
+Settings   1.0 Settings.qml
 Tray  1.0 Tray.qml
+WallpaperPicker   1.0 WallpaperPicker.qml
