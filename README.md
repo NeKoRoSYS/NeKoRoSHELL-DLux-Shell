@@ -51,7 +51,7 @@ NeKoRoSHELL DLux is currently being developed by two people (*cough* [CONTRIBUTI
 
 ## Hyprland
 
-Put these anywhere on your `hypr` config files:
+For a more aesthetic experience when using transparent mode, be sure to put these anywhere on your `hypr` config files:
 
 ```conf
 layerrule = no_anim 1, match:class ^quickshell$
@@ -63,6 +63,7 @@ layerrule = blur 1, match:namespace ^quickshell-power$
 layerrule = ignore_alpha 0.1, match:namespace ^quickshell-power
 ```
 
+(Optional, you can configure keybinds however you want. Just know that you can toggle panels using `qs ipc call nekoroshell PANELid`)
 ```conf
 bind = $mainMod, W, exec, qs ipc call nekoroshell toggle wallpaper
 bind = $mainMod, D, exec, qs ipc call nekoroshell toggle dashboard
