@@ -74,6 +74,13 @@ Scope {
         anchorAlignment: "center"
     }
 
+    Clipboard {
+        showPanel:    shell.activePanel === "clipboard"
+        navbarOffset: loader.barSize
+        panelId:      "clipboard"
+        anchorAlignment: "center"
+    }
+
     Notifications {
         showPanel:    shell.activePanel === "notifications"
         navbarOffset: loader.barSize
@@ -138,7 +145,7 @@ Scope {
 
                 delegate: NotificationCard {
                     id: card
-                    notification: modelData 
+                    notification: model.notif 
                     
                     Timer {
                         running: true
@@ -192,9 +199,20 @@ Scope {
             Qt.resolvedUrl("file://" + Quickshell.env("HOME") + "/.local/share/icons"),
             Qt.resolvedUrl("file://" + Quickshell.env("HOME") + "/.icons"),
         ]
+        
+        let currentPaths = Qt.iconSearchPaths ?? [];
+        let newPaths = currentPaths.slice(); 
+        let needsUpdate = false;
+        
         for (let p of extra) {
-            if (!(Qt.iconSearchPaths ?? []).includes(p))
-                Qt.iconSearchPaths = (Qt.iconSearchPaths ?? []).concat([p])
+            if (!newPaths.includes(p)) {
+                newPaths.push(p);
+                needsUpdate = true;
+            }
+        }
+        
+        if (needsUpdate) {
+            Qt.iconSearchPaths = newPaths;
         }
     }
 }

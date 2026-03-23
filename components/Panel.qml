@@ -70,7 +70,7 @@ Scope {
         if (!showPanel) rootScope.isMapped = false;
     }
 
-    property real animProgress: rootScope.showPanel ? 1.0 : 0.0
+    property real animProgress: rootScope.isMapped ? 1.0 : 0.0
     Behavior on animProgress { NumberAnimation { duration: 500; easing.type: Easing.OutCubic } }
 
     readonly property real gapTop:    rootScope.anchoredTop    && !isFullscreen ? (Config.navbarLocation === "top"    ? rootScope.navbarOffset + rootScope.visualGap + transparentGap : rootScope.borderGap + rootScope.visualGap) : 0
@@ -109,6 +109,13 @@ Scope {
             WlrLayershell.namespace:     "quickshell-panel-dismiss"
 
             anchors { top: true; bottom: true; left: true; right: true }
+
+            margins {
+                top:    Config.navbarLocation === "top"    ? rootScope.gapTop : 0
+                bottom: Config.navbarLocation === "bottom" ? rootScope.gapBottom : 0
+                left:   Config.navbarLocation === "left"   ? rootScope.gapLeft : 0
+                right:  Config.navbarLocation === "right"  ? rootScope.gapRight : 0
+            }
 
             MouseArea {
                 anchors.fill: parent

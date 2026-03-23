@@ -217,7 +217,7 @@ QtObject {
     property Component networkWidget:    Component { CCToggle { icon: Network.wifiEnabled ? (Network.connected ? "󰤨" : "󰤮") : "󰤭"; label: "Wi-Fi";     active: Network.wifiEnabled;  onTap: Network.toggleWifi();  onRightTap: Network.openApplet() } }
     property Component bluetoothWidget:  Component { CCToggle { icon: Bluetooth.icon;                                                 label: "Bluetooth"; active: Bluetooth.enabled;    onTap: Bluetooth.toggle();    onRightTap: Bluetooth.openSettings() } }
     property Component idleWidget:       Component { CCToggle { icon: IdleInhibitor.icon; label: IdleInhibitor.inhibited ? "Awake" : "Sleep"; active: IdleInhibitor.inhibited; onTap: IdleInhibitor.toggle() } }
-    property Component cliphistWidget:   Component { CCToggle { icon: "󱘔"; label: "Clipboard"; onTap: ClipHist.open() } }
+    property Component cliphistWidget:   Component { CCToggle { icon: "󱘔"; label: "Clipboard"; onTap: EventBus.togglePanel("clipboard", null) } }
     property Component powerWidget:      Component { CCToggle { icon: "⏻";  label: "Power";     onTap: Power.open() } }
     property Component settingsWidget:   Component { CCToggle { icon: "";  label: "Settings";  onTap: EventBus.togglePanel("settings", null) } }
 }

@@ -39,8 +39,8 @@ Scope {
 
             screen:        modelData
             color:         "transparent"
-            WlrLayershell.layer:         WlrLayer.Overlay
-            exclusionMode: ExclusionMode.Auto
+            WlrLayershell.layer:         shell.activePanel !== "" ? WlrLayer.Overlay : WlrLayer.Top
+            exclusionMode:              ExclusionMode.Auto
             WlrLayershell.namespace:     "quickshell-navbar"
 
             anchors {
@@ -52,7 +52,7 @@ Scope {
 
             property real edgeMargin: Config.transparentNavbar ? Style.borderWidth + 5 : 0
             Behavior on edgeMargin {
-                NumberAnimation { duration: 250; easing.type: Easing.OutCubic } //
+                NumberAnimation { duration: 250; easing.type: Easing.OutCubic }
             }
 
             margins {
@@ -86,52 +86,36 @@ Scope {
                 moduleSize:   Style.moduleSize
             }
 
-            // ── Horizontal ────────────────────────────────────────────────
             BarSlot {
-                visible:    Config.isHorizontal
-                modules:    root.layoutLeft
-                barScreen:  bar.modelData
-                anchors.left:           parent.left
-                anchors.leftMargin:     Style.barPadding
-                anchors.verticalCenter: parent.verticalCenter
-            }
-            BarSlot {
-                visible:   Config.isHorizontal
-                modules:   root.layoutCenter
-                barScreen: bar.modelData
-                anchors.centerIn: parent
-            }
-            BarSlot {
-                visible:    Config.isHorizontal
-                modules:    root.layoutRight
-                barScreen:  bar.modelData
-                anchors.right:          parent.right
-                anchors.rightMargin:    Style.barPadding
-                anchors.verticalCenter: parent.verticalCenter
-            }
-
-            // ── Vertical ──────────────────────────────────────────────────
-            BarSlot {
-                visible:   !Config.isHorizontal
                 modules:   root.layoutLeft
                 barScreen: bar.modelData
-                anchors.top:              parent.top
-                anchors.topMargin:        Style.barPadding
-                anchors.horizontalCenter: parent.horizontalCenter
+                
+                anchors.left:             Config.isHorizontal ? parent.left : undefined
+                anchors.leftMargin:       Config.isHorizontal ? Style.barPadding : 0
+                anchors.verticalCenter:   Config.isHorizontal ? parent.verticalCenter : undefined
+                
+                anchors.top:              !Config.isHorizontal ? parent.top : undefined
+                anchors.topMargin:        !Config.isHorizontal ? Style.barPadding : 0
+                anchors.horizontalCenter: !Config.isHorizontal ? parent.horizontalCenter : undefined
             }
+            
             BarSlot {
-                visible:   !Config.isHorizontal
                 modules:   root.layoutCenter
                 barScreen: bar.modelData
                 anchors.centerIn: parent
             }
+            
             BarSlot {
-                visible:   !Config.isHorizontal
                 modules:   root.layoutRight
                 barScreen: bar.modelData
-                anchors.bottom:           parent.bottom
-                anchors.bottomMargin:     Style.barPadding
-                anchors.horizontalCenter: parent.horizontalCenter
+                
+                anchors.right:            Config.isHorizontal ? parent.right : undefined
+                anchors.rightMargin:      Config.isHorizontal ? Style.barPadding : 0
+                anchors.verticalCenter:   Config.isHorizontal ? parent.verticalCenter : undefined
+                
+                anchors.bottom:           !Config.isHorizontal ? parent.bottom : undefined
+                anchors.bottomMargin:     !Config.isHorizontal ? Style.barPadding : 0
+                anchors.horizontalCenter: !Config.isHorizontal ? parent.horizontalCenter : undefined
             }
         }
     }

@@ -77,23 +77,16 @@ Singleton {
             transparentNavbar: root.transparentNavbar,
             enableBorders: root.enableBorders,
             activeLayout: root.activeLayout,
-            navbarLayout: root.navbarLayout,
             enableParallax: root.enableParallax,
             lightMode: root.lightMode,
             wallpaperPath: root.wallpaperPath,
             dndEnabled: root.dndEnabled
         };
-
+        
         let jsonString = JSON.stringify(fileData, null, 2);
         
-        let safeJson = jsonString.replace(/'/g, "'\\''");
-
         Quickshell.execDetached({
-            command: [
-                "sh", 
-                "-c", 
-                `mkdir -p "${root.configDir}" && echo '${safeJson}' > "${root.tmpPath}" && mv "${root.tmpPath}" "${root.configPath}"`
-            ]
+            command: ["sh", "-c", `echo '${jsonString.replace(/'/g, "'\\''")}' > "${root.configPath}"`]
         });
     }
 }

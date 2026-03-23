@@ -1,0 +1,7 @@
+
+t.execu
+In
+// Replace your executeSave() with this safer, native implementation     function executeSave() {         let fileData = {             navbarLocation: root.navbarLocation,             transparentNavbar: root.transparentNavbar,             enableBorders: root.enableBorders,             activeLayout: root.activeLayout,             enableParallax: root.enableParallax,             lightMode: root.lightMode,             wallpaperPath: root.wallpaperPath,             dndEnabled: root.dndEnabled         };                  let jsonString = JSON.stringify(fileData, null, 2);                  // Use a Quickshell Process to write safely using tee, avoiding bash escaping hell         Quickshell.execDetached({             command: ["sh", "-c", `echo '${jsonString.replace(/'/g, "'\\''")}' > "${root.configPath}"`]         });     }
+// Copy the array
+        // Only trigger the C++ cache rebuild once
+    // Upgraded to a highly optimized ListModel

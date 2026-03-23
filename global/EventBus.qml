@@ -17,5 +17,9 @@ QtObject {
         function toggle(panelId: string): void {
             EventBus.togglePanel(panelId)
         }
+
+        function ctx(menuId: string): void {
+            EventBus.toggleContextMenu(menuId)
+        }
     }
 }

@@ -1,4 +1,4 @@
-// modules/cliphist/ClipHist.qml  — BACKEND + MODULE DESCRIPTOR
+// modules/cliphist/ClipHist.qml
 pragma Singleton
 
 import QtQuick
@@ -10,11 +10,6 @@ QtObject {
 
     readonly property var item: ({
         icon:      "󱘔",
-        onClicked: function() { ClipHist.open() }
+        onClicked: function() { EventBus.togglePanel("clipboard") }
     })
-
-    function open() {
-        Quickshell.execDetached({ command: ["sh", "-c",
-            "qs ipc call clipboard toggle"] })
-    }
 }

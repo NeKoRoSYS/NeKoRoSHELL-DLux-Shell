@@ -3,6 +3,7 @@ module qs.components
 AnimatedElement  1.0 AnimatedElement.qml
 Button           1.0 Button.qml
 CCToggle         1.0 CCToggle.qml
+ContextMenu      1.0 ContextMenu.qml
 DynamicChip      1.0 DynamicChip.qml
 NotificationCard 1.0 NotificationCard.qml
 Panel            1.0 Panel.qml

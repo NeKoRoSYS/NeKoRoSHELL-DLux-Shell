@@ -12,21 +12,21 @@ NotificationServer {
     actionIconsSupported: true
     imageSupported: true
 
-    property var activePopups: []
+    property var activePopups: ListModel {}
 
     function removePopup(notification) {
-        let idx = activePopups.indexOf(notification);
-        if (idx !== -1) {
-            let newArr = activePopups.slice();
-            newArr.splice(idx, 1);
-            activePopups = newArr;
+        for (let i = 0; i < activePopups.count; i++) {
+            if (activePopups.get(i).notif === notification) {
+                activePopups.remove(i);
+                break;
+            }
         }
     }
 
     onNotification: (notification) => {
         notification.tracked = true;
         if (!Config.dndEnabled) {
-            activePopups = activePopups.concat([notification]);
+            activePopups.append({ "notif": notification });
         }
     }
 }
