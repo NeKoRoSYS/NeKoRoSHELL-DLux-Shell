@@ -2,7 +2,7 @@
 set -euo pipefail
 
 WALL_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/wallpapers"
-CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/quickshell"
+CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/nekoroshell"
 THUMB_CACHE="$CACHE_DIR/wallpaper-thumbs"
 JSON_OUT="$CACHE_DIR/wallpapers.json"
 

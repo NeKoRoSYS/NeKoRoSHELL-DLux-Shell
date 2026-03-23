@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-exec > /tmp/quickshell-wallpaper-dl.log 2>&1
+exec > /tmp/nekoroshell-wallpaper-dl.log 2>&1
 set -x 
 
 URL="$1"
 WALL_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/wallpapers"
-CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/quickshell"
+CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/nekoroshell"
 THUMB_CACHE="$CACHE_DIR/wallpaper-thumbs"
 
 mkdir -p "$WALL_DIR" "$THUMB_CACHE"

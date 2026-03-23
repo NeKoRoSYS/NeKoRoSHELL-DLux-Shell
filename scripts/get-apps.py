@@ -56,7 +56,7 @@ for app in apps:
 
 unique_apps.sort(key=lambda x: x["name"].lower())
 
-cache_dir = os.path.expanduser("~/.cache/quickshell")
+cache_dir = os.path.expanduser("~/.cache/nekoroshell")
 os.makedirs(cache_dir, exist_ok=True)
 with open(os.path.join(cache_dir, "apps.json"), "w", encoding="utf-8") as f:
     json.dump(unique_apps, f)
