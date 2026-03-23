@@ -42,9 +42,9 @@ NeKoRoSHELL DLux is currently being developed by two people (*cough* [CONTRIBUTI
 | Replace mpvpaper | ✅ |
 | Replace waybar | ✅ |
 | Replace rofi | ✅ |
-| Replace wlogout | 🛠 |
-| Replace SwayNC | 🛠 |
-| Port all necessary bash scripts into native QML modules/functionality | ⏳ |
+| Replace wlogout | ✅ |
+| Replace SwayNC | ✅ |
+| Port all necessary bash scripts into native QML modules/functionality | ✅ |
 
 </div>
 <br>
