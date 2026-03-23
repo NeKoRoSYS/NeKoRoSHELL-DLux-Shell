@@ -52,6 +52,7 @@ NeKoRoSHELL DLux is currently being developed by two people (*cough* [CONTRIBUTI
 ## Acknowledgements
 
 - Amelie ([@S-e-r-a-p-h-i-n-e](https://github.com/S-e-r-a-p-h-i-n-e)) for revamping the project architecture! Your contributions made DLux more modular and easier to maintain.
+  - Also try [YAQC](https://github.com/S-e-r-a-p-h-i-n-e/YAQC/tree/main), it's a fork of DLux! Both projects contain the same DNA but with different philosophies applied; parity is subjective and some functionalities are either altered or totally different but we often opt for doing soft merges every once in a while.
 <br>
 <br>
 
