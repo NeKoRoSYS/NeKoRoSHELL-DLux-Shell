@@ -60,7 +60,9 @@ layerrule = ignore_alpha 0.1, match:namespace ^quickshell-panel$
 layerrule = blur 1, match:namespace ^quickshell-navbar$
 layerrule = ignore_alpha 0.1, match:namespace ^quickshell-navbar$
 layerrule = blur 1, match:namespace ^quickshell-power$
-layerrule = ignore_alpha 0.1, match:namespace ^quickshell-power
+layerrule = ignore_alpha 0.1, match:namespace ^quickshell-power$
+layerrule = blur 1, match:namespace ^quickshell-notification$
+layerrule = ignore_alpha 0.1, match:namespace ^quickshell-notification$
 ```
 
 (Optional, you can configure keybinds however you want. Just know that you can toggle panels using `qs ipc call nekoroshell PANELid`)
