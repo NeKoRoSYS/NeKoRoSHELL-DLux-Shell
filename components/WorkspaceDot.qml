@@ -67,7 +67,8 @@ Item {
             hoverEnabled: true
 
             onClicked: {
-                EventBus.hideAppPreview()
+                hoverTimer.stop()
+                if (root.appData) EventBus.hideAppPreview()
             }
 
             onContainsMouseChanged: {
