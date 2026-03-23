@@ -49,11 +49,35 @@ NeKoRoSHELL DLux is currently being developed by two people (*cough* [CONTRIBUTI
 </div>
 <br>
 
+## Hyprland
+
+Put these anywhere on your `hypr` config files:
+
+```conf
+layerrule = no_anim 1, match:class ^quickshell$
+layerrule = blur 1, match:namespace ^quickshell-panel$
+layerrule = ignore_alpha 0.1, match:namespace ^quickshell-panel$
+layerrule = blur 1, match:namespace ^quickshell-navbar$
+layerrule = ignore_alpha 0.1, match:namespace ^quickshell-navbar$
+layerrule = blur 1, match:namespace ^quickshell-power$
+layerrule = ignore_alpha 0.1, match:namespace ^quickshell-power
+```
+
+```conf
+bind = $mainMod, W, exec, qs ipc call nekoroshell toggle wallpaper
+bind = $mainMod, D, exec, qs ipc call nekoroshell toggle dashboard
+bind = $mainMod, T, exec, qs ipc call nekoroshell toggle tray
+bind = $mainMod, V, exec, qs ipc call nekoroshell toggle clipboard
+bind = $mainMod, N, exec, qs ipc call nekoroshell toggle notifications
+bind = $mainMod, A, exec, qs ipc call nekoroshell toggle overview
+bind = $mainMod, L, exec, qs ipc call nekoroshell toggle power
+```
+<br>
+
 ## Acknowledgements
 
 - Amelie ([@S-e-r-a-p-h-i-n-e](https://github.com/S-e-r-a-p-h-i-n-e)) for revamping the project architecture! Your contributions made DLux more modular and easier to maintain.
   - Also try [YAQC](https://github.com/S-e-r-a-p-h-i-n-e/YAQC/tree/main), it's a fork of DLux! Both projects contain the same DNA but with different philosophies applied; parity is subjective and some functionalities are either altered or totally different but we often opt for doing soft merges every once in a while.
-<br>
 <br>
 
 ## Star History

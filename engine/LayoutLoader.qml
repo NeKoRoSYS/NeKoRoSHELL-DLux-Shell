@@ -39,7 +39,7 @@ Scope {
 
             screen:        modelData
             color:         "transparent"
-            WlrLayershell.layer:         shell.activePanel !== "" ? WlrLayer.Overlay : WlrLayer.Top
+            WlrLayershell.layer:         shell.activePanel !== "" && shell.activePanel !== "power" ? WlrLayer.Overlay : WlrLayer.Top
             exclusionMode:              ExclusionMode.Auto
             WlrLayershell.namespace:     "quickshell-navbar"
 

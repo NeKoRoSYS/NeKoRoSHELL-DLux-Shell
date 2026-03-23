@@ -1,10 +1,10 @@
 {
-  "navbarLocation": "right",
-  "transparentNavbar": false,
+  "navbarLocation": "top",
+  "transparentNavbar": true,
   "enableBorders": true,
   "activeLayout": "center",
-  "enableParallax": true,
+  "enableParallax": false,
   "lightMode": false,
-  "wallpaperPath": "/home/nekorosys/.config/wallpapers/Neon-Genesis-Evangelion.mp4",
-  "dndEnabled": true
+  "wallpaperPath": "/home/nekorosys/.config/wallpapers/wallhaven-21z7w6.jpg",
+  "dndEnabled": false
 }

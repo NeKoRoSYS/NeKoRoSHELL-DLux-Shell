@@ -33,7 +33,7 @@ Scope {
             color:   "transparent"
 
             WlrLayershell.layer:         WlrLayer.Overlay
-            WlrLayershell.keyboardFocus: isTargetScreen ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
+            WlrLayershell.keyboardFocus: isTargetScreen ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
             WlrLayershell.namespace:     "quickshell-power"
             exclusionMode:               ExclusionMode.Ignore
 
