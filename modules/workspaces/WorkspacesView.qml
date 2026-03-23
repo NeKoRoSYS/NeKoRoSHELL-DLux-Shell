@@ -100,6 +100,7 @@ Item {
                         labelFont.pixelSize: root.baseSize / 1.85
                         textOffsetX: 0.25
                         textOffsetY: 1
+                        appData: modelData
                         area.onClicked: Workspaces.focusWindow(modelData.address)
                     }
                 }

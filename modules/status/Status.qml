@@ -62,10 +62,21 @@ QtObject {
         return "󰃛"
     }
     
+    property var _blThrottleTimer: Timer {
+        id: blThrottleTimer
+        interval: 1
+        property int targetVal: 100
+        onTriggered: {
+            Quickshell.execDetached({ command: ["brightnessctl", "set", targetVal.toString()] })
+        }
+    }
+    
     function setBacklight(v) {
         let next = Math.max(1, Math.min(root.blMax, v))
-        Quickshell.execDetached({ command: ["brightnessctl", "set", next.toString()] })
         root.blCurrent = next
+        
+        blThrottleTimer.targetVal = next
+        blThrottleTimer.restart()
     }
     
     function stepBacklight(d) { root.setBacklight(root.blCurrent + Math.round(root.blMax * 0.05) * d) }

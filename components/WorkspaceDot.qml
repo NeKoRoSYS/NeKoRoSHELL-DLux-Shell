@@ -18,6 +18,8 @@ Item {
     property real textOffsetX: 0
     property real textOffsetY: 0
 
+    property var appData: null
+
     implicitWidth:  showDot ? baseSize : 0
     implicitHeight: showDot ? baseSize : 0
     width: implicitWidth; height: implicitHeight
@@ -29,6 +31,16 @@ Item {
     Behavior on scale   { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
     
     visible: showDot
+
+    Timer {
+        id: hoverTimer
+        interval: 350
+        onTriggered: {
+            if (root.showDot && root.appData) {
+                EventBus.showAppPreview(root.appData)
+            }
+        }
+    }
 
     Rectangle {
         anchors.centerIn: parent
@@ -53,6 +65,19 @@ Item {
             anchors.fill: parent
             cursorShape: Qt.PointingHandCursor
             hoverEnabled: true
+
+            onClicked: {
+                EventBus.hideAppPreview()
+            }
+
+            onContainsMouseChanged: {
+                if (containsMouse) {
+                    hoverTimer.start()
+                } else {
+                    hoverTimer.stop()
+                    if (root.appData) EventBus.hideAppPreview()
+                }
+            }
         }
     }
 }

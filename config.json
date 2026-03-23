@@ -2,7 +2,7 @@
   "navbarLocation": "top",
   "transparentNavbar": false,
   "enableBorders": true,
-  "activeLayout": "center",
+  "activeLayout": "default",
   "enableParallax": true,
   "lightMode": false,
   "wallpaperPath": "/home/nekorosys/.config/wallpapers/Neon-Genesis-Evangelion.mp4",

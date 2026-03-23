@@ -119,7 +119,7 @@ Panel {
             Repeater {
                 model: overviewPanel.rows * overviewPanel.cols
                 
-                WorkspaceView {
+                WorkspacePreview {
                     parentWindow: overviewRoot
                     
                     Layout.preferredWidth: overviewPanel.tileW 

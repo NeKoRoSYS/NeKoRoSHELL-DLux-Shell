@@ -43,10 +43,41 @@ QtObject {
     property bool   srcMuted:  false
     readonly property string micIcon: srcMuted ? "󰍭" : "󰍬"
 
+    property var _sinkThrottleTimer : Timer {
+        id: sinkThrottleTimer
+        interval: 1
+        property int targetVal: 100
+        onTriggered: {
+            Quickshell.execDetached({ command: ["pactl", "set-sink-volume", "@DEFAULT_SINK@", targetVal + "%"] });
+            Qt.callLater(pollSink)
+        }
+    }
+
+    property var _srcThrottleTimer : Timer {
+        id: srcThrottleTimer
+        interval: 1
+        property int targetVal: 100
+        onTriggered: {
+            Quickshell.execDetached({ command: ["pactl", "set-source-volume", "@DEFAULT_SOURCE@", targetVal + "%"] });
+            Qt.callLater(pollSrc)
+        }
+    }
+
     function muteSink()       { Quickshell.execDetached({ command: ["pactl", "set-sink-mute",   "@DEFAULT_SINK@",   "toggle"] }); Qt.callLater(pollSink) }
     function muteSrc()        { Quickshell.execDetached({ command: ["pactl", "set-source-mute", "@DEFAULT_SOURCE@", "toggle"] }); Qt.callLater(pollSrc) }
-    function setSinkVolume(v) { Quickshell.execDetached({ command: ["pactl", "set-sink-volume",   "@DEFAULT_SINK@",   v + "%"] }); Qt.callLater(pollSink) }
-    function setSrcVolume(v)  { Quickshell.execDetached({ command: ["pactl", "set-source-volume", "@DEFAULT_SOURCE@", v + "%"] }); Qt.callLater(pollSrc) }
+
+    function setSinkVolume(v) {
+        sinkVolume = v
+        sinkThrottleTimer.targetVal = v
+        sinkThrottleTimer.restart()
+    }
+    
+    function setSrcVolume(v) {
+        srcVolume = v
+        srcThrottleTimer.targetVal = v
+        srcThrottleTimer.restart()
+    }
+
     function openMixer()      { Quickshell.execDetached({ command: ["pavucontrol"] }) }
     
     function pollSink() { sinkProc.running = false; sinkProc.running = true }

@@ -1,4 +1,4 @@
-// components/WorkspaceView.qml
+// components/WorkspacePreview.qml
 pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell

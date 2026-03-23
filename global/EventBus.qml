@@ -10,6 +10,8 @@ QtObject {
     signal changeLayout(string newLayout)
     signal toggleBorders(bool state)
     signal toggleLightMode(bool state)
+    signal showAppPreview(var appData)
+    signal hideAppPreview()
 
     property var ipc: IpcHandler {
         target: "nekoroshell"

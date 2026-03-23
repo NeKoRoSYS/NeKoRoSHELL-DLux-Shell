@@ -96,6 +96,8 @@ Scope {
         anchorEdge: "center"
     }
 
+    AppPreview {}
+
     Variants {
         model: Quickshell.screens
 
@@ -116,7 +118,7 @@ Scope {
             exclusionMode: ExclusionMode.Ignore
             
             color: "transparent"
-            visible: Notifs.activePopups.length > 0
+            visible: Notifs.activePopups.count > 0
             
             width: 400
             height: Math.max(1, popupList.contentHeight)
