@@ -99,7 +99,7 @@ Panel {
 
         function executeAction(action, arg) {
             Quickshell.execDetached({ command: ["python3", clipRoot.backendScript, action, arg] })
-            if (action === "wipe" || (action === "rm-fav" && clipRoot.currentTab === "favorites")) {
+            if (action === "wipe" || action === "rm-hist" || action === "rm-fav" || action === "rm-fav-hist") {
                 refreshDelay.restart()
             }
         }
@@ -178,11 +178,18 @@ Panel {
                         id: clipMouse
                         anchors.fill: parent
                         hoverEnabled: true
+                        acceptedButtons: Qt.LeftButton | Qt.RightButton
                         cursorShape: Qt.PointingHandCursor
-                        onClicked: {
-                            let action = (clipRoot.currentTab === "history") ? "copy-hist" : "copy-fav"
-                            clipRoot.executeAction(action, model.clipId)
-                            EventBus.togglePanel("clipboard")
+                        
+                        onClicked: (mouse) => {
+                            if (mouse.button === Qt.RightButton) {
+                                let action = (clipRoot.currentTab === "history") ? "rm-hist" : "rm-fav"
+                                clipRoot.executeAction(action, model.clipId)
+                            } else {
+                                let action = (clipRoot.currentTab === "history") ? "copy-hist" : "copy-fav"
+                                clipRoot.executeAction(action, model.clipId)
+                                EventBus.togglePanel("clipboard")
+                            }
                         }
                     }
 

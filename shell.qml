@@ -121,6 +121,7 @@ Scope {
             
             WlrLayershell.layer: WlrLayer.Overlay
             exclusionMode: ExclusionMode.Ignore
+            WlrLayershell.namespace: "quickshell-notification"
             
             color: "transparent"
             visible: Notifs.activePopups.count > 0
@@ -139,31 +140,58 @@ Scope {
                 
                 model: Notifs.activePopups
                 
-                add: Transition {
-                    NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 250 }
-                    NumberAnimation { property: "x"; from: 50; to: 0; duration: 250; easing.type: Easing.OutBack }
-                }
-                remove: Transition {
-                    NumberAnimation { property: "opacity"; to: 0; duration: 200 }
-                }
                 displaced: Transition {
                     NumberAnimation { properties: "x,y"; duration: 250; easing.type: Easing.OutCubic }
                 }
 
-                delegate: NotificationCard {
-                    id: card
-                    notification: model.notif 
+                delegate: AnimatedElement {
+                    id: animWrapper
+                    width: 400
+                    height: card.height
                     
-                    Timer {
-                        running: true
-                        interval: (notification && notification.expireTimeout > 0) ? notification.expireTimeout : 5000
-                        onTriggered: Notifs.removePopup(notification) 
+                    preset: "slide"
+                    edge: "right"
+                    show: false
+                    
+                    Component.onCompleted: {
+                        show = true
                     }
 
-                    Connections {
-                        target: notification
-                        function onClosed() {
-                            Notifs.removePopup(notification)
+                    NotificationCard {
+                        id: card
+                        notification: model.notif 
+                        
+                        function dismissPopup() {
+                            if (!animWrapper.show) return;
+                            animWrapper.show = false;
+                            removeTimer.start();
+                        }
+
+                        Timer {
+                            id: removeTimer
+                            interval: 300 
+                            onTriggered: Notifs.removePopup(model.notif)
+                        }
+                        
+                        Timer {
+                            running: true
+                            
+                            property int timeVal: (card.notification && card.notification.expireTimeout !== undefined) ? card.notification.expireTimeout : -1
+                            
+                            interval: timeVal > 0 ? timeVal : 5000
+                            
+                            onTriggered: {
+                                if (timeVal !== 0) {
+                                    card.dismissPopup()
+                                }
+                            }
+                        }
+
+                        Connections {
+                            target: card.notification
+                            function onClosed() {
+                                card.dismissPopup()
+                            }
                         }
                     }
                 }

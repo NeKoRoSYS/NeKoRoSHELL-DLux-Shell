@@ -62,7 +62,7 @@ Scope {
     property bool isMapped: false
     Timer {
         id: mapTimer
-        interval: 15
+        interval: 50
         running: rootScope.showPanel
         onTriggered: rootScope.isMapped = true
     }

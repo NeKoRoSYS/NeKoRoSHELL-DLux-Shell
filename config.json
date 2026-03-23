@@ -3,8 +3,8 @@
   "transparentNavbar": true,
   "enableBorders": true,
   "activeLayout": "center",
-  "enableParallax": false,
+  "enableParallax": true,
   "lightMode": false,
-  "wallpaperPath": "/home/nekorosys/.config/wallpapers/wallhaven-21z7w6.jpg",
-  "dndEnabled": false
+  "wallpaperPath": "/home/nekorosys/.config/wallpapers/wallhaven-d8kdml.png",
+  "dndEnabled": true
 }

@@ -80,6 +80,10 @@ elif action == "rm-fav":
     save_favs([f for f in favs if f.get("id") != arg])
     notify("Removed from Favorites ❌")
 
+elif action == "rm-hist":
+    subprocess.run(f"cliphist list | awk -v id='{arg}' '$1 == id {{print; exit}}' | cliphist delete", shell=True)
+    notify("Item Deleted 🗑️")
+
 elif action == "wipe":
     subprocess.run(["cliphist", "wipe"])
     notify("History Cleared 🗑️")

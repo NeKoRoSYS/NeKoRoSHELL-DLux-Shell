@@ -17,7 +17,7 @@ QtObject {
     signal wallhavenFetched()
     
     property var jsonLoader: FileView {
-        path: Quickshell.env("HOME") + "/.cache/quickshell/wallpapers.json"
+        path: Quickshell.env("HOME") + "/.cache/nekoroshell/wallpapers.json"
         
         watchChanges: true
         onFileChanged: {

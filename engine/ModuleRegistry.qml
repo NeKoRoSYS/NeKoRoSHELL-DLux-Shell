@@ -149,7 +149,7 @@ QtObject {
             Rectangle {
                 anchors.bottom: parent.bottom; anchors.left: parent.left; anchors.right: parent.right
                 height: Math.min(parent.height, parent.height * Math.max(0, Math.min(1, Audio.sinkVolume / 100)) + radius)
-                radius: 12; color: Colors.color7; opacity: 0.5
+                radius: 12; color: Colors.color13; opacity: 0.5
                 Behavior on height { NumberAnimation { duration: 80 } }
             }
             Column {
@@ -173,7 +173,7 @@ QtObject {
             Rectangle {
                 anchors.bottom: parent.bottom; anchors.left: parent.left; anchors.right: parent.right
                 height: Math.min(parent.height, parent.height * Math.max(0, Math.min(1, Audio.srcVolume / 100)) + radius)
-                radius: 12; color: Colors.color7; opacity: 0.5
+                radius: 12; color: Colors.color13; opacity: 0.5
                 Behavior on height { NumberAnimation { duration: 80 } }
             }
             Column {
@@ -197,7 +197,7 @@ QtObject {
             Rectangle {
                 anchors.bottom: parent.bottom; anchors.left: parent.left; anchors.right: parent.right
                 height: Math.min(parent.height, parent.height * Math.max(0, Math.min(1, Status.blPercent / 100)) + radius)
-                radius: 12; color: Colors.color7; opacity: 0.5
+                radius: 12; color: Colors.color13; opacity: 0.5
                 Behavior on height { NumberAnimation { duration: 80 } }
             }
             Column {

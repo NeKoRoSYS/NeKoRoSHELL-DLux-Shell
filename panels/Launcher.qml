@@ -45,7 +45,7 @@ Panel {
 
         FileView {
             id: appsFile
-            path: Quickshell.env("HOME") + "/.cache/quickshell/apps.json"
+            path: Quickshell.env("HOME") + "/.cache/nekoroshell/apps.json"
             watchChanges: true
             onFileChanged: reload()
             onLoaded: launcherRoot.parseAppsJson()
