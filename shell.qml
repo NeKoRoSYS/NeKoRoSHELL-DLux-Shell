@@ -23,7 +23,7 @@ Scope {
         cornerRadius: Style.cornerRadius
     }
 
-    NotificationsToast { allowToasts: shell.activePanel !== "notifications" }
+    Toaster { allowToasts: shell.activePanel !== "notifications" }
 
     AppPreview { }
 
