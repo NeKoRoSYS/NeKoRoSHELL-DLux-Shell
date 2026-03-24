@@ -9,16 +9,16 @@ Scope {
     property string configRoot: Qt.resolvedUrl("../")
 
     readonly property var builtInPanels: [
-        { id: "dashboard",     file: root.configRoot + "/panels/Dashboard.qml",        edge: "top",    align: "center", screen: "active" },
+        { id: "dashboard",     file: root.configRoot + "/panels/Dashboard.qml",        anchor: "top",    align: "center", screen: "active" },
         { id: "settings",      file: root.configRoot + "/panels/Settings.qml",         align: "end",    screen: "active" },
         { id: "advanced",      file: root.configRoot + "/panels/AdvancedSettings.qml", align: "end",    screen: "active" },
         { id: "tray",          file: root.configRoot + "/panels/Tray.qml",             align: "end",    screen: "active" },
-        { id: "launcher",      file: root.configRoot + "/panels/Launcher.qml",         edge: "bottom", align: "center", screen: "active" },
-        { id: "wallpaper",     file: root.configRoot + "/panels/WallpaperPicker.qml",  edge: "bottom", align: "center", screen: "active" },
-        { id: "clipboard",     file: root.configRoot + "/panels/Clipboard.qml",        edge: "right",  align: "center", screen: "active" },
-        { id: "notifications", file: root.configRoot + "/panels/Notifications.qml",    edge: "right",  align: "center", screen: "active" },
-        { id: "overview",      file: root.configRoot + "/panels/Overview.qml",         edge: "center", align: "center", screen: "active" },
-        { id: "power",         file: root.configRoot + "/panels/PowerManager.qml",     edge: "center", align: "center", screen: "active" }
+        { id: "launcher",      file: root.configRoot + "/panels/Launcher.qml",         anchor: "bottom", align: "center", screen: "active" },
+        { id: "wallpaper",     file: root.configRoot + "/panels/WallpaperPicker.qml",  anchor: "bottom", align: "center", screen: "active" },
+        { id: "clipboard",     file: root.configRoot + "/panels/Clipboard.qml",        anchor: "right",  align: "center", screen: "active" },
+        { id: "notifications", file: root.configRoot + "/panels/Notifications.qml",    anchor: "right",  align: "center", screen: "active" },
+        { id: "overview",      file: root.configRoot + "/panels/Overview.qml",         anchor: "center", align: "center", screen: "active" },
+        { id: "power",         file: root.configRoot + "/panels/PowerManager.qml",     anchor: "center", align: "center", screen: "active" }
     ]
 
     property var userPanels: []
