@@ -38,7 +38,7 @@ QtObject {
     property var customDefs: []
 
     property var widgetFileWatcher: FileView {
-        path: Qt.resolvedUrl("../user/widgets.json") 
+        path: Qt.resolvedUrl("../user/dashboard/widgets.json") 
         adapter: JsonAdapter {
             property var widgets: []
             onWidgetsChanged: root.customDefs = widgets || []
