@@ -27,34 +27,16 @@ Scope {
 
     AppPreview { }
 
-    property string activePanel: "calendar"
+    property string activePanel: ""
     property var    activeScreen: Quickshell.screens.length > 0 ? Quickshell.screens[0] : null
 
-    Instantiator {
-        model: PanelRegistry.allPanels
-        delegate: Loader {
-            id: panelLoader
+    Component {
+        id: dynamicPanelDelegate
+        Loader {
             source: modelData.file
-            
-            function resolveTargetScreen(screenConfig, currentActiveScreen, hMonitor) {
-                if (screenConfig && screenConfig !== "active") {
-                    for (let i = 0; i < Quickshell.screens.length; i++) {
-                        if (Quickshell.screens[i].name === screenConfig) {
-                            return Quickshell.screens[i];
-                        }
-                    }
-                }
-                
-                if (currentActiveScreen) { return currentActiveScreen; }
-                
-                if (hMonitor && hMonitor.name) {
-                    for (let j = 0; j < Quickshell.screens.length; j++) {
-                        if (Quickshell.screens[j].name === hMonitor.name) {
-                            return Quickshell.screens[j];
-                        }
-                    }
-                }
-                
+            function resolveTargetScreen(screenConfig, activeMonitorObj) {
+                if (screenConfig && screenConfig !== "active") { return { name: screenConfig }; }
+                if (activeMonitorObj) {  return activeMonitorObj; }
                 return Quickshell.screens.length > 0 ? Quickshell.screens[0] : null;
             }
 
@@ -73,6 +55,9 @@ Scope {
             }
         }
     }
+
+    Instantiator { model: PanelRegistry.builtInPanels; delegate: dynamicPanelDelegate }
+    Instantiator { model: PanelRegistry.userPanels; delegate: dynamicPanelDelegate }
 
     Connections {
         target: EventBus

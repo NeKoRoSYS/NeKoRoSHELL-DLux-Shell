@@ -1,8 +1,14 @@
 {
-  "calendar": {
-    "path": "/user/panels/Calendar.qml",
-    "screen": "active",
-    "anchor": "center",
-    "align": "end"
-  }
+  "panels": [
+    {
+      "id": "test",
+      "path": "/user/panels/Test.qml",
+      "screen": "active"
+    },
+    {
+      "id": "calendar",
+      "path": "/user/panels/Calendar.qml",
+      "screen": "active"
+    }
+  ]
 }
