@@ -23,10 +23,10 @@ Item {
 
     Rectangle {
         anchors.centerIn: parent
-        width:  !root.isHorizontal ? root.baseSize : (container.implicitWidth + 15)
-        height: !root.isHorizontal ? (container.implicitHeight + 15) : root.baseSize
+        width:  !root.isHorizontal ? root.baseSize : (container.implicitWidth)
+        height: !root.isHorizontal ? (container.implicitHeight) : root.baseSize
         radius: (!root.isHorizontal ? width : height) / 2
-
+  
         color: Colors.background
         opacity: 0.325
     }
@@ -84,7 +84,7 @@ Item {
                     labelFont.pixelSize: root.baseSize / 2
                     labelFont.weight: Font.ExtraBold
                     textOffsetX: 1
-                    area.onClicked: Workspaces.activate(wsDelegate.modelData)
+                    onSwitchRequested: Workspaces.activate(wsDelegate.modelData)
                 }
 
                 Repeater {
@@ -101,7 +101,7 @@ Item {
                         textOffsetX: 0.25
                         textOffsetY: 1
                         appData: modelData
-                        area.onClicked: Workspaces.focusWindow(modelData.address)
+                        onSwitchRequested: Workspaces.focusWindow(modelData.address)
                     }
                 }
 
@@ -115,7 +115,7 @@ Item {
                     labelFont.weight: Font.ExtraBold
                     textOffsetX: -2
                     textOffsetY: 1
-                    area.onClicked: Workspaces.activate(wsDelegate.modelData)
+                    onSwitchRequested: Workspaces.activate(wsDelegate.modelData)
                 }
             }
 

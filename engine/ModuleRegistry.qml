@@ -25,6 +25,11 @@ import qs.modules.start
 QtObject {
     id: root
 
+    property Component sandboxDelegate: Component {
+        ModuleLoader {
+        }
+    }
+
     // ── Navbar resolve ────────────────────────────────────────────────────
     readonly property var _map: ({
         // Dynamic
@@ -47,12 +52,6 @@ QtObject {
         "workspaces":    workspacesView,
     })
 
-    function resolve(name) {
-        let c = _map[name]
-        if (!c) console.warn("ModuleRegistry: unknown module '" + name + "'")
-        return c ?? null
-    }
-
     // ── Dashboard resolve ─────────────────────────────────────────────────
     readonly property var _widgetMap: ({
         "stats":         statsWidget,
@@ -67,11 +66,58 @@ QtObject {
         "power":         powerWidget,
         "settings":      settingsWidget,
     })
+    
+    property var _customCache: ({})
+
+    function resolve(name) {
+        if (name && name.startsWith("custom:")) {
+            if (_customCache[name]) return _customCache[name];
+            
+            let loaderPath = "file://" + Quickshell.env("HOME") + "/.config/quickshell/components/ModuleLoader.qml";
+            
+            let qmlString = `
+                import QtQuick
+                Item {
+                    property Component comp: Component {
+                        Loader {
+                            source: "${loaderPath}"
+                            onLoaded: item.moduleName = "${name}"
+                            
+                            width: item ? item.implicitWidth : 0
+                            height: item ? item.implicitHeight : 0
+                        }
+                    }
+                }
+            `;
+            let factory = Qt.createQmlObject(qmlString, root, "dyn_factory_" + name);
+            let comp = factory.comp;
+            
+            _customCache[name] = comp;
+            return comp;
+        }
+
+        let c = _map[name] || _widgetMap[name];
+        if (!c) console.warn("ModuleRegistry: unknown module '" + name + "'");
+        return c ?? null;
+    }
 
     function resolveWidget(id) {
-        let c = _widgetMap[id]
-        if (!c) console.warn("ModuleRegistry: unknown widget '" + id + "'")
-        return c ?? null
+        if (id && id.startsWith("custom:")) {
+            let parsed = id.substring(7);
+            if (_customCache["widget_" + parsed]) return _customCache["widget_" + parsed];
+            
+            let path = "file://" + Quickshell.env("HOME") + "/.config/quickshell/user/modules/" + parsed + "/" + parsed + "Widget.qml";
+            
+            let comp = Qt.createComponent(path);
+            
+            if (comp.status === Component.Error) {
+                console.warn("Error loading widget:", comp.errorString());
+            }
+            
+            _customCache["widget_" + parsed] = comp;
+            return comp;
+        }
+        return resolve(id);
     }
 
     // ── Navbar: Dynamic ───────────────────────────────────────────────────

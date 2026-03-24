@@ -4,7 +4,7 @@
   "barFont": " JetBrainsMono Nerd Font",
   "barPadding": 0,
   "slotSpacing": 20,
-  "pillPadding": 15,
+  "pillPadding": 0,
   "pillSpacing": 8,
   "pillOpacity": 0.4,
   "pillRadius": 999,

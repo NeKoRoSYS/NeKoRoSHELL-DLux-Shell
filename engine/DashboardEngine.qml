@@ -5,6 +5,8 @@
 pragma ComponentBehavior: Bound
 
 import QtQuick
+import Quickshell
+import Quickshell.Io
 import qs.global
 
 QtObject {
@@ -20,7 +22,7 @@ QtObject {
     property real cellW: 0
 
     // ── Widget registry ───────────────────────────────────────────────────
-    readonly property var widgetDefs: [
+    readonly property var systemDefs: [
         { id: "stats",         label: "Stats",      icon: "󰍛",  cols: 1, rows: 2 },
         { id: "speaker",       label: "Speaker",    icon: "󰕾",  cols: 1, rows: 2 },
         { id: "mic",           label: "Mic",        icon: "󰍬",  cols: 1, rows: 2 },
@@ -32,6 +34,18 @@ QtObject {
         { id: "power",         label: "Power",      icon: "⏻",  cols: 1, rows: 1 },
         { id: "settings",      label: "Settings",   icon: "",   cols: 1, rows: 1 },
     ]
+
+    property var customDefs: []
+
+    property var widgetFileWatcher: FileView {
+        path: Qt.resolvedUrl("../user/widgets.json") 
+        adapter: JsonAdapter {
+            property var widgets: []
+            onWidgetsChanged: root.customDefs = widgets || []
+        }
+    }
+
+    readonly property var widgetDefs: systemDefs.concat(customDefs)
 
     // ── Persisted active widget list ──────────────────────────────────────
     property var activeWidgets: {

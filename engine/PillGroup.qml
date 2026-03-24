@@ -55,11 +55,13 @@ Item {
             id: mod
             anchors.centerIn: parent
             sourceComponent: ModuleRegistry.resolve(parent.modelData)
-            
-            Binding { when: mod.status === Loader.Ready; target: mod.item; property: "isHorizontal"; value: root.isHorizontal }
-            Binding { when: mod.status === Loader.Ready; target: mod.item; property: "barThickness"; value: root.moduleSize }
-            Binding { when: mod.status === Loader.Ready && mod.item !== null && ("inPill" in mod.item); target: mod.item; property: "inPill"; value: true }
-            Binding { when: mod.status === Loader.Ready && mod.item !== null && ("barScreen" in mod.item); target: mod.item; property: "barScreen"; value: root.barScreen }
+
+            onLoaded: {
+                item.isHorizontal = root.isHorizontal;
+                item.barThickness = root.moduleSize;
+                if ("inPill" in item) item.inPill = true;
+                if ("barScreen" in item) item.barScreen = root.barScreen;
+            }
         }
     }
 

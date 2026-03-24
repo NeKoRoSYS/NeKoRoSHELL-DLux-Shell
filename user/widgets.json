@@ -1,0 +1,11 @@
+{
+    "widgets": [
+      {
+        "id": "custom:weather",
+        "label": "Weather",
+        "icon": "󰖐",
+        "cols": 2,
+        "rows": 2
+      }
+    ]
+  }

@@ -10,7 +10,10 @@ Singleton {
 
     readonly property string configPath: Quickshell.env("HOME") + "/.config/quickshell/config.json"
     readonly property string tmpPath:    Quickshell.env("HOME") + "/.config/quickshell/.config.json.tmp"
-
+    readonly property string userBasePath:   Quickshell.env("HOME") + "/.config/quickshell/user/"
+    readonly property string userLayoutsPath: userBasePath + "layouts/"
+    readonly property string userModulesPath: userBasePath + "modules/"
+    
     property string navbarLocation: "top"
     property bool   transparentNavbar: false
     property bool   enableBorders:  true

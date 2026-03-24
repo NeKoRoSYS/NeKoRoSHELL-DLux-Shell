@@ -1,0 +1,13 @@
+{
+    "left": [
+      "status"
+    ],
+    "center": [
+      "workspaces",
+      ["media", "cava", "clock"], 
+      ["notifications", "settings", "power"]
+    ],
+    "right": [
+      "custom:weather", "tray"
+    ]
+}

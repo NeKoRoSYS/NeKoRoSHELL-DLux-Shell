@@ -17,8 +17,16 @@ Scope {
     property var layoutCenter: []
     property var layoutRight:  []
 
+    function resolveLayoutPath(name) {
+        if (name.startsWith("custom:")) {
+            return Quickshell.env("HOME") + "/.config/quickshell/user/layouts/" + name.substring(7) + ".json";
+        }
+        return Quickshell.env("HOME") + "/.config/quickshell/layouts/" + name + ".json";
+    }
+
     FileView {
-        path: Qt.resolvedUrl("../layouts/" + Config.activeLayout + ".json")
+        path: root.resolveLayoutPath(Config.activeLayout)
+        
         adapter: JsonAdapter {
             property var left:   []
             property var center: []

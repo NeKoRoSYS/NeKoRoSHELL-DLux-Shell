@@ -120,9 +120,17 @@ Panel {
                                     clip:          true
                                     layer.enabled: true
 
+                                    readonly property bool isCustom: modelData.id.startsWith("custom:")
+                                    readonly property string parsedName: isCustom ? modelData.id.split(":")[1] : modelData.id
+
                                     Loader {
                                         anchors.fill:    parent
-                                        sourceComponent: ModuleRegistry.resolveWidget(modelData.id)
+                                        source: widgetCard.isCustom 
+                                            ? `file://${Config.userModulesPath}${widgetCard.parsedName}/${widgetCard.parsedName}Widget.qml`
+                                            : ""
+                                        sourceComponent: !widgetCard.isCustom 
+                                            ? ModuleRegistry.resolveWidget(modelData.id) 
+                                            : undefined
                                     }
 
                                     MouseArea { anchors.fill: parent; enabled: engine.editMode; hoverEnabled: false }

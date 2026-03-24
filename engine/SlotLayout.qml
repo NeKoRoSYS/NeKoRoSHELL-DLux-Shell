@@ -46,9 +46,32 @@ Item {
         Loader {
             id: mod; visible: !isGroup
             sourceComponent: !isGroup ? ModuleRegistry.resolve(modelData) : null
-            Binding { when: mod.status === Loader.Ready; target: mod.item; property: "isHorizontal"; value: root.isHorizontal }
-            Binding { when: mod.status === Loader.Ready; target: mod.item; property: "barThickness";  value: root.moduleSize }
-            Binding { when: mod.status === Loader.Ready && mod.item !== null && mod.item.hasOwnProperty("barScreen"); target: mod.item; property: "barScreen"; value: root.barScreen }
+
+            Binding { 
+                when: mod.status === Loader.Ready && mod.item !== null && mod.item.hasOwnProperty("moduleName")
+                target: mod.item
+                property: "moduleName"
+                value: modelData 
+            }
+            
+            Binding { 
+                when: mod.status === Loader.Ready && mod.item !== null && mod.item.hasOwnProperty("isHorizontal")
+                target: mod.item
+                property: "isHorizontal"
+                value: root.isHorizontal 
+            }
+            Binding { 
+                when: mod.status === Loader.Ready && mod.item !== null && mod.item.hasOwnProperty("barThickness")
+                target: mod.item
+                property: "barThickness"
+                value: root.moduleSize 
+            }
+            Binding { 
+                when: mod.status === Loader.Ready && mod.item !== null && mod.item.hasOwnProperty("barScreen")
+                target: mod.item
+                property: "barScreen"
+                value: root.barScreen 
+            }
         }
     }
 

@@ -20,6 +20,8 @@ Item {
 
     property var appData: null
 
+    signal switchRequested()
+
     implicitWidth:  showDot ? baseSize : 0
     implicitHeight: showDot ? baseSize : 0
     width: implicitWidth; height: implicitHeight
@@ -39,6 +41,14 @@ Item {
             if (root.showDot && root.appData) {
                 EventBus.showAppPreview(root.appData)
             }
+        }
+    }
+
+    Timer {
+        id: dragSwitchTimer
+        interval: 200 
+        onTriggered: {
+            root.switchRequested();
         }
     }
 
@@ -69,6 +79,8 @@ Item {
             onClicked: {
                 hoverTimer.stop()
                 if (root.appData) EventBus.hideAppPreview()
+                
+                root.switchRequested() 
             }
 
             onContainsMouseChanged: {
@@ -79,6 +91,36 @@ Item {
                     if (root.appData) EventBus.hideAppPreview()
                 }
             }
+        }
+    }
+
+    DropArea {
+        id: dropArea
+        anchors.fill: parent
+        z: 999 
+        keys: ["*"]
+        
+        onEntered: function(dragEvent) {
+            dragEvent.accept();
+            
+            hoverTimer.stop();
+            if (root.appData) EventBus.hideAppPreview();
+            
+            dragSwitchTimer.start();
+        }
+        
+        onPositionChanged: function(dragEvent) {
+            dragEvent.accept();
+        }
+        
+        onExited: {
+            dragSwitchTimer.stop();
+        }
+        
+        onDropped: function(dragEvent) {
+            dragEvent.accept();
+            dragSwitchTimer.stop();
+            root.switchRequested(); 
         }
     }
 }

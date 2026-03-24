@@ -2,6 +2,7 @@
 import Quickshell
 import QtQuick
 import QtQuick.Controls
+import Qt.labs.folderlistmodel
 import qs.components
 import qs.global
 
@@ -16,6 +17,18 @@ Panel {
 
     edgePadding:     15
 
+    property var builtinLayoutsModel: FolderListModel {
+        folder: "file://" + Quickshell.env("HOME") + "/.config/quickshell/layouts"
+        nameFilters: ["*.json"]
+        showDirs: false
+    }
+
+    property var customLayoutsModel: FolderListModel {
+        folder: "file://" + Quickshell.env("HOME") + "/.config/quickshell/user/layouts"
+        nameFilters: ["*.json"]
+        showDirs: false
+    }
+    
     Rectangle {
         id: launcherRoot
         anchors.fill: parent
@@ -178,22 +191,30 @@ Panel {
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
 
-                Row {
+                Flow {
                     anchors.horizontalCenter: parent.horizontalCenter
+                    width: parent.width - 20
                     spacing: 10
-
+                    layoutDirection: Qt.LeftToRight
+                    
                     Repeater {
-                        model: ["default", "center", "minimal", "media"]
+                        model: settingsPanel.builtinLayoutsModel
                         delegate: Rectangle {
-                            required property string modelData
-                            width:  80; height: 28; radius: 14
-                            color:  Config.activeLayout === modelData ? Colors.color3 : Colors.color0
+                            property string fName: model.fileName !== undefined ? model.fileName : ""
+                            property string layoutId: fName.replace(".json", "")
+
+                            visible: fName !== ""
+                            width:  layoutText.implicitWidth + 24
+                            height: 28
+                            radius: 14
+                            color:  Config.activeLayout === layoutId ? Colors.color3 : Colors.color0
                             Behavior on color { ColorAnimation { duration: 150 } }
 
                             Text {
+                                id: layoutText
                                 anchors.centerIn: parent
-                                text:            parent.modelData
-                                color:           Config.activeLayout === parent.modelData ? "white" : Colors.foreground
+                                text:            layoutId
+                                color:           Config.activeLayout === parent.layoutId ? "white" : Colors.foreground
                                 font.family:     "JetBrainsMono Nerd Font"
                                 font.pixelSize:  11
                                 font.weight:     Font.Bold
@@ -201,7 +222,37 @@ Panel {
                             MouseArea {
                                 anchors.fill: parent
                                 cursorShape:  Qt.PointingHandCursor
-                                onClicked:    EventBus.changeLayout(parent.modelData)
+                                onClicked:    Config.saveSetting("activeLayout", parent.layoutId)
+                            }
+                        }
+                    }
+
+                    Repeater {
+                        model: settingsPanel.customLayoutsModel
+                        delegate: Rectangle {
+                            property string fName: model.fileName !== undefined ? model.fileName : ""
+                            property string layoutId: "custom:" + fName.replace(".json", "")
+
+                            visible: fName !== ""
+                            width:  layoutText.implicitWidth + 24
+                            height: 28
+                            radius: 14
+                            color:  Config.activeLayout === layoutId ? Colors.color3 : Colors.color0
+                            Behavior on color { ColorAnimation { duration: 150 } }
+
+                            Text {
+                                id: layoutText
+                                anchors.centerIn: parent
+                                text:            fName.replace(".json", "")
+                                color:           Config.activeLayout === parent.layoutId ? "white" : Colors.foreground
+                                font.family:     "JetBrainsMono Nerd Font"
+                                font.pixelSize:  11
+                                font.weight:     Font.Bold
+                            }
+                            MouseArea {
+                                anchors.fill: parent
+                                cursorShape:  Qt.PointingHandCursor
+                                onClicked:    Config.saveSetting("activeLayout", parent.layoutId)
                             }
                         }
                     }
