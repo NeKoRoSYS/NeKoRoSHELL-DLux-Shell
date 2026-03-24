@@ -15,20 +15,21 @@ Item {
     readonly property bool hasContent: isHorizontal ? (pillRow.implicitWidth > 0.01) : (pillCol.implicitHeight > 0.01)
 
     property real currentPadding: hasContent ? Style.pillPadding : 0
-    Behavior on currentPadding { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
+    
+    Behavior on currentPadding { NumberAnimation { duration: Animations.normal; easing.type: Easing.OutQuad } }
 
     implicitWidth:  isHorizontal ? (pillRow.implicitWidth + currentPadding)  : (hasContent ? moduleSize : 0)
     implicitHeight: isHorizontal ? (hasContent ? moduleSize : 0) : (pillCol.implicitHeight + currentPadding)
     
-    Behavior on implicitWidth  { enabled: !isHorizontal; NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
-    Behavior on implicitHeight { enabled: isHorizontal;  NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
+    Behavior on implicitWidth  { enabled: !isHorizontal; NumberAnimation { duration: Animations.normal; easing.type: Easing.OutQuad } }
+    Behavior on implicitHeight { enabled: isHorizontal; NumberAnimation { duration: Animations.normal; easing.type: Easing.OutQuad } }
 
     Rectangle {
         anchors.fill: parent
         radius:       Style.pillRadius
         color:        Colors.color0
         opacity:      root.hasContent ? Style.pillOpacity : 0
-        Behavior on opacity { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
+        Behavior on opacity { NumberAnimation { duration: Animations.normal; easing.type: Easing.OutQuad } }
     }
 
     component PillDelegate: Item {
@@ -43,10 +44,10 @@ Item {
         opacity: moduleActive ? 1 : 0
         scale:   moduleActive ? 1 : 0.01
 
-        Behavior on implicitWidth  { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
-        Behavior on implicitHeight { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
-        Behavior on opacity        { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOut } }
-        Behavior on scale          { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeOutBack } }
+        Behavior on implicitWidth  { NumberAnimation { duration: Animations.normal; easing.type: Easing.OutQuad } }
+        Behavior on implicitHeight { NumberAnimation { duration: Animations.normal; easing.type: Easing.OutQuad } }
+        Behavior on opacity        { NumberAnimation { duration: Animations.normal; easing.type: Easing.OutQuad } }
+        Behavior on scale          { NumberAnimation { duration: Animations.normal; easing.type: Easing.OutBack } }
 
         visible: opacity > 0 || (root.isHorizontal ? implicitWidth > 0 : implicitHeight > 0)
         clip: true

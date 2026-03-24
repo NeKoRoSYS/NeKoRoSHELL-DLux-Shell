@@ -23,8 +23,11 @@ Item {
         visible: false
     }
 
-    implicitWidth:  isHorizontal ? hPill.implicitWidth : barThickness
-    implicitHeight: isHorizontal ? barThickness : barThickness
+    implicitWidth:  isHorizontal ? hPill.width : barThickness
+    implicitHeight: isHorizontal ? barThickness : vPill.height
+    
+    width: implicitWidth
+    height: implicitHeight
 
     // ── Horizontal Pill ───────────────────────────────────────────────────
     Rectangle {
@@ -32,7 +35,7 @@ Item {
         visible:          root.isHorizontal
         anchors.centerIn: parent
         
-        implicitWidth:    metricText.implicitWidth + 30
+        width:            metricText.implicitWidth + 30
         height:           root.barThickness
         radius:           height / 2
 
@@ -80,14 +83,14 @@ Item {
         }
     }
 
-    // ── Vertical Pill (Fallback) ──────────────────────────────────────────
+    // ── Vertical Pill ─────────────────────────────────────────────────────
     Rectangle {
         id: vPill
         visible:          !root.isHorizontal
         anchors.centerIn: parent
         
         width:            root.barThickness
-        height:           root.barThickness
+        height:           vCol.implicitHeight + 24
         radius:           width / 2
 
         color: vMouseArea.containsMouse 
@@ -96,16 +99,49 @@ Item {
             
         Behavior on color { ColorAnimation { duration: 150 } }
 
-        Text {
+        Column {
+            id: vCol
             anchors.centerIn: parent
-            text: currentIcon
-            font.family: root.barFont
-            font.pixelSize: 14
+            spacing: 2
             
-            color: vMouseArea.containsMouse 
-                ? Colors.color3 
-                : (Config.lightMode && Config.transparentNavbar ? "black" : "white")
-            Behavior on color { ColorAnimation { duration: 150 } }
+            Text {
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: currentIcon
+                font.family: root.barFont
+                font.pixelSize: 13
+                
+                color: vMouseArea.containsMouse 
+                    ? Colors.color3 
+                    : (Config.lightMode && Config.transparentNavbar ? "black" : "white")
+                Behavior on color { ColorAnimation { duration: 150 } }
+            }
+
+            Text {
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: currentTemp.replace("°C", "")
+                font.family: root.barFont
+                font.pixelSize: 11
+                font.weight: Font.Bold
+                
+                color: vMouseArea.containsMouse 
+                    ? Colors.color3 
+                    : (Config.lightMode && Config.transparentNavbar ? "black" : "white")
+                Behavior on color { ColorAnimation { duration: 150 } }
+            }
+
+            // The unit stacked underneath
+            Text {
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: "°C"
+                font.family: root.barFont
+                font.pixelSize: 9
+                font.weight: Font.Bold
+                
+                color: vMouseArea.containsMouse 
+                    ? Colors.color3 
+                    : (Config.lightMode && Config.transparentNavbar ? "black" : "white")
+                Behavior on color { ColorAnimation { duration: 150 } }
+            }
         }
         
         MouseArea {

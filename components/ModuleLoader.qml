@@ -9,12 +9,16 @@ Item {
     property string moduleName: ""
     property bool isHorizontal: true
     property real barThickness: 0
+    property var barScreen: null 
 
     readonly property bool isCustom: moduleName !== "" && moduleName.startsWith("custom:")
     readonly property string parsedName: isCustom ? moduleName.substring(7) : moduleName
 
-    implicitWidth: viewLoader.active ? viewLoader.width : (dynamicLoader.active ? dynamicLoader.width : 0)
-    implicitHeight: viewLoader.active ? viewLoader.height : (dynamicLoader.active ? dynamicLoader.height : 0)
+    implicitWidth: viewLoader.active && viewLoader.item ? viewLoader.item.implicitWidth : (dynamicLoader.active && dynamicLoader.item ? dynamicLoader.item.implicitWidth : 0)
+    implicitHeight: viewLoader.active && viewLoader.item ? viewLoader.item.implicitHeight : (dynamicLoader.active && dynamicLoader.item ? dynamicLoader.item.implicitHeight : 0)
+
+    width: implicitWidth
+    height: implicitHeight
 
     Loader {
         id: backendLoader
@@ -38,8 +42,11 @@ Item {
 
         onLoaded: {
             item.backend = backendLoader.item
-            item.isHorizontal = root.isHorizontal
         }
+
+        Binding { target: viewLoader.item; property: "isHorizontal"; value: root.isHorizontal; when: viewLoader.status === Loader.Ready }
+        Binding { target: viewLoader.item; property: "barThickness"; value: root.barThickness; when: viewLoader.status === Loader.Ready }
+        Binding { target: viewLoader.item; property: "barScreen";    value: root.barScreen;    when: viewLoader.status === Loader.Ready }
     }
 
     Loader {

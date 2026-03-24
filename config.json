@@ -1,5 +1,5 @@
 {
-  "navbarLocation": "top",
+  "navbarLocation": "right",
   "transparentNavbar": true,
   "enableBorders": true,
   "activeLayout": "custom:test",

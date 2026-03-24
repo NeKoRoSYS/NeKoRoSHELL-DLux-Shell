@@ -80,11 +80,24 @@ QtObject {
                 Item {
                     property Component comp: Component {
                         Loader {
+                            id: wrapper
                             source: "${loaderPath}"
-                            onLoaded: item.moduleName = "${name}"
                             
-                            width: item ? item.implicitWidth : 0
+                            // 1. Catch properties from SlotLayout
+                            property string moduleName: "${name}"
+                            property bool   isHorizontal: true
+                            property real   barThickness: 0
+                            property var    barScreen: null
+
+                            // 2. Forward dimensions up to SlotLayout
+                            width:  item ? item.implicitWidth  : 0
                             height: item ? item.implicitHeight : 0
+
+                            // 3. Forward properties down into your custom widget
+                            Binding { target: wrapper.item; property: "moduleName";   value: wrapper.moduleName;   when: wrapper.status === Loader.Ready }
+                            Binding { target: wrapper.item; property: "isHorizontal"; value: wrapper.isHorizontal; when: wrapper.status === Loader.Ready }
+                            Binding { target: wrapper.item; property: "barThickness"; value: wrapper.barThickness; when: wrapper.status === Loader.Ready }
+                            Binding { target: wrapper.item; property: "barScreen";    value: wrapper.barScreen;    when: wrapper.status === Loader.Ready }
                         }
                     }
                 }
