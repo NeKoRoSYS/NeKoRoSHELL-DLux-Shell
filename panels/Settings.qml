@@ -83,7 +83,7 @@ Panel {
                     }
 
                     Toggle {
-                        labelText: "Show Borders"
+                        labelText: "Screen Borders"
                         checked: settingsPanel.bordersEnabled
                         onToggled: (state) => EventBus.toggleBorders(state)
                     }

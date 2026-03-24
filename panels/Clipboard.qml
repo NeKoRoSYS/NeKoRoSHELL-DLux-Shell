@@ -221,6 +221,7 @@ Panel {
                             Text {
                                 text: clipRoot.currentTab === "history" ? (parent.isFav ? "⭐" : "☆") : "❌"
                                 font.pixelSize: 16
+                                color: Colors.foreground
                                 anchors.centerIn: parent
                             }
                             

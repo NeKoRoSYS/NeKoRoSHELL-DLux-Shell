@@ -1,8 +1,7 @@
 // shell.qml — entry point
 //@ pragma UseQApplication
 import Quickshell
-import Quickshell.Wayland
-import Quickshell.Services.Notifications
+import Quickshell.Hyprland
 import QtQuick
 import qs.global
 import qs.components
@@ -24,110 +23,72 @@ Scope {
         cornerRadius: Style.cornerRadius
     }
 
-    NotificationsToast {
-        allowToasts: shell.activePanel !== "notifications"
-    }
+    NotificationsToast { allowToasts: shell.activePanel !== "notifications" }
 
-    property string activePanel: ""
-    property var    activeScreen: null
+    AppPreview { }
 
-    Dashboard {
-        showPanel:    shell.activePanel === "dashboard"
-        navbarOffset: loader.barSize
-        panelId:      "dashboard"
-        anchorEdge: "top"
-        anchorAlignment: "center"
-    }
+    property string activePanel: "calendar"
+    property var    activeScreen: Quickshell.screens.length > 0 ? Quickshell.screens[0] : null
 
-    Settings {
-        showPanel:      shell.activePanel === "settings"
-        navbarOffset:   loader.barSize
-        panelId:      "settings"
-        bordersEnabled: Config.enableBorders
-        lightMode:      Config.lightMode
-        anchorAlignment: "end"
-    }
+    Instantiator {
+        model: PanelRegistry.allPanels
+        delegate: Loader {
+            id: panelLoader
+            source: modelData.file
+            
+            function resolveTargetScreen(screenConfig, currentActiveScreen, hMonitor) {
+                if (screenConfig && screenConfig !== "active") {
+                    for (let i = 0; i < Quickshell.screens.length; i++) {
+                        if (Quickshell.screens[i].name === screenConfig) {
+                            return Quickshell.screens[i];
+                        }
+                    }
+                }
+                
+                if (currentActiveScreen) { return currentActiveScreen; }
+                
+                if (hMonitor && hMonitor.name) {
+                    for (let j = 0; j < Quickshell.screens.length; j++) {
+                        if (Quickshell.screens[j].name === hMonitor.name) {
+                            return Quickshell.screens[j];
+                        }
+                    }
+                }
+                
+                return Quickshell.screens.length > 0 ? Quickshell.screens[0] : null;
+            }
 
-    AdvancedSettings {
-        showPanel:    shell.activePanel === "advanced"
-        navbarOffset: loader.barSize
-        panelId:      "advanced"
-        anchorAlignment: "end"
+            onLoaded: {
+                if (!item) return;
+                if ("panelId" in item) item.panelId = modelData.id;
+                if ("anchorEdge" in item && modelData.anchor !== undefined) item.anchorEdge = modelData.anchor;
+                if ("anchorAlignment" in item && modelData.align !== undefined) item.anchorAlignment = modelData.align;
+                if ("showPanel" in item) item.showPanel = Qt.binding(() => shell.activePanel === modelData.id);
+                if ("navbarOffset" in item) item.navbarOffset = Qt.binding(() => loader.barSize);
+                if ("targetScreen" in item) { item.targetScreen = Qt.binding(() => resolveTargetScreen(modelData.screen, Hyprland.focusedMonitor)); }
+                if (modelData.id === "settings") {
+                    if ("bordersEnabled" in item) item.bordersEnabled = Qt.binding(() => Config.enableBorders);
+                    if ("lightMode" in item) item.lightMode = Qt.binding(() => Config.lightMode);
+                }
+            }
+        }
     }
-
-    Tray {
-        showPanel:    shell.activePanel === "tray"
-        navbarOffset: loader.barSize
-        panelId:      "tray"
-        anchorAlignment: "end"
-    }
-
-    Launcher {
-        showPanel:    shell.activePanel === "launcher"
-        navbarOffset: loader.barSize
-        panelId:      "launcher"
-        anchorEdge: "bottom"
-        anchorAlignment: "center"
-    }
-    
-    WallpaperPicker {
-        showPanel:    shell.activePanel === "wallpaper"
-        navbarOffset: loader.barSize
-        panelId:      "wallpaper"
-        anchorEdge: "bottom"
-        anchorAlignment: "center"
-    }
-
-    Clipboard {
-        showPanel:    shell.activePanel === "clipboard"
-        navbarOffset: loader.barSize
-        panelId:      "clipboard"
-        anchorAlignment: "center"
-    }
-
-    Notifications {
-        showPanel:    shell.activePanel === "notifications"
-        navbarOffset: loader.barSize
-        panelId:      "notifications"
-        anchorEdge: "right"
-        anchorAlignment: "center"
-    }
-
-    Overview {
-        showPanel:    shell.activePanel === "overview"
-        navbarOffset: loader.barSize
-        panelId:      "overview"
-        anchorEdge: "center"
-    }
-
-    PowerManager {
-        showPanel:    shell.activePanel === "power"
-    }
-
-    AppPreview {}
 
     Connections {
         target: EventBus
 
         function onTogglePanel(panelId, screen) {
             if (shell.activePanel === panelId) {
-                shell.activePanel = ""
-                shell.activeScreen = null
+                shell.activePanel = "";
             } else {
-                shell.activePanel = panelId
-                shell.activeScreen = screen
+                shell.activePanel = panelId;
+                if (screen) { shell.activeScreen = screen; } else { shell.activeScreen = null; }
             }
         }
 
-        function onChangeLocation(newLocation) {
-            Config.saveSetting("navbarLocation", newLocation)
-        }
-        function onToggleBorders(state) {
-            Config.saveSetting("enableBorders", state)
-        }
-        function onChangeLayout(layoutName) {
-            Config.saveSetting("activeLayout", layoutName)
-        }
+        function onChangeLocation(newLocation) { Config.saveSetting("navbarLocation", newLocation) }
+        function onToggleBorders(state) { Config.saveSetting("enableBorders", state) }
+        function onChangeLayout(layoutName) { Config.saveSetting("activeLayout", layoutName) }
         function onToggleLightMode(state) {
             Config.saveSetting("lightMode", state)
             Colors.reloadColors()

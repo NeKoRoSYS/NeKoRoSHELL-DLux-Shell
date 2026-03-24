@@ -15,7 +15,7 @@ Panel {
     property real lockedMonitorWidth: 1920
     property var lockedScreen: Quickshell.primaryScreen
 
-    screen: lockedScreen
+    targetScreen: lockedScreen
 
     property real spacingAmount: 10
     property real cols: 5
@@ -45,7 +45,10 @@ Panel {
         }
     }
 
-    Keys.onEscapePressed: EventBus.togglePanel("overview")
+    Shortcut {
+        sequence: "Escape"
+        onActivated: EventBus.togglePanel("overview", null)
+    }
 
     Rectangle {
         id: overviewRoot
