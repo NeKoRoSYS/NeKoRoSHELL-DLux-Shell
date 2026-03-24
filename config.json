@@ -1,11 +1,11 @@
 {
   "navbarLocation": "top",
-  "transparentNavbar": true,
+  "transparentNavbar": false,
   "enableBorders": true,
-  "activeLayout": "center",
-  "dashboardLayout": "[\"custom:weather\",\"stats\",\"network\",\"bluetooth\",\"speaker\",\"mic\",\"brightness\",\"idleinhibitor\",\"power\"]",
+  "activeLayout": "custom:test",
+  "dashboardLayout": "[\"custom:weather\",\"stats\",\"network\",\"bluetooth\",\"speaker\",\"mic\",\"brightness\",\"idleinhibitor\",\"power\",\"cliphist\",\"settings\"]",
   "enableParallax": true,
   "lightMode": false,
   "wallpaperPath": "/home/nekorosys/.config/wallpapers/wallhaven-3q312y.jpg",
-  "dndEnabled": false
+  "dndEnabled": true
 }

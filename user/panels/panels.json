@@ -1,0 +1,6 @@
+{
+  "calendar": {
+    "path": "/user/panels/Calendar.qml",
+    "screen": "active"
+  }
+}

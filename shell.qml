@@ -24,6 +24,10 @@ Scope {
         cornerRadius: Style.cornerRadius
     }
 
+    NotificationsToast {
+        allowToasts: shell.activePanel !== "notifications"
+    }
+
     property string activePanel: ""
     property var    activeScreen: null
 
@@ -98,106 +102,9 @@ Scope {
 
     PowerManager {
         showPanel:    shell.activePanel === "power"
-        targetScreen: shell.activeScreen
     }
 
     AppPreview {}
-
-    Variants {
-        model: Quickshell.screens
-
-        PanelWindow {
-            required property var modelData
-            screen: modelData
-
-            anchors { top: true; right: true }
-            
-            margins {
-                top:    (Config.navbarLocation === "top"    ? loader.barSize : 0) + 15
-                bottom: (Config.navbarLocation === "bottom" ? loader.barSize : 0) + 15
-                left:   (Config.navbarLocation === "left"   ? loader.barSize : 0) + 15
-                right:  (Config.navbarLocation === "right"  ? loader.barSize : 0) + 15
-            }
-            
-            WlrLayershell.layer: WlrLayer.Overlay
-            exclusionMode: ExclusionMode.Ignore
-            WlrLayershell.namespace: "quickshell-notification"
-            
-            color: "transparent"
-            visible: Notifs.activePopups.count > 0
-            
-            width: 400
-            height: Math.max(1, popupList.contentHeight)
-
-            ListView {
-                id: popupList
-                
-                width: parent.width
-                height: contentHeight
-                
-                spacing: 15
-                interactive: false
-                
-                model: Notifs.activePopups
-                
-                displaced: Transition {
-                    NumberAnimation { properties: "x,y"; duration: 250; easing.type: Easing.OutCubic }
-                }
-
-                delegate: AnimatedElement {
-                    id: animWrapper
-                    width: 400
-                    height: card.height
-                    
-                    preset: "slide"
-                    edge: "right"
-                    show: false
-                    
-                    Component.onCompleted: {
-                        show = true
-                    }
-
-                    NotificationCard {
-                        id: card
-                        notification: model.notif 
-                        
-                        function dismissPopup() {
-                            if (!animWrapper.show) return;
-                            animWrapper.show = false;
-                            removeTimer.start();
-                        }
-
-                        Timer {
-                            id: removeTimer
-                            interval: 300 
-                            onTriggered: Notifs.removePopup(model.notif)
-                        }
-                        
-                        Timer {
-                            running: true
-                            
-                            property int timeVal: (card.notification && card.notification.expireTimeout !== undefined) ? card.notification.expireTimeout : -1
-                            
-                            interval: timeVal > 0 ? timeVal : 5000
-                            
-                            onTriggered: {
-                                if (timeVal !== 0) {
-                                    card.dismissPopup()
-                                }
-                            }
-                        }
-
-                        Connections {
-                            target: card.notification
-                            function onClosed() {
-                                card.dismissPopup()
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     Connections {
         target: EventBus
@@ -224,30 +131,6 @@ Scope {
         function onToggleLightMode(state) {
             Config.saveSetting("lightMode", state)
             Colors.reloadColors()
-        }
-    }
-
-    Component.onCompleted: {
-        console.log("Notification Daemon Active: " + Notifs.bodySupported)
-        let extra = [
-            "/usr/share/pixmaps",
-            Qt.resolvedUrl("file://" + Quickshell.env("HOME") + "/.local/share/icons"),
-            Qt.resolvedUrl("file://" + Quickshell.env("HOME") + "/.icons"),
-        ]
-        
-        let currentPaths = Qt.iconSearchPaths ?? [];
-        let newPaths = currentPaths.slice(); 
-        let needsUpdate = false;
-        
-        for (let p of extra) {
-            if (!newPaths.includes(p)) {
-                newPaths.push(p);
-                needsUpdate = true;
-            }
-        }
-        
-        if (needsUpdate) {
-            Qt.iconSearchPaths = newPaths;
         }
     }
 }

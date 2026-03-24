@@ -12,5 +12,5 @@ QtObject {
         onClicked: function() { Tray.open() }
     })
 
-    function open() { EventBus.togglePanel("tray") }
+    function open() { EventBus.togglePanel("tray", null) }
 }

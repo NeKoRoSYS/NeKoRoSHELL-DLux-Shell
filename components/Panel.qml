@@ -126,7 +126,7 @@ Scope {
             MouseArea {
                 anchors.fill: parent
                 enabled:      rootScope.showPanel
-                onClicked:    EventBus.togglePanel(rootScope.panelId)
+                onClicked:    EventBus.togglePanel(rootScope.panelId, null)
                 hoverEnabled: false
             }
         }

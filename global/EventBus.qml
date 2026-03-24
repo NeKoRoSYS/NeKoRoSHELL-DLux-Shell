@@ -5,7 +5,7 @@ import Quickshell
 import Quickshell.Io
 
 QtObject {
-    signal togglePanel(string panelId)
+    signal togglePanel(string panelId, var screen)
     signal changeLocation(string newLocation)
     signal changeLayout(string newLayout)
     signal toggleBorders(bool state)
@@ -17,7 +17,20 @@ QtObject {
         target: "nekoroshell"
         
         function toggle(panelId: string): void {
-            EventBus.togglePanel(panelId)
+            EventBus.togglePanel(panelId, null)
+        }
+
+        function toggleOn(panelId: string, monitorName: string): void {
+            let targetMonitor = null;
+            if (monitorName) {
+                for (let i = 0; i < Quickshell.screens.length; i++) {
+                    if (Quickshell.screens[i].name === monitorName) {
+                        targetMonitor = Quickshell.screens[i];
+                        break;
+                    }
+                }
+            }
+            EventBus.togglePanel(panelId, targetMonitor)
         }
 
         function ctx(menuId: string): void {

@@ -12,5 +12,5 @@ QtObject {
         onClicked: function() { Settings.open() }
     })
 
-    function open() { EventBus.togglePanel("settings") }
+    function open() { EventBus.togglePanel("settings", null) }
 }

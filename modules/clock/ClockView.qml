@@ -62,7 +62,7 @@ Item {
             hoverEnabled: true
             anchors.fill: parent
             cursorShape:  Qt.PointingHandCursor
-            onClicked:    EventBus.togglePanel("dashboard")
+            onClicked:    EventBus.togglePanel("dashboard", null)
         }
     }
 

@@ -13,5 +13,5 @@ QtObject {
         onClicked: function() { Notifications.open() }
     })
 
-    function open() { EventBus.togglePanel("notifications") }
+    function open() { EventBus.togglePanel("notifications", null) }
 }

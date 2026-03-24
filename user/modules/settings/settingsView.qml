@@ -25,7 +25,7 @@ Item {
         item: {
             "icon": "",
             "active": false, 
-            "onClicked": function() { EventBus.togglePanel("settings") }
+            "onClicked": function() { EventBus.togglePanel("settings", null) }
         }
     }
 }

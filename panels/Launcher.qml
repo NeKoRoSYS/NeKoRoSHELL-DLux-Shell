@@ -132,7 +132,7 @@ Panel {
             if (appsModel.count > 0 && launcherRoot.selectedIndex >= 0 && launcherRoot.selectedIndex < appsModel.count) {
                 let cmd = appsModel.get(launcherRoot.selectedIndex).appExec;
                 Quickshell.execDetached({ command: ["sh", "-c", cmd] });
-                EventBus.togglePanel("launcher");
+                EventBus.togglePanel("launcher", null);
             }
         }
 
@@ -189,7 +189,7 @@ Panel {
                         appList.positionViewAtIndex(launcherRoot.selectedIndex, ListView.Contain)
                     }
                     Keys.onReturnPressed: launcherRoot.launchSelected()
-                    Keys.onEscapePressed: EventBus.togglePanel("launcher")
+                    Keys.onEscapePressed: EventBus.togglePanel("launcher", null)
                 }
             }
 

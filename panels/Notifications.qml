@@ -4,13 +4,14 @@ import Quickshell
 import Quickshell.Wayland
 import Quickshell.Services.Notifications
 import qs.global
+import qs.engine
 import qs.components
 
 Panel {
     id: ncPanel
 
     property int maxPanelHeight: 700
-    property int notifCount: Notifs.trackedNotifications.values.length
+    property int notifCount: NotificationsEngine.trackedNotifications.values.length
     
     property int trackedContentHeight: 58
 
@@ -23,6 +24,12 @@ Panel {
         NumberAnimation {
             duration: Animations.normal
             easing.type: Animations.easeOut
+        }
+    }
+
+    onShowPanelChanged: {
+        if (showPanel) {
+            NotificationsEngine.activePopups.clear();
         }
     }
 
@@ -44,7 +51,7 @@ Panel {
         }
 
         property var groupedNotifications: {
-            let vals = Notifs.trackedNotifications.values || [];
+            let vals = NotificationsEngine.trackedNotifications.values || [];
             let map = {};
             let arr = [];
             
@@ -57,13 +64,13 @@ Panel {
                     map[app] = { appName: app, notifs: [] };
                     arr.push(map[app]);
                 }
-                map[app].notifs.push(n);
+                map[app].notifs.push(n); 
             }
             return arr;
         }
 
         function clearAllNotifications() {
-            let vals = Notifs.trackedNotifications.values;
+            let vals = NotificationsEngine.trackedNotifications.values;
             for (let i = vals.length - 1; i >= 0; i--) {
                 if (vals[i]) vals[i].dismiss();
             }
@@ -133,6 +140,13 @@ Panel {
                         }
                     }
 
+                    move: Transition {
+                        NumberAnimation { properties: "y"; duration: 250; easing.type: Easing.OutCubic }
+                    }
+                    add: Transition {
+                        NumberAnimation { properties: "y"; duration: 250; easing.type: Easing.OutCubic }
+                    }
+
                     Repeater {
                         id: rep
                         model: ncRoot.groupedNotifications
@@ -177,7 +191,7 @@ Panel {
                                 id: groupDismissTimer
                                 interval: 200
                                 onTriggered: {
-                                    let notifsToDismiss = groupRoot.notifs.slice(); 
+                                    let notifsToDismiss = groupRoot.notifs.slice();
                                     for (let i = notifsToDismiss.length - 1; i >= 0; i--) {
                                         if (notifsToDismiss[i]) notifsToDismiss[i].dismiss();
                                     }

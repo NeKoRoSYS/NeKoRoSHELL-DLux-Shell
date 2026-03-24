@@ -63,7 +63,7 @@ Panel {
 
         Shortcut {
             sequence: "Escape"
-            onActivated: EventBus.togglePanel("wallpaper")
+            onActivated: EventBus.togglePanel("wallpaper", null)
         }
 
         Timer {

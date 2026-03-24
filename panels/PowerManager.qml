@@ -8,7 +8,6 @@ Scope {
     id: rootScope
 
     property bool showPanel:    false
-    property var  targetScreen: null
     property bool isAnimating:  false
 
     readonly property var actions: [
@@ -26,7 +25,7 @@ Scope {
             required property var modelData
 
             readonly property bool isTargetScreen:
-                !rootScope.targetScreen || rootScope.targetScreen.name === modelData.name
+                !rootScope.screen || rootScope.screen.name === modelData.name
 
             screen:  modelData
             visible: overlayItem.opacity > 0

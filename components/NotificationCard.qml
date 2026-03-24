@@ -12,6 +12,13 @@ Item {
     property real contentOpacity: 1.0
     property bool swipeEnabled: true 
 
+    function triggerDismiss() {
+        if (!dismissTimer.running) {
+            cardRoot.x = rootItem.width;
+            dismissTimer.start();
+        }
+    }
+
     Rectangle {
         id: cardRoot
         width: rootItem.width
@@ -103,6 +110,7 @@ Item {
                         elide: Text.ElideRight
                         width: parent.width
                     }
+  
                     Text {
                         text: notification ? notification.body : ""
                         color: mouseArea.containsMouse ? Qt.alpha(Colors.background, 0.6) : Qt.alpha(Colors.foreground, 0.6)
@@ -163,7 +171,7 @@ Item {
                             anchors.fill: parent
                             onClicked: {
                                 modelData.invoke()
-                                if (rootItem.notification) rootItem.notification.dismiss();
+                                rootItem.triggerDismiss();
                             }
                         }
                     }
@@ -180,17 +188,17 @@ Item {
                 if (!rootItem.notification) return;
                 
                 if (mouse.button === Qt.RightButton) {
-                    rootItem.notification.dismiss();
+                    rootItem.triggerDismiss();
                 } else if (mouse.button === Qt.LeftButton) {
                     if (rootItem.notification.actions) {
                         for (let i = 0; i < rootItem.notification.actions.length; i++) {
                             if (rootItem.notification.actions[i].identifier === "default") {
-                                rootItem.notification.actions[i].invoke();
+                                 rootItem.notification.actions[i].invoke();
                                 break;
                             }
                         }
                     }
-                    rootItem.notification.dismiss();
+                    rootItem.triggerDismiss();
                 }
             }
         }

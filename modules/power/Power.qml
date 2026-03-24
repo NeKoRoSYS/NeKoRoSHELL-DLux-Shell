@@ -13,5 +13,5 @@ QtObject {
         onClicked: function() { Power.open() }
     })
 
-    function open() { EventBus.togglePanel("power") }
+    function open() { EventBus.togglePanel("power", null) }
 }

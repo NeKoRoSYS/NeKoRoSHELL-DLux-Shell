@@ -1,8 +1,11 @@
 module qs.engine
 
 singleton ModuleRegistry    1.0 ModuleRegistry.qml
+singleton NotificationsEngine 1.0 NotificationsEngine.qml
+singleton PanelRegistry     1.0 PanelRegistry.qml
 singleton WallpaperEngine   1.0 WallpaperEngine.qml
 DashboardEngine             1.0 DashboardEngine.qml
 LayoutLoader                1.0 LayoutLoader.qml
+NotificationsToast          1.0 NotificationsToast.qml
 PillGroup                   1.0 PillGroup.qml
 SlotLayout                  1.0 SlotLayout.qml
