@@ -41,12 +41,27 @@ Item {
         ) : ""
 
         onLoaded: {
-            item.backend = backendLoader.item
+            if (item.hasOwnProperty("backend")) item.backend = backendLoader.item
         }
 
-        Binding { target: viewLoader.item; property: "isHorizontal"; value: root.isHorizontal; when: viewLoader.status === Loader.Ready }
-        Binding { target: viewLoader.item; property: "barThickness"; value: root.barThickness; when: viewLoader.status === Loader.Ready }
-        Binding { target: viewLoader.item; property: "barScreen";    value: root.barScreen;    when: viewLoader.status === Loader.Ready }
+        Binding { 
+            target: viewLoader.item
+            property: "isHorizontal"
+            value: root.isHorizontal
+            when: viewLoader.status === Loader.Ready && viewLoader.item !== null && viewLoader.item.hasOwnProperty("isHorizontal") 
+        }
+        Binding { 
+            target: viewLoader.item
+            property: "barThickness"
+            value: root.barThickness
+            when: viewLoader.status === Loader.Ready && viewLoader.item !== null && viewLoader.item.hasOwnProperty("barThickness") 
+        }
+        Binding { 
+            target: viewLoader.item
+            property: "barScreen"
+            value: root.barScreen
+            when: viewLoader.status === Loader.Ready && viewLoader.item !== null && viewLoader.item.hasOwnProperty("barScreen") 
+        }
     }
 
     Loader {

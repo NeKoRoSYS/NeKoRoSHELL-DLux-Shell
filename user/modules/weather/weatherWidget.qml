@@ -1,4 +1,4 @@
-// ~/.config/quickshell/user/modules/weather/weatherWidget.qml
+// user/modules/weather/weatherWidget.qml
 import QtQuick
 import qs.global
 

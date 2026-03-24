@@ -63,11 +63,16 @@ Scope {
     Timer {
         id: mapTimer
         interval: 50
-        running: rootScope.showPanel
         onTriggered: rootScope.isMapped = true
     }
+
     onShowPanelChanged: {
-        if (!showPanel) rootScope.isMapped = false;
+        if (showPanel) {
+            mapTimer.restart();
+        } else {
+            mapTimer.stop();  
+            rootScope.isMapped = false;
+        }
     }
 
     property real animProgress: rootScope.isMapped ? 1.0 : 0.0
@@ -97,10 +102,11 @@ Scope {
         model: Quickshell.screens
 
         PanelWindow {
+            id: clickCatcher
             required property var modelData
             screen: modelData
 
-            visible: rootScope.showPanel && rootScope.panelId !== ""
+            visible: (rootScope.showPanel || rootScope.animProgress > 0) && rootScope.panelId !== ""
             color:   "transparent"
 
             WlrLayershell.layer:         WlrLayer.Top
@@ -119,6 +125,7 @@ Scope {
 
             MouseArea {
                 anchors.fill: parent
+                enabled:      rootScope.showPanel
                 onClicked:    EventBus.togglePanel(rootScope.panelId)
                 hoverEnabled: false
             }

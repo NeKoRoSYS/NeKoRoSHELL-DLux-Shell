@@ -120,7 +120,6 @@ QtObject {
             if (_customCache["widget_" + parsed]) return _customCache["widget_" + parsed];
             
             let path = "file://" + Quickshell.env("HOME") + "/.config/quickshell/user/modules/" + parsed + "/" + parsed + "Widget.qml";
-            
             let comp = Qt.createComponent(path);
             
             if (comp.status === Component.Error) {
@@ -130,7 +129,10 @@ QtObject {
             _customCache["widget_" + parsed] = comp;
             return comp;
         }
-        return resolve(id);
+        
+        let c = _widgetMap[id] || _map[id];
+        if (!c) console.warn("ModuleRegistry: unknown widget '" + id + "'");
+        return c ?? null;
     }
 
     // ── Navbar: Dynamic ───────────────────────────────────────────────────

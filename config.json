@@ -1,8 +1,9 @@
 {
-  "navbarLocation": "right",
+  "navbarLocation": "top",
   "transparentNavbar": true,
   "enableBorders": true,
   "activeLayout": "custom:test",
+  "dashboardLayout": "[\"custom:weather\",\"stats\",\"network\",\"bluetooth\",\"speaker\",\"mic\",\"brightness\",\"idleinhibitor\",\"power\"]",
   "enableParallax": true,
   "lightMode": false,
   "wallpaperPath": "/home/nekorosys/.config/wallpapers/wallhaven-3q312y.jpg",

@@ -18,6 +18,8 @@ Singleton {
     property bool   transparentNavbar: false
     property bool   enableBorders:  true
     property string activeLayout:   "default"
+
+    property string dashboardLayout: "[]"
     
     property bool enableParallax: false
     property bool lightMode: false
@@ -38,6 +40,7 @@ Singleton {
             property bool   transparentNavbar: false
             property bool   enableBorders:  true
             property string activeLayout:   "default"
+            property string dashboardLayout: "[]"
             property bool enableParallax: false
             property bool lightMode: false
             property string wallpaperPath: ""
@@ -47,6 +50,7 @@ Singleton {
             onTransparentNavbarChanged: root.transparentNavbar = transparentNavbar
             onEnableBordersChanged:  root.enableBorders  = enableBorders
             onActiveLayoutChanged:   root.activeLayout   = activeLayout
+            onDashboardLayoutChanged:   root.dashboardLayout   = dashboardLayout            
             onEnableParallaxChanged:      root.enableParallax = enableParallax
             onLightModeChanged:      root.lightMode      = lightMode
             onWallpaperPathChanged:  root.wallpaperPath  = wallpaperPath
@@ -66,6 +70,7 @@ Singleton {
         if (key === "transparentNavbar")  root.transparentNavbar  = value;
         if (key === "enableBorders")  root.enableBorders  = value;
         if (key === "activeLayout")   root.activeLayout   = value;
+        if (key === "dashboardLayout")   root.dashboardLayout   = value;
         if (key === "enableParallax") root.enableParallax = value;
         if (key === "lightMode")      root.lightMode      = value;
         if (key === "wallpaperPath")  root.wallpaperPath  = value;
@@ -80,6 +85,7 @@ Singleton {
             transparentNavbar: root.transparentNavbar,
             enableBorders: root.enableBorders,
             activeLayout: root.activeLayout,
+            dashboardLayout: root.dashboardLayout,
             enableParallax: root.enableParallax,
             lightMode: root.lightMode,
             wallpaperPath: root.wallpaperPath,

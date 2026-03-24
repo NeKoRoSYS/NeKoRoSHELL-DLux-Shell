@@ -1,6 +1,6 @@
 {
     "left": [
-      "status"
+      ["status"]
     ],
     "center": [
       "workspaces",
@@ -8,6 +8,6 @@
       ["notifications", "settings", "power"]
     ],
     "right": [
-      "custom:weather", "tray"
+      ["custom:settings", "custom:weather", "tray"]
     ]
 }

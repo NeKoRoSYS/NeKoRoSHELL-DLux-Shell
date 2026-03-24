@@ -72,7 +72,7 @@ Panel {
                         anchors.right:          parent.right
                         anchors.verticalCenter: parent.verticalCenter
                         width: 70; height: 28; radius: 14
-                        color: engine.editMode ? Colors.color7 : Qt.alpha(Colors.background, 0.4)
+                        color: engine.editMode ? Colors.color7 : Qt.alpha(Colors.color0, 0.4)
                         Behavior on color { ColorAnimation { duration: 150 } }
                         Text {
                             anchors.centerIn: parent
@@ -116,7 +116,7 @@ Panel {
                                     id:            widgetCard
                                     anchors.fill:  parent
                                     radius:        12
-                                    color:         Qt.alpha(Colors.background, 0.4)
+                                    color:         Qt.alpha(Colors.color0, 0.4)
                                     clip:          true
                                     layer.enabled: true
 
