@@ -2,7 +2,7 @@
   "navbarLocation": "top",
   "transparentNavbar": true,
   "enableBorders": true,
-  "activeLayout": "custom:test",
+  "activeLayout": "default",
   "dashboardLayout": "[\"custom:weather\",\"stats\",\"network\",\"bluetooth\",\"speaker\",\"mic\",\"brightness\",\"idleinhibitor\",\"power\"]",
   "enableParallax": true,
   "lightMode": false,
