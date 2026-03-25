@@ -16,7 +16,6 @@ Scope {
         { id: "launcher",      file: root.configRoot + "/panels/Launcher.qml",         anchor: "bottom", align: "center", screen: "active" },
         { id: "wallpaper",     file: root.configRoot + "/panels/WallpaperPicker.qml",  anchor: "bottom", align: "center", screen: "active" },
         { id: "clipboard",     file: root.configRoot + "/panels/Clipboard.qml",        anchor: "right",  align: "center", screen: "active" },
-        { id: "notifications", file: root.configRoot + "/panels/Notifications.qml",    anchor: "right",  align: "center", screen: "active" },
         { id: "overview",      file: root.configRoot + "/panels/Overview.qml",         anchor: "center", align: "center", screen: "active" },
         { id: "power",         file: root.configRoot + "/panels/PowerManager.qml",     anchor: "center", align: "center", screen: "active" }
     ]

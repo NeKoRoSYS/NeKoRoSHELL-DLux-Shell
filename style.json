@@ -13,7 +13,7 @@
   "panelWidth": 450,
   "panelHeight": 500,
   "panelRadius": 15,
-  "panelPadding": 25,
+  "panelPadding": 15,
   "borderWidth": 15,
   "cornerRadius": 15
 }

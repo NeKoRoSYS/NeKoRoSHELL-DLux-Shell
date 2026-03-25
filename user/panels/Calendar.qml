@@ -44,7 +44,7 @@ Panel {
                     implicitWidth: 42
                     implicitHeight: 42
                     radius: 21
-                    color: model.today ? Colors.color3 : "transparent"
+                    color: model.today ? Colors.color13 : "transparent"
                     border.color: model.selected ? Colors.color13 : "transparent"
                     border.width: 2
 
@@ -52,7 +52,7 @@ Panel {
                         anchors.centerIn: parent
                         text: model.day
                         font.pixelSize: 14
-                        color: model.today ? Colors.background : (model.month === grid.month ? Colors.color5 : Colors.color13)
+                        color: model.today ? Colors.foreground : (model.month === grid.month ? Colors.foreground : Colors.color5)
                     }
                 }
             }

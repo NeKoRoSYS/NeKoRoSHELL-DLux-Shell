@@ -6,6 +6,6 @@
     "clock"
   ],
   "right": [
-    ["tray", "notifications", "settings", "power"]
+    ["tray", "settings", "power"]
   ]
 }
