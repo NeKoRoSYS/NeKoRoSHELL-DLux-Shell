@@ -18,6 +18,14 @@ def save_favs(favs):
 def notify(msg):
     subprocess.run(["notify-send", "-u", "low", "-h", "string:x-canonical-private-synchronous:clip", "Clipboard", msg])
 
+def get_clip_item(item_id):
+list_proc = subprocess.run(["cliphist", "list"], capture_output=True, text=True, errors="replace")
+for line in list_proc.stdout.splitlines():
+    if line.startswith(f"{item_id}\t"):
+        dec_proc = subprocess.run(["cliphist", "decode"], input=line.encode('utf-8'), capture_output=True)
+        return dec_proc.stdout.decode('utf-8', errors='replace'), line.split('\t', 1)[1]
+return None, ""
+
 if len(sys.argv) < 2: sys.exit(0)
 action = sys.argv[1]
 arg = sys.argv[2] if len(sys.argv) > 2 else ""
@@ -39,8 +47,10 @@ elif action == "list-favs":
         sys.stdout.flush()
 
 elif action == "copy-hist":
-    subprocess.run(f"cliphist list | awk -v id='{arg}' '$1 == id {{print; exit}}' | cliphist decode | wl-copy", shell=True)
-    notify("Copied to clipboard")
+    text, _ = get_clip_item(arg)
+    if text:
+        subprocess.run(["wl-copy"], input=text.encode('utf-8'))
+        notify("Copied to clipboard")
 
 elif action == "copy-fav":
     favs = load_favs()
@@ -50,10 +60,18 @@ elif action == "copy-fav":
         proc.communicate(input=fav["full_text"].encode('utf-8'))
         notify("Favorite Copied 🌟")
 
+
 elif action == "add-fav":
-    proc = subprocess.run(f"cliphist list | awk -v id='{arg}' '$1 == id {{print; exit}}' | cliphist decode", shell=True, capture_output=True)
-    full_text = proc.stdout.decode('utf-8', errors='replace')
+    full_text, preview = get_clip_item(arg)
     if not full_text: sys.exit(0)
+
+    favs = load_favs()
+    if not any(f.get("full_text") == full_text for f in favs):
+        favs.insert(0, {"id": f"fav_{uuid.uuid4().hex[:8]}", "preview": preview, "full_text": full_text})
+        save_favs(favs)
+        notify("Added to Favorites 🌟")
+    else:
+        notify("Already in Favorites ✨")
 
     proc2 = subprocess.run(f"cliphist list | awk -v id='{arg}' '$1 == id {{print; exit}}'", shell=True, capture_output=True, text=True, errors='replace')
     preview = proc2.stdout.strip().split('\t', 1)[1] if '\t' in proc2.stdout else ""

@@ -136,7 +136,6 @@ Panel {
 
                         Rectangle { width: parent.width; height: 1; color: Colors.color8; opacity: 0.3 }
 
-                        // ── Control center grid ───────────────────────────────────────
                         Item {
                             width:  parent.width
                             height: gridLayout.height + (engine.editMode ? addSheet.height + 10 : 0)
@@ -276,8 +275,6 @@ Panel {
                                 }
                             }
                         }
-
-                        Rectangle { width: parent.width; height: 1; color: Colors.color8; opacity: 0.3 }
                     }
                 }
             }
@@ -329,7 +326,7 @@ Panel {
                             Button {
                                 labelText: ""
                                 labelFont: "JetBrainsMono Nerd Font"
-                                buttonColor: Colors.color1
+                                buttonColor: Qt.alpha(Colors.color0, 0.4)
                                 width: height
                                 height: 30
                                 onButtonClicked: dashRoot.clearAllNotifications()
@@ -433,7 +430,7 @@ Panel {
                                                 anchors.bottom: parent.bottom
                                                 anchors.bottomMargin: 5
                                                 text: groupData.appName + (notifs.length > 1 ? " (" + notifs.length + ")" : "")
-                                                color: Colors.color5
+                                                color: Colors.foreground
                                                 font.family: "JetBrains Mono"
                                                 font.weight: Font.Bold
                                                 font.pixelSize: 13
