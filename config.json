@@ -1,11 +1,11 @@
 {
   "navbarLocation": "top",
-  "transparentNavbar": true,
+  "transparentNavbar": false,
   "enableBorders": true,
   "activeLayout": "center",
   "dashboardLayout": "[\"custom:weather\",\"stats\",\"network\",\"bluetooth\",\"speaker\",\"mic\",\"brightness\",\"idleinhibitor\",\"power\"]",
   "enableParallax": true,
   "lightMode": false,
-  "wallpaperPath": "/home/nekorosys/.config/wallpapers/1287023.jpg",
+  "wallpaperPath": "/home/nekorosys/.config/wallpapers/wallhaven-lyw1m2.jpg",
   "dndEnabled": false
 }

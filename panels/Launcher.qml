@@ -5,6 +5,7 @@ import Quickshell.Io
 import Quickshell.Wayland
 import qs.global
 import qs.components
+import qs.engine 
 
 Panel {
     id: launcherPanel
@@ -29,7 +30,15 @@ Panel {
         property var allAppsRaw: [] 
         property int selectedIndex: 0
 
-        Component.onCompleted: focusTimer.restart()
+        property var builtInCommands: []
+        property var userCommands:    []
+        property var panelCommands:   []
+        property var commandList:     []
+
+        Component.onCompleted: {
+            focusTimer.restart();
+            updatePanelCommands(); 
+        }
 
         onSearchQueryChanged: updateSearch()
 
@@ -49,6 +58,52 @@ Panel {
             watchChanges: true
             onFileChanged: reload()
             onLoaded: launcherRoot.parseAppsJson()
+        }
+
+        FileView {
+            id: builtInCmdFile
+            path: Quickshell.shellDir + "/commands.json"
+            watchChanges: true
+            onFileChanged: reload()
+            onLoaded: {
+                let content = builtInCmdFile.text();
+                if (content) {
+                    try {
+                        let parsed = JSON.parse(content);
+                        let cmds = parsed.commands || [];
+                        let arr = [];
+                        for(let i = 0; i < cmds.length; i++) arr.push(cmds[i]);
+                        launcherRoot.builtInCommands = arr;
+                        launcherRoot.updateCommandList();
+                    } catch(e) { console.log("Built-in Cmd Parse Error:", e) }
+                }
+            }
+        }
+
+        FileView {
+            id: userCmdFile
+            path: Quickshell.shellDir + "/user/commands.json"
+            watchChanges: true
+            onFileChanged: reload()
+            onLoaded: {
+                let content = userCmdFile.text();
+                if (content) {
+                    try {
+                        let parsed = JSON.parse(content);
+                        let cmds = parsed.commands || [];
+                        let arr = [];
+                        for(let i = 0; i < cmds.length; i++) arr.push(cmds[i]);
+                        launcherRoot.userCommands = arr;
+                        launcherRoot.updateCommandList();
+                    } catch(e) { console.log("User Cmd Parse Error:", e) }
+                }
+            }
+        }
+
+        Connections {
+            target: PanelRegistry
+            function onBuiltInPanelsChanged() { launcherRoot.updatePanelCommands(); }
+            function onUserPanelsChanged()   { launcherRoot.updatePanelCommands(); }
         }
 
         Connections {
@@ -94,6 +149,31 @@ Panel {
             }
         }
 
+        function updatePanelCommands() {
+            let pCmds = [];
+            let builtIn = PanelRegistry.builtInPanels || [];
+            for (let i = 0; i < builtIn.length; i++) {
+                let pId = builtIn[i].id;
+                if (pId) pCmds.push({ trigger: pId, name: "Toggle Panel", icon: "window-new", exec: "toggle:" + pId });
+            }
+            
+            let userP = PanelRegistry.userPanels || [];
+            for (let i = 0; i < userP.length; i++) {
+                let pId = userP[i].id;
+                if (pId) pCmds.push({ trigger: pId, name: "Toggle Panel", icon: "window-new", exec: "toggle:" + pId });
+            }
+            
+            launcherRoot.panelCommands = pCmds;
+            launcherRoot.updateCommandList();
+        }
+
+        function updateCommandList() {
+            launcherRoot.commandList = [].concat(launcherRoot.panelCommands)
+                                         .concat(launcherRoot.builtInCommands)
+                                         .concat(launcherRoot.userCommands);
+            if (launcherRoot.searchQuery.startsWith(">")) launcherRoot.updateSearch();
+        }
+
         function fuzzyMatch(str, pattern) {
             if (!pattern) return true;
             pattern = pattern.toLowerCase().replace(/\s+/g, "")
@@ -107,19 +187,39 @@ Panel {
 
         function updateSearch() {
             appsModel.clear();
-            let filtered = [];
+            let batchedApps = [];
             
-            if (launcherRoot.searchQuery.trim() === "") {
-                filtered = launcherRoot.allAppsRaw;
-            } else {
-                filtered = launcherRoot.allAppsRaw.filter(app => launcherRoot.fuzzyMatch(app.name, launcherRoot.searchQuery));
-            }
+            if (launcherRoot.searchQuery.startsWith(">")) {
+                let pattern = launcherRoot.searchQuery.substring(1).trim();
+                let filtered = [];
+                
+                if (pattern === "") {
+                    filtered = launcherRoot.commandList;
+                } else {
+                    filtered = launcherRoot.commandList.filter(cmd => 
+                        launcherRoot.fuzzyMatch(cmd.trigger, pattern) || launcherRoot.fuzzyMatch(cmd.name, pattern)
+                    );
+                }
 
-            let batchedApps = filtered.map(app => ({
-                "appName": app.name,
-                "appIcon": app.icon,
-                "appExec": app.exec
-            }));
+                batchedApps = filtered.map(cmd => ({
+                    "appName": cmd.name + " (" + cmd.trigger + ")",
+                    "appIcon": cmd.icon || "system-run",
+                    "appExec": cmd.exec || ""
+                }));
+            } else {
+                let filtered = [];
+                if (launcherRoot.searchQuery.trim() === "") {
+                    filtered = launcherRoot.allAppsRaw;
+                } else {
+                    filtered = launcherRoot.allAppsRaw.filter(app => launcherRoot.fuzzyMatch(app.name, launcherRoot.searchQuery));
+                }
+
+                batchedApps = filtered.map(app => ({
+                    "appName": app.name,
+                    "appIcon": app.icon,
+                    "appExec": app.exec || ""
+                }));
+            }
 
             if (batchedApps.length > 0) {
                 appsModel.append(batchedApps);
@@ -130,9 +230,19 @@ Panel {
 
         function launchSelected() {
             if (appsModel.count > 0 && launcherRoot.selectedIndex >= 0 && launcherRoot.selectedIndex < appsModel.count) {
-                let cmd = appsModel.get(launcherRoot.selectedIndex).appExec;
-                Quickshell.execDetached({ command: ["sh", "-c", cmd] });
+                let item = appsModel.get(launcherRoot.selectedIndex);
+                let cmd = item ? item.appExec : "";
+                
+                if (!cmd || cmd === "") return;
+
                 EventBus.togglePanel("launcher", null);
+                
+                if (cmd.startsWith("toggle:")) {
+                    let targetPanel = cmd.substring(7);
+                    EventBus.togglePanel(targetPanel, null);
+                } else {
+                    Quickshell.execDetached({ command: ["sh", "-c", cmd] });
+                }
             }
         }
 
@@ -162,7 +272,7 @@ Panel {
                     onTextEdited: launcherRoot.searchQuery = text
                     
                     Text {
-                        text: "  Search apps..."
+                        text: "  Search apps or type > for commands"
                         color: Colors.color8
                         visible: !parent.text
                         font.family: "JetBrains Mono"
@@ -171,7 +281,7 @@ Panel {
                     }
 
                     Text {
-                        text: appsModel.count + " apps"
+                        text: appsModel.count + (launcherRoot.searchQuery.startsWith(">") ? " cmds" : " apps")
                         color: Colors.color8
                         font.family: "JetBrains Mono"
                         font.pixelSize: 12

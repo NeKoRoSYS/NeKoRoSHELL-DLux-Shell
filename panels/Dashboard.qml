@@ -76,6 +76,7 @@ Panel {
         }
 
         Row {
+            id: mainRow
             anchors.fill: parent
 
             Item {

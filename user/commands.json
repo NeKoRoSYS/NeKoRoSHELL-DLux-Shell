@@ -1,0 +1,10 @@
+{
+    "commands": [
+      { 
+        "trigger": "test", 
+        "name": "Test", 
+        "icon": "system-reboot", 
+        "exec": "notify-send 'tung tung tung sahur'" 
+      }
+    ]
+  }

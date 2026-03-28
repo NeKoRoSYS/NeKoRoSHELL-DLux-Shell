@@ -1,0 +1,16 @@
+{
+    "commands": [
+      { 
+        "trigger": "reboot", 
+        "name": "Reboot System", 
+        "icon": "system-reboot", 
+        "exec": "systemctl reboot" 
+      },
+      { 
+        "trigger": "sleep", 
+        "name": "Suspend to Ram", 
+        "icon": "system-suspend", 
+        "exec": "systemctl suspend" 
+      }
+    ]
+  }
