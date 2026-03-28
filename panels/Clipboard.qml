@@ -72,13 +72,11 @@ Panel {
             }
         }
 
-        Connections {
-            target: clipboardPanel
-            function onShowPanelChanged() {
-                if (clipboardPanel.showPanel) {
-                    clipRoot.refreshData()
-                }
-            }
+        // --- FIXED: Reliable Data Refresh ---
+        // Because the panel content is deferred via a Loader, it is created AFTER 
+        // showPanel becomes true. We just fetch the data immediately upon creation.
+        Component.onCompleted: {
+            clipRoot.refreshData()
         }
 
         Timer {
@@ -90,11 +88,9 @@ Panel {
         function refreshData() {
             clipModel.clear()
             fetchProcess.mode = (clipRoot.currentTab === "history") ? "list-history" : "list-favs"
+            // Restarting the process forces it to run again
+            fetchProcess.running = false
             fetchProcess.running = true
-        }
-
-        Component.onCompleted: {
-            refreshData()
         }
 
         function executeAction(action, arg) {
@@ -171,8 +167,9 @@ Panel {
                     radius: 5
                     color: clipMouse.containsMouse ? Colors.color13 : "transparent"
 
-                    property string clipId: model.rawText.indexOf('\t') !== -1 ? model.rawText.substring(0, model.rawText.indexOf('\t')) : ""
-                    property string clipText: clipRoot.currentTab === "history" ? model.rawText.substring(model.rawText.indexOf('\t') + 1) : model.rawText
+                    // Corrected parsing to prevent undefined errors
+                    property string clipId: model.clipId || ""
+                    property string clipText: model.clipText || ""
 
                     MouseArea {
                         id: clipMouse
@@ -184,11 +181,11 @@ Panel {
                         onClicked: (mouse) => {
                             if (mouse.button === Qt.RightButton) {
                                 let action = (clipRoot.currentTab === "history") ? "rm-hist" : "rm-fav"
-                                clipRoot.executeAction(action, model.clipId)
+                                clipRoot.executeAction(action, delegateRoot.clipId)
                             } else {
                                 let action = (clipRoot.currentTab === "history") ? "copy-hist" : "copy-fav"
-                                clipRoot.executeAction(action, model.clipId)
-                                EventBus.togglePanel("clipboard")
+                                clipRoot.executeAction(action, delegateRoot.clipId)
+                                EventBus.togglePanel("clipboard", null) // Pass null to match function signature
                             }
                         }
                     }
@@ -199,7 +196,7 @@ Panel {
                         spacing: 10
 
                         Text {
-                            text: model.clipText
+                            text: delegateRoot.clipText
                             color: Colors.foreground
                             font.family: "JetBrains Mono"
                             font.pixelSize: 13
@@ -215,7 +212,7 @@ Panel {
                             
                             property bool isFav: {
                                 if (clipRoot.currentTab === "favorites") return true;
-                                return clipRoot.favoriteArray.some(fav => fav.preview === model.clipText);
+                                return clipRoot.favoriteArray.some(fav => fav.preview === delegateRoot.clipText);
                             }
 
                             Text {
@@ -231,9 +228,9 @@ Panel {
                                 onClicked: {
                                     if (clipRoot.currentTab === "history") {
                                         let action = parent.isFav ? "rm-fav-hist" : "add-fav"
-                                        clipRoot.executeAction(action, model.clipId)
+                                        clipRoot.executeAction(action, delegateRoot.clipId)
                                     } else {
-                                        clipRoot.executeAction("rm-fav", model.clipId)
+                                        clipRoot.executeAction("rm-fav", delegateRoot.clipId)
                                     }
                                 }
                             }

@@ -1,6 +1,6 @@
 {
   "navbarLocation": "top",
-  "transparentNavbar": false,
+  "transparentNavbar": true,
   "enableBorders": true,
   "activeLayout": "center",
   "dashboardLayout": "[\"custom:weather\",\"stats\",\"network\",\"bluetooth\",\"speaker\",\"mic\",\"brightness\",\"idleinhibitor\",\"power\"]",
